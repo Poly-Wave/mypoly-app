@@ -14,7 +14,24 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  # Lint
   flutter_lints: ^5.0.0
+
+  # CLI
+  melos: ^7.3.0
 
 flutter:
   uses-material-design: true
+
+melos:
+  useRootAsPackage: true
+
+  scripts:
+    clean:
+      steps:
+        - fvm flutter clean
+        - fvm flutter pub get
+        - |
+          if [[ "$OSTYPE" == "darwin"* ]]; then
+            fvm flutter precache --ios
+          fi
