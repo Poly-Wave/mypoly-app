@@ -49,3 +49,8 @@ app.*.map.json
 
 .env*
 !.env.example
+!.env.script.example
+
+service-account.json
+
+**/fastlane/report.xml
