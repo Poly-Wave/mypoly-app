@@ -54,3 +54,7 @@ app.*.map.json
 service-account.json
 
 **/fastlane/report.xml
+
+lib/**/*.freezed.dart
+lib/**/*.g.dart
+lib/**/*.gr.dart

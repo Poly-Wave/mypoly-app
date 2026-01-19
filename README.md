@@ -34,4 +34,10 @@ melos bootstrap
 
 # 클린 빌드
 melos run clean
+
+# Build Runner Watch
+melos run watch
+
+# Spider Build Watch
+melos run spider
 ```

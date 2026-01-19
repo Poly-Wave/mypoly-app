@@ -1,5 +1,5 @@
 name: mypoly
-description: "A new Flutter project."
+description: "MyPOLY"
 publish_to: 'none'
 version: 0.1.0+1
 
@@ -10,16 +10,47 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # State
+  hooks_riverpod: ^3.1.0
+  flutter_hooks: ^0.21.3+1
+  riverpod_annotation: ^4.0.0
+
+  # Route
+  auto_route: ^11.1.0
+
+  # Widget
+  flutter_screenutil: ^5.9.3
+  loader_overlay: ^5.0.0
+  skeletonizer: ^2.1.2
+  flutter_svg: ^2.2.3
+  cached_network_image: ^3.4.1
+
+  # Native
+  flutter_native_splash: ^2.4.7
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  # Runner
+  build_runner: ^2.10.5
+
+  # Route
+  auto_route_generator: ^10.4.0
+
+  # State
+  riverpod_generator: ^4.0.0+1
+
   # Lint
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
+  custom_lint: ^0.8.1
+  riverpod_lint: ^3.1.0
 
   # CLI
   melos: ^7.3.0
+  spider: ^4.2.3
   change_app_package_name: ^1.5.0
+  flutter_launcher_icons: ^0.14.4
 
 flutter:
   config:
@@ -30,6 +61,30 @@ flutter:
   assets:
     - .env
     - .env.dev
+    - assets/svg/
+    - assets/webp/
+    
+  fonts:
+    - family: Pretendard
+      fonts:
+        - asset: assets/font/Pretendard-Thin.ttf
+          weight: 100
+        - asset: assets/font/Pretendard-ExtraLight.ttf
+          weight: 200
+        - asset: assets/font/Pretendard-Light.ttf
+          weight: 300
+        - asset: assets/font/Pretendard-Regular.ttf
+          weight: 400
+        - asset: assets/font/Pretendard-Medium.ttf
+          weight: 500
+        - asset: assets/font/Pretendard-SemiBold.ttf
+          weight: 600
+        - asset: assets/font/Pretendard-Bold.ttf
+          weight: 700
+        - asset: assets/font/Pretendard-ExtraBold.ttf
+          weight: 800
+        - asset: assets/font/Pretendard-Black.ttf
+          weight: 900
     
 melos:
   useRootAsPackage: true
@@ -39,7 +94,14 @@ melos:
       steps:
         - fvm flutter clean
         - fvm flutter pub get
-        - |
-          if [[ "$OSTYPE" == "darwin"* ]]; then
-            fvm flutter precache --ios
-          fi
+        - test "$(uname)" = "Darwin" && fvm flutter precache --ios && cd ios && pod install && cd .. || true
+        - fvm flutter pub run spider build
+        - fvm flutter pub run build_runner build --delete-conflicting-outputs
+
+    watch:
+      steps:
+        - fvm flutter pub run build_runner watch --delete-conflicting-outputs
+
+    spider:
+      steps:
+        - fvm flutter pub run spider build --watch
