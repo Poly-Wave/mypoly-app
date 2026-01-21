@@ -65,38 +65,6 @@ class OnboardView extends HookConsumerWidget {
                 ("구글로 로그인", SvgImage.socialGoogle, ColorStyles.white, () {}),
               ].map((item) => OnboardButton(item: item)).toList(),
             ),
-            MPHeight(24),
-            RichText(
-              textAlign: .center,
-              text: TextSpan(
-                style: Pretendard.medium.set(
-                  size: 14,
-                  height: 1.45,
-                  color: ColorStyles.gray30,
-                ),
-                children: [
-                  TextSpan(text: "로그인함으로써 폴리웨이브\n"),
-                  TextSpan(
-                    text: "개인 정보 처리방침",
-                    style: Pretendard.medium.set(
-                      size: 14,
-                      height: 1.45,
-                      color: ColorStyles.white,
-                    ),
-                  ),
-                  TextSpan(text: " 및 "),
-                  TextSpan(
-                    text: "이용약관",
-                    style: Pretendard.medium.set(
-                      size: 14,
-                      height: 1.45,
-                      color: ColorStyles.white,
-                    ),
-                  ),
-                  TextSpan(text: "에 동의합니다."),
-                ],
-              ),
-            ),
             MPHeight(50),
           ],
         ),
