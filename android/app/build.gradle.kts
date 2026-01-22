@@ -43,14 +43,16 @@ android {
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
+    
+    val flutterRoot = rootProject.projectDir.parentFile
 
     val devEnv = dotenv {
-        directory = "../"
+        directory = flutterRoot.absolutePath
         filename = ".env.dev"
     }
 
     val prodEnv = dotenv {
-        directory = "../"
+        directory = flutterRoot.absolutePath
         filename = ".env"
     }
 
