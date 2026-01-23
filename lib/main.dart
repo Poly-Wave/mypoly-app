@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:mypoly/asset/index.dart';
 import 'package:mypoly/enum/flavor.dart';
 import 'package:mypoly/provider/router_provider.dart';
 import 'package:mypoly/style/index.dart';
+import 'package:mypoly/widget/index.dart';
 
 const systemUiOverlayStyle = SystemUiOverlayStyle(
   systemNavigationBarContrastEnforced: false,
@@ -42,6 +45,21 @@ class MainApp extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
 
+    final controller = useAnimationController(
+      duration: const Duration(milliseconds: 1200),
+    );
+
+    final rotation = Tween<double>(
+      begin: 0,
+      end: -1,
+    ).animate(CurvedAnimation(parent: controller, curve: Curves.linear));
+
+    useEffect(() {
+      controller.repeat();
+
+      return null;
+    }, []);
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: systemUiOverlayStyle,
       child: ScreenUtilInit(
@@ -51,6 +69,13 @@ class MainApp extends HookConsumerWidget {
         fontSizeResolver: (fontSize, instance) =>
             FontSizeResolvers.radius(fontSize, instance),
         child: GlobalLoaderOverlay(
+          overlayColor: ColorStyles.dim,
+          overlayWidgetBuilder: (_) => Center(
+            child: RotationTransition(
+              turns: rotation,
+              child: MPImage(WebpImage.loading, size: 80),
+            ),
+          ),
           child: MaterialApp.router(
             theme: ThemeData(scaffoldBackgroundColor: ColorStyles.black),
             debugShowCheckedModeBanner: false,
