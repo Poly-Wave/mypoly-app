@@ -7,8 +7,11 @@ class SvgImage {
   static const String arrowLeft = 'assets/svg/arrow_left.svg';
   static const String arrowRight = 'assets/svg/arrow_right.svg';
   static const String arrowUp = 'assets/svg/arrow_up.svg';
+  static const String icBack = 'assets/svg/ic_back.svg';
+  static const String icChange = 'assets/svg/ic_change.svg';
   static const String icClose = 'assets/svg/ic_close.svg';
   static const String icInfo = 'assets/svg/ic_info.svg';
+  static const String icReset = 'assets/svg/ic_reset.svg';
   static const String icSearch = 'assets/svg/ic_search.svg';
   static const String logo = 'assets/svg/logo.svg';
   static const String selectorCheckboxCircleOff =

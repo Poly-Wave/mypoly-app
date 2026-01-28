@@ -4,7 +4,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:loader_overlay/loader_overlay.dart';
 import 'package:mypoly/asset/index.dart';
 import 'package:mypoly/module/onboard/onboard_provider.dart';
 import 'package:mypoly/style/index.dart';

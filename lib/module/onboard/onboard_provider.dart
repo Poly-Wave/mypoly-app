@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mypoly/asset/index.dart';
+import 'package:mypoly/provider/router_provider.dart';
 import 'package:mypoly/style/index.dart';
 import 'package:mypoly/widget/index.dart';
 import 'package:mypoly/widget/modal/index.dart';
@@ -108,7 +109,16 @@ void showTerm(WidgetRef ref) {
                     Expanded(
                       child: MPButton("취소", style: .gray, onTap: context.pop),
                     ),
-                    Expanded(child: MPButton("동의", enabled: onNextEnabled)),
+                    Expanded(
+                      child: MPButton(
+                        "동의",
+                        enabled: onNextEnabled,
+                        onTap: () {
+                          context.pop();
+                          context.pushRoute(RegisterNicknameRoute());
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ],

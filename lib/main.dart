@@ -9,6 +9,7 @@ import 'package:mypoly/asset/index.dart';
 import 'package:mypoly/enum/flavor.dart';
 import 'package:mypoly/provider/router_provider.dart';
 import 'package:mypoly/style/index.dart';
+import 'package:mypoly/util/logger.dart';
 import 'package:mypoly/widget/index.dart';
 
 const systemUiOverlayStyle = SystemUiOverlayStyle(
@@ -35,7 +36,7 @@ void main() {
 
   print(flavor);
 
-  runApp(ProviderScope(child: const MainApp()));
+  runApp(ProviderScope(observers: [ProviderLogger()], child: const MainApp()));
 }
 
 class MainApp extends HookConsumerWidget {

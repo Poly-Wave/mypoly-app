@@ -123,15 +123,87 @@ enum MPButtonStyle {
   }
 }
 
-class MPBottomButton extends MPButton {
+class MPBottomButton extends HookWidget {
+  final void Function()? onTap;
+  final void Function()? onTapForced;
+  final MPButtonStyle style;
+  final bool enabled;
+  final String text;
+  final List<Widget>? children;
+
   const MPBottomButton(
-    super.text, {
+    this.text, {
     super.key,
-    super.style,
-    super.enabled,
-    super.onTap,
-    super.onTapForced,
-  }) : super(height: 57, borderRadius: .zero, safeBottom: true);
+    this.style = .primary,
+    this.enabled = true,
+    this.onTap,
+    this.onTapForced,
+    this.children,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final keyboardState = useState<KeyboardState>(.hidden);
+
+    return KeyboardDetection(
+      controller: KeyboardDetectionController(
+        onChanged: (value) => keyboardState.value = value,
+      ),
+      child:
+          keyboardState.value == .visible || keyboardState.value == .visibling
+          ? MPButton(
+              text,
+              style: style,
+              enabled: enabled,
+              onTap: onTap,
+              onTapForced: onTapForced,
+              borderRadius: .zero,
+              safeBottom: true,
+            )
+          : Stack(
+              clipBehavior: .none,
+              children: [
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  top: -20.h,
+                  child: Container(
+                    height: 20.h,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          ColorStyles.black.withValues(alpha: 0),
+                          ColorStyles.black,
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                MPSafeColumn(
+                  bottom: true,
+                  crossAxisAlignment: .stretch,
+                  children: [
+                    Container(
+                      padding: .symmetric(horizontal: 20.w),
+                      color: ColorStyles.black,
+                      child: MPButton(
+                        text,
+                        style: style,
+                        enabled: enabled,
+                        onTap: onTap,
+                        onTapForced: onTapForced,
+                      ),
+                    ),
+                    ...(children ?? []),
+                    MPHeight(20),
+                  ],
+                ),
+              ],
+            ),
+    );
+  }
 }
 
 class MPButton extends StatefulWidget {
