@@ -1,0 +1,135 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mypoly/asset/index.dart';
+import 'package:mypoly/style/index.dart';
+import 'package:mypoly/widget/index.dart';
+//import 'package:mypoly/module/main/home/widget/agenda_intro_item.dart';
+
+class AgendaIntroSection extends StatelessWidget {
+  const AgendaIntroSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: .symmetric(horizontal: 20.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: .symmetric(horizontal: 10.w),
+            child: Padding(
+              padding: .symmetric(vertical: 10.h),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      "다양한 안건 소개",
+                      style: Pretendard.semiBold.set(
+                        size: 18,
+                        color: ColorStyles.gray10,
+                      ),
+                    ),
+                  ),
+
+                  GestureDetector(
+                    onTap: () {
+                      // 더보기 기능
+                    },
+                    behavior: HitTestBehavior.translucent,
+                    child: Row(
+                      spacing: 4.w,
+                      children: [
+                        Text(
+                          "더보기",
+                          style: Pretendard.medium.set(
+                            size: 13,
+                            color: ColorStyles.gray30,
+                          ),
+                        ),
+                        MPSvgImage(
+                          SvgImage.arrowRight,
+                          size: 14,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          Padding(
+            padding: .symmetric(horizontal: 12.w, vertical: 12.h),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ("쟁쟁한", true),
+                ("맞춤형", false),
+                ("요즘 핫한", false),
+                ("이번달 인기", false),
+              ].map((item) => AgendaCategoryButton(item: item)).toList(),
+            ),
+          ),
+
+          Padding(
+            padding: .only(top: 12.h),
+            child: Column(
+              children: [
+                // AgendaIntroItem(
+                //   item: (
+                //     1, 
+                //     "소득세법 일부개정법률안(대안)(기획재정부)", 
+                //     90, 
+                //     10, 
+                //     500,
+                //     (){
+
+                //     }
+                //   ),
+                // ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class AgendaCategoryButton extends StatelessWidget {
+  final (String, bool) item;
+
+  const AgendaCategoryButton({super.key, required this.item});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+      },
+      child: Container(
+        padding: .symmetric(horizontal: 12.w, vertical: 6.h),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+          borderRadius: .circular(99.r),
+          border: Border.all(
+            color: item.$2
+                ? ColorStyles.primary50
+                : ColorStyles.gray60,
+          ),
+        ),
+        child: Text(
+          item.$1,
+          maxLines: 1,
+          softWrap: false,
+          style: Pretendard.medium.set(
+            size: 13,
+            color: item.$2
+                ? ColorStyles.primary60
+                : ColorStyles.gray20,
+          ),
+        ),
+      ),
+    );
+  }
+}
