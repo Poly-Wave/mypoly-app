@@ -28,6 +28,10 @@ dependencies:
   # Native
   flutter_native_splash: ^2.4.7
 
+  # Util
+  collection: ^1.19.1
+  keyboard_detection: ^0.8.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

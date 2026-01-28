@@ -3,6 +3,8 @@ part of 'index.dart';
 class ColorStyles {
   ColorStyles._();
 
+  static const Color dim = Color(0x99000000);
+
   static const Color primary10 = Color(0xFFE5FAF7);
   static const Color primary20 = Color(0xFFCDFDF5);
   static const Color primary30 = Color(0xFFA5FEF0);

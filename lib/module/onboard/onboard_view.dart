@@ -5,6 +5,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mypoly/asset/index.dart';
+import 'package:mypoly/module/onboard/onboard_provider.dart';
 import 'package:mypoly/style/index.dart';
 import 'package:mypoly/widget/index.dart';
 
@@ -60,7 +61,12 @@ class OnboardView extends HookConsumerWidget {
               crossAxisAlignment: .stretch,
               spacing: 12.h,
               children: [
-                ("카카오로 로그인", SvgImage.socialKakao, Color(0xFFFFDF00), () {}),
+                (
+                  "카카오로 로그인",
+                  SvgImage.socialKakao,
+                  Color(0xFFFFDF00),
+                  () => showTerm(ref),
+                ),
                 ("애플로 로그인", SvgImage.socialApple, ColorStyles.white, () {}),
                 ("구글로 로그인", SvgImage.socialGoogle, ColorStyles.white, () {}),
               ].map((item) => OnboardButton(item: item)).toList(),
