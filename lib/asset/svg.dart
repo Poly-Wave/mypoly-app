@@ -7,13 +7,20 @@ class SvgImage {
   static const String arrowLeft = 'assets/svg/arrow_left.svg';
   static const String arrowRight = 'assets/svg/arrow_right.svg';
   static const String arrowUp = 'assets/svg/arrow_up.svg';
+  static const String homeStore = 'assets/svg/home_store.svg';
+  static const String homeVote = 'assets/svg/home_vote.svg';
   static const String icBack = 'assets/svg/ic_back.svg';
   static const String icChange = 'assets/svg/ic_change.svg';
   static const String icClose = 'assets/svg/ic_close.svg';
   static const String icInfo = 'assets/svg/ic_info.svg';
+  static const String icNotice = 'assets/svg/ic_notice.svg';
   static const String icReset = 'assets/svg/ic_reset.svg';
   static const String icSearch = 'assets/svg/ic_search.svg';
   static const String logo = 'assets/svg/logo.svg';
+  static const String mainAgenda = 'assets/svg/main_agenda.svg';
+  static const String mainHome = 'assets/svg/main_home.svg';
+  static const String mainSubsidy = 'assets/svg/main_subsidy.svg';
+  static const String noticeSectionLogo = 'assets/svg/notice_section_logo.svg';
   static const String selectorCheckboxCircleOff =
       'assets/svg/selector_checkbox_circle_off.svg';
   static const String selectorCheckboxCircleOn =
