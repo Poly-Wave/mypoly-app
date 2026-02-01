@@ -4,7 +4,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mypoly/style/index.dart';
 import 'package:mypoly/module/main/home/section/notice_section.dart';
 import 'package:mypoly/module/main/home/section/my_info_section.dart';
 import 'package:mypoly/module/main/home/section/agenda_intro_section.dart';
@@ -28,18 +27,15 @@ class HomeView extends HookConsumerWidget {
     return Scaffold(
       appBar: HomeAppBar(),
       
-      body: Container(
-        color: ColorStyles.black,
-        child: ListView(
-          children: [
-            const NoticeSection(),  // 공지사항
-            const MyInfoSection(),  // 내 정보
+      body: ListView(
+        children: [
+          NoticeSection(),  // 공지사항
+          MyInfoSection(),  // 내 정보
 
-            SizedBox(height: 50.h),
+          SizedBox(height: 50.h),
 
-            const AgendaIntroSection(), // 안건 소개
-          ],
-        ),
+          AgendaIntroSection(), // 안건 소개
+        ],
       ),
       
       bottomNavigationBar: HomeBottomBar(),
