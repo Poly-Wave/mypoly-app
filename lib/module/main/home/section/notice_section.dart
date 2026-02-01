@@ -20,7 +20,7 @@ class NoticeSection extends StatelessWidget {
         children: [
           MPSvgImage(
             SvgImage.noticeSectionLogo,
-            size: 20,
+            size: 24,
           ),
 
           SizedBox(width: 10.w),
@@ -29,7 +29,7 @@ class NoticeSection extends StatelessWidget {
             child: Text(
               '북마크한 보조금 신청기간입니다.',
               style: Pretendard.medium.set(
-                size: 14,
+                size: 15,
                 color: ColorStyles.white,
               ),
               maxLines: 1,
@@ -45,7 +45,7 @@ class NoticeSection extends StatelessWidget {
             },
             child: MPSvgImage(
               SvgImage.arrowRight,
-              size: 16,
+              size: 20,
             ),
           ),
         ],

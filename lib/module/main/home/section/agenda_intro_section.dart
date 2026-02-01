@@ -25,7 +25,7 @@ class AgendaIntroSection extends StatelessWidget {
                     child: Text(
                       "다양한 안건 소개",
                       style: Pretendard.semiBold.set(
-                        size: 18,
+                        size: 20,
                         color: ColorStyles.gray10,
                       ),
                     ),
@@ -42,13 +42,13 @@ class AgendaIntroSection extends StatelessWidget {
                         Text(
                           "더보기",
                           style: Pretendard.medium.set(
-                            size: 13,
+                            size: 14,
                             color: ColorStyles.gray30,
                           ),
                         ),
                         MPSvgImage(
                           SvgImage.arrowRight,
-                          size: 14,
+                          size: 16,
                         ),
                       ],
                     ),

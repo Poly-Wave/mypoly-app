@@ -16,6 +16,9 @@ import 'package:mypoly/module/onboard/register/topic/register_topic_view.dart';
 // Main
 import 'package:mypoly/module/main/main_view.dart';
 
+// Home
+import 'package:mypoly/module/main/home/home_view.dart';
+
 part 'router_provider.gr.dart';
 part 'router_provider.g.dart';
 
@@ -42,6 +45,8 @@ class AppRouter extends RootStackRouter {
 
     // Main
     AutoRoute(page: MainRoute.page),
+    // Home
+    AutoRoute(page: HomeRoute.page),
   ];
 }
 
