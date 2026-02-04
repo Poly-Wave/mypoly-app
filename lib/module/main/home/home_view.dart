@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mypoly/module/main/home/section/notice_section.dart';
 import 'package:mypoly/module/main/home/section/my_info_section.dart';
 import 'package:mypoly/module/main/home/section/agenda_intro_section.dart';
+import 'package:mypoly/module/main/home/section/popular_subsidy_section.dart';
 import 'package:mypoly/module/main/home/widget/home_app_bar.dart';
 import 'package:mypoly/module/main/home/widget/home_bottom_bar.dart';
 
@@ -34,7 +35,8 @@ class HomeView extends HookConsumerWidget {
 
           SizedBox(height: 50.h),
 
-          AgendaIntroSection(), // 안건 소개
+          AgendaIntroSection(),  // 안건 소개
+          PopularSubsidySection(),  // 인기 보조금
         ],
       ),
       
