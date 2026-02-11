@@ -16,28 +16,28 @@ class RegisterTopicView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final categories = useState([
-      (false, WebpImage.categoryBangtong, "디지털"),
-      (false, WebpImage.categoryAuth, "보안"),
+      (false, WebpImage.categoryDigital, "디지털"),
+      (false, WebpImage.categorySecurity, "보안"),
       (false, WebpImage.categoryBangtong, "방통"),
 
       (false, WebpImage.categoryEconomy, "경제"),
-      (false, WebpImage.categoryEconomy, "부동산"),
-      (false, WebpImage.categoryEconomy, "교통"),
+      (false, WebpImage.categoryRealEstate, "부동산"),
+      (false, WebpImage.categoryTraffic, "교통"),
 
-      (false, WebpImage.categoryEconomy, "환경"),
-      (false, WebpImage.categoryBangtong, "의료"),
-      (false, WebpImage.categoryEconomy, "복지"),
+      (false, WebpImage.categoryEnvironment, "환경"),
+      (false, WebpImage.categoryMedical, "의료"),
+      (false, WebpImage.categoryWelfare, "복지"),
 
-      (false, WebpImage.categoryEconomy, "교육"),
-      (false, WebpImage.categoryBangtong, "노동"),
-      (false, WebpImage.categoryEconomy, "여성"),
+      (false, WebpImage.categoryEducation, "교육"),
+      (false, WebpImage.categoryLabor, "노동"),
+      (false, WebpImage.categoryFemale, "여성"),
 
-      (false, WebpImage.categoryEconomy, "가족"),
-      (false, WebpImage.categoryBangtong, "아동"),
-      (false, WebpImage.categoryEconomy, "성범죄"),
+      (false, WebpImage.categoryFamily, "가족"),
+      (false, WebpImage.categoryChild, "아동"),
+      (false, WebpImage.categorySexCrime, "성범죄"),
 
-      (false, WebpImage.categoryEconomy, "외교안보"),
-      (false, WebpImage.categoryBangtong, "법·행정"),
+      (false, WebpImage.categoryDiplomacy, "외교안보"),
+      (false, WebpImage.categoryLaw, "법·행정"),
     ]);
 
     final onNextEnabled =
