@@ -38,6 +38,7 @@ dependencies:
 
   # Util
   collection: ^1.19.1
+  intl: ^0.20.2
   keyboard_detection: ^0.8.1
 
 dev_dependencies:

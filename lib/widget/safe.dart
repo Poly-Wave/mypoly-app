@@ -16,6 +16,7 @@ class MPSafeBox extends SafeArea {
 class MPSafeColumn extends Column {
   final bool top;
   final bool bottom;
+  final bool maintainBottomViewPadding;
 
   MPSafeColumn({
     super.key,
@@ -29,11 +30,20 @@ class MPSafeColumn extends Column {
     required List<Widget> children,
     this.top = false,
     this.bottom = false,
+    this.maintainBottomViewPadding = false,
   }) : super(
          children: [
-           if (top) const MPSafeBox(top: true),
+           if (top)
+             MPSafeBox(
+               top: true,
+               maintainBottomViewPadding: maintainBottomViewPadding,
+             ),
            ...children,
-           if (bottom) const MPSafeBox(bottom: true),
+           if (bottom)
+             MPSafeBox(
+               bottom: true,
+               maintainBottomViewPadding: maintainBottomViewPadding,
+             ),
          ],
        );
 }

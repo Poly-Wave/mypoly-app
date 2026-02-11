@@ -20,6 +20,7 @@ Future<T?> showMPBottomSheetModal<T>(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
         ),
         child: MPSafeColumn(
+          maintainBottomViewPadding: true,
           bottom: true,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,

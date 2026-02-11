@@ -12,6 +12,7 @@ import 'package:mypoly/module/onboard/register/nickname/register_nickname_view.d
 import 'package:mypoly/module/onboard/register/onboard/register_onboard_view.dart';
 import 'package:mypoly/module/onboard/register/more/register_more_view.dart';
 import 'package:mypoly/module/onboard/register/topic/register_topic_view.dart';
+import 'package:mypoly/module/onboard/register/complete/register_complete_view.dart';
 
 // Main
 import 'package:mypoly/module/main/main_view.dart';
@@ -39,6 +40,7 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: RegisterOnboardRoute.page),
     AutoRoute(page: RegisterMoreRoute.page),
     AutoRoute(page: RegisterTopicRoute.page),
+    AutoRoute(page: RegisterCompleteRoute.page),
 
     // Main
     AutoRoute(page: MainRoute.page),
