@@ -18,7 +18,10 @@ import 'package:mypoly/module/onboard/register/complete/register_complete_view.d
 import 'package:mypoly/module/main/main_view.dart';
 
 // Home
-import 'package:mypoly/module/main/home/home_view.dart';
+
+// Agenda
+
+// Subsidy
 
 part 'router_provider.gr.dart';
 part 'router_provider.g.dart';
@@ -47,8 +50,12 @@ class AppRouter extends RootStackRouter {
 
     // Main
     AutoRoute(page: MainRoute.page),
+
     // Home
-    AutoRoute(page: HomeRoute.page),
+
+    // Agenda
+
+    // Subsidy
   ];
 }
 
