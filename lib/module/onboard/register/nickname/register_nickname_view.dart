@@ -56,7 +56,7 @@ class RegisterNicknameView extends HookConsumerWidget {
                         hintText: "한글로 최대 4~12자 입력",
                         inputFormatters: [
                           FilteringTextInputFormatter.allow(
-                            RegExp(r'[가-힣ㄱ-ㅎㅏ-ㅣ]'),
+                            RegExp(r'[가-힣ㄱ-ㅎㅏ-ㅣㆍ\s]'),
                           ),
                         ],
                         innerRight: Row(
