@@ -9,6 +9,42 @@ enum MPInputMessageType {
   const MPInputMessageType({required this.color});
 }
 
+class MPInputLabel extends StatelessWidget {
+  final String text;
+  final bool required;
+
+  const MPInputLabel(this.text, {super.key, this.required = false});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: .only(bottom: 4.h),
+      child: Row(
+        spacing: 2.w,
+        children: [
+          Text(
+            text,
+            style: Pretendard.medium.set(
+              size: 15,
+              height: 1.45,
+              color: ColorStyles.white,
+            ),
+          ),
+          if (required)
+            Text(
+              "*",
+              style: Pretendard.medium.set(
+                size: 15,
+                height: 1.45,
+                color: ColorStyles.danger50,
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
 class MPInput extends StatelessWidget {
   final TextEditingController? controller;
   final FocusNode? focusNode;
