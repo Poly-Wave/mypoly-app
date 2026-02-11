@@ -78,7 +78,10 @@ class MainApp extends HookConsumerWidget {
             ),
           ),
           child: MaterialApp.router(
-            theme: ThemeData(scaffoldBackgroundColor: ColorStyles.black),
+            theme: ThemeData(
+              brightness: Brightness.dark,
+              scaffoldBackgroundColor: ColorStyles.black,
+            ),
             debugShowCheckedModeBanner: false,
             routerConfig: router.config(),
             builder: (context, widget) {
