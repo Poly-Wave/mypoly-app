@@ -32,6 +32,70 @@ platform :ios do
     }
   end
 
+  def send_discord_message(target, is_dev = false)
+    if ENV['DISCORD_WEBHOOK_URL']
+      require 'net/http'
+      require 'json'
+      require 'uri'
+
+      # 버전 정보 가져오기
+      version_info = get_version_info
+      version = version_info[:version]
+      no = version_info[:build_number]
+
+      # 릴리즈 노트 읽기
+      release_notes = ""
+      release_notes_path = is_dev ? "../../release-notes-dev.txt" : "../../release-notes-prod.txt"
+      if File.exist?(release_notes_path)
+        release_notes = "\n\n📝 릴리즈 노트:\n" + File.read(release_notes_path).strip
+      end
+
+      # 메시지 생성
+      env_label = is_dev ? " [DEV]" : ""
+      color = is_dev ? 3447003 : 3066993  # 파란색(DEV), 초록색(PROD)
+
+      embed = {
+        "title" => "🚀 MyPOLY#{env_label} #{target} 배포 완료",
+        "description" => "Android, iOS 배포가 완료되었습니다!",
+        "color" => color,
+        "fields" => [
+          {
+            "name" => "버전",
+            "value" => "#{version} (빌드: #{no})",
+            "inline" => true
+          }
+        ]
+      }
+
+      # 릴리즈 노트가 있으면 추가
+      if release_notes.length > 0
+        embed["fields"] << {
+          "name" => "📝 릴리즈 노트",
+          "value" => release_notes.sub("\n\n📝 릴리즈 노트:\n", ""),
+          "inline" => false
+        }
+      end
+
+      message = {
+        "embeds" => [embed]
+      }
+
+      uri = URI(ENV['DISCORD_WEBHOOK_URL'])
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+      request = Net::HTTP::Post.new(uri)
+      request['Content-Type'] = 'application/json'
+      request.body = message.to_json
+
+      response = http.request(request)
+      puts "Discord 알림 전송 결과: #{response.code}"
+    else
+      puts "DISCORD_WEBHOOK_URL이 설정되지 않아 알림을 전송하지 않습니다."
+    end
+  end
+
   desc "Deploy Firebase Dev"
   lane :deploy_firebase_dev do
     Dir.chdir "../.." do
@@ -46,5 +110,7 @@ platform :ios do
       release_notes_file: "../release-notes-dev.txt",
       ipa_path: "../build/ios/ipa/mypoly.ipa",
     )
+    
+    send_discord_message("Firebase", true)
   end
 end

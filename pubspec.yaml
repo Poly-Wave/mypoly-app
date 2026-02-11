@@ -1,7 +1,7 @@
 name: mypoly
 description: "MyPOLY"
 publish_to: 'none'
-version: 0.1.0+2
+version: 0.1.0+3
 
 environment:
   sdk: ^3.10.7
@@ -131,3 +131,8 @@ melos:
     gen:
       steps:
         - fvm dart run scripts/generate_openapi.dart
+
+    deploy:dev:
+      steps:
+        - cd android && fastlane deploy_firebase_dev && cd ..
+        - cd ios && fastlane deploy_firebase_dev && cd ..
