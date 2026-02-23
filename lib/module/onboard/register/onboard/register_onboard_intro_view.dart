@@ -48,7 +48,7 @@ class RegisterOnboardIntroView extends HookWidget {
           children: [
             Center(
               child: MPImage(
-                WebpImage.registerOnboard1,
+                WebpImage.registerOnboard,
                 width: 274,
                 fit: .fitWidth,
               ),

@@ -24,8 +24,5 @@ class WebpImage {
   static const String categoryWelfare = 'assets/webp/category_welfare.webp';
   static const String loading = 'assets/webp/loading.webp';
   static const String registerComplete = 'assets/webp/register_complete.webp';
-  static const String registerOnboard1 = 'assets/webp/register_onboard1.webp';
-  static const String registerOnboard2 = 'assets/webp/register_onboard2.webp';
-  static const String registerOnboard3 = 'assets/webp/register_onboard3.webp';
-  static const String registerOnboard4 = 'assets/webp/register_onboard4.webp';
+  static const String registerOnboard = 'assets/webp/register_onboard.webp';
 }

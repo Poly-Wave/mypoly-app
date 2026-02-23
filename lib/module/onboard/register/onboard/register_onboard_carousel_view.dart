@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:mypoly/asset/index.dart';
 import 'package:mypoly/style/index.dart';
-import 'package:mypoly/widget/index.dart';
 import 'register_onboard_provider.dart';
 
 class RegisterOnboardCarouselView extends HookConsumerWidget {
   RegisterOnboardCarouselView({super.key});
 
   final _steps = [
-    (WebpImage.registerOnboard2, "나에게 필요한 정책은 뭘까?\nAI가 찾아서 알려드려요"),
-    (WebpImage.registerOnboard3, "의안 찬성 vs 반대!\n투표로 의견을 나눠요"),
-    (WebpImage.registerOnboard4, "내 정보를 넣어두고\n알맞는 혜택을 찾아드려요"),
+    (LottieFile.registerOnboard1, "나에게 필요한 정책은 뭘까?\nAI가 찾아서 알려드려요"),
+    (LottieFile.registerOnboard2, "의안 찬성 vs 반대!\n투표로 의견을 나눠요"),
+    (LottieFile.registerOnboard3, "내 정보를 넣어두고\n알맞는 혜택을 찾아드려요"),
   ];
 
   @override
@@ -50,7 +50,7 @@ class RegisterOnboardCarouselView extends HookConsumerWidget {
             children: _steps
                 .map(
                   (data) => Center(
-                    child: MPImage(data.$1, width: 274, fit: .fitWidth),
+                    child: Lottie.asset(data.$1, width: 274.w, fit: .fitWidth),
                   ),
                 )
                 .toList(),
