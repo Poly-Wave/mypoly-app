@@ -5,3 +5,5 @@ import 'package:mypoly/style/index.dart';
 import 'package:mypoly/widget/index.dart';
 
 part 'bottom_sheet.dart';
+part 'alert.dart';
+part 'confirm.dart';
