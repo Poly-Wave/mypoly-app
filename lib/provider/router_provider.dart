@@ -1,6 +1,11 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+// Common
+import 'package:mypoly/module/common/term/term_view.dart';
+import 'package:mypoly/generate/users/model/terms_response.dart';
 
 // Splash
 import 'package:mypoly/module/splash/splash_view.dart';
@@ -9,6 +14,9 @@ import 'package:mypoly/module/splash/splash_view.dart';
 import 'package:mypoly/module/onboard/onboard_view.dart';
 
 import 'package:mypoly/module/onboard/register/nickname/register_nickname_view.dart';
+import 'package:mypoly/generate/users/model/terms_agreement_request.dart';
+import 'package:mypoly/enum/social.dart';
+
 import 'package:mypoly/module/onboard/register/onboard/register_onboard_view.dart';
 import 'package:mypoly/module/onboard/register/more/register_more_view.dart';
 import 'package:mypoly/module/onboard/register/topic/register_topic_view.dart';
@@ -32,6 +40,9 @@ class AppRouter extends RootStackRouter {
 
   @override
   List<AutoRoute> get routes => [
+    // Common
+    AutoRoute(page: TermRoute.page),
+
     // Splash
     CustomRoute(
       initial: true,

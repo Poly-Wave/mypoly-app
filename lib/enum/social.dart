@@ -1,7 +1,15 @@
-import 'package:mypoly/generate/model/social_token_login_request.dart';
-import 'package:mypoly/generate/model/social_token_signup_request.dart';
+import 'package:mypoly/generate/users/model/social_token_login_request.dart';
+import 'package:mypoly/generate/users/model/social_token_signup_request.dart';
 
-enum SocialProvider { kakao, apple, google }
+enum SocialProvider {
+  kakao(text: "카카오"),
+  apple(text: "애플"),
+  google(text: "구글");
+
+  final String text;
+
+  const SocialProvider({required this.text});
+}
 
 enum SocialTokenType {
   accessToken(login: .accessToken, register: .accessToken),

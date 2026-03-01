@@ -9,7 +9,11 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:mypoly/asset/index.dart';
+import 'package:mypoly/data/provider/service_provider.dart';
 import 'package:mypoly/enum/social.dart';
+import 'package:mypoly/generate/users/model/terms_agreement_request.dart';
+import 'package:mypoly/generate/users/model/terms_response.dart';
+import 'package:mypoly/provider/app_provider.dart';
 import 'package:mypoly/provider/router_provider.dart';
 import 'package:mypoly/style/index.dart';
 import 'package:mypoly/widget/index.dart';
@@ -17,6 +21,12 @@ import 'package:mypoly/widget/modal/index.dart';
 import 'package:collection/collection.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+
+void showLoginError(BuildContext context, SocialProvider provider) =>
+    showMPAlertModal(
+      context,
+      title: "${provider.text} 로그인에 실패하였습니다.\n잠시 후 다시 시도해 주세요.",
+    );
 
 Future<void> onLogin(WidgetRef ref, SocialProvider provider) async {
   final context = ref.context;
@@ -47,7 +57,7 @@ Future<void> onLogin(WidgetRef ref, SocialProvider provider) async {
           return;
         }
 
-        showMPAlertModal(context, title: "카카오 로그인에 실패하였습니다.\n잠시 후 다시 시도해 주세요.");
+        showLoginError(context, provider);
         try {
           await UserApi.instance.logout();
           debugPrint('카카오 로그아웃 완료');
@@ -70,10 +80,7 @@ Future<void> onLogin(WidgetRef ref, SocialProvider provider) async {
           if (identityToken == null) {
             if (!context.mounted) return;
             context.loaderOverlay.hide();
-            showMPAlertModal(
-              context,
-              title: "애플 로그인에 실패하였습니다.\n잠시 후 다시 시도해 주세요.",
-            );
+            showLoginError(context, provider);
 
             return;
           }
@@ -87,14 +94,11 @@ Future<void> onLogin(WidgetRef ref, SocialProvider provider) async {
             return;
           }
 
-          showMPAlertModal(
-            context,
-            title: "애플 로그인에 실패하였습니다.\n잠시 후 다시 시도해 주세요.",
-          );
+          showLoginError(context, provider);
         }
       } else {
         context.loaderOverlay.hide();
-        showMPAlertModal(context, title: "애플 로그인에 실패하였습니다.\n잠시 후 다시 시도해 주세요.");
+        showLoginError(context, provider);
       }
 
       break;
@@ -109,10 +113,7 @@ Future<void> onLogin(WidgetRef ref, SocialProvider provider) async {
         if (idToken == null) {
           if (!context.mounted) return;
           context.loaderOverlay.hide();
-          showMPAlertModal(
-            context,
-            title: "구글 로그인에 실패하였습니다.\n잠시 후 다시 시도해 주세요.",
-          );
+          showLoginError(context, provider);
 
           return;
         }
@@ -125,17 +126,48 @@ Future<void> onLogin(WidgetRef ref, SocialProvider provider) async {
           return;
         }
 
-        showMPAlertModal(context, title: "구글 로그인에 실패하였습니다.\n잠시 후 다시 시도해 주세요.");
+        showLoginError(context, provider);
       }
       break;
   }
 
-  if (!context.mounted) return;
-  context.loaderOverlay.hide();
+  try {
+    await ref
+        .read(authServiceProvider)
+        .signIn(provider: provider, tokenType: type, token: token);
+
+    if (!context.mounted) return;
+    context.loaderOverlay.hide();
+
+    context.replaceRoute(MainRoute());
+  } on String catch (e) {
+    if (!context.mounted) return;
+    context.loaderOverlay.hide();
+
+    switch (e) {
+      case "USER_NOT_FOUND":
+        showTerm(ref, provider: provider, type: type, token: token);
+        break;
+      default:
+        showLoginError(context, provider);
+        break;
+    }
+  } catch (e) {
+    if (!context.mounted) return;
+    context.loaderOverlay.hide();
+    showLoginError(context, provider);
+  }
 }
 
-void showTerm(WidgetRef ref) {
+void showTerm(
+  WidgetRef ref, {
+  required SocialProvider provider,
+  required SocialTokenType type,
+  required String token,
+}) {
   final context = ref.context;
+
+  final appTerms = ref.read(appTermsProvider) ?? [];
 
   showMPBottomSheetModal(
     context,
@@ -145,14 +177,12 @@ void showTerm(WidgetRef ref) {
         padding: .symmetric(horizontal: 20.w),
         child: HookBuilder(
           builder: (_) {
-            final terms = useState([
-              (false, true, "서비스 이용 약관", null),
-              (false, true, "개인정보 처리방침", null),
-              (false, false, "광고성 정보 수신 동의", null),
-            ]);
+            final terms = useState(
+              appTerms.map((term) => (false, term)).toList(),
+            );
 
             final onNextEnabled = !terms.value
-                .where((item) => item.$2)
+                .where((item) => item.$2.required_)
                 .map((item) => item.$1)
                 .contains(false);
 
@@ -167,9 +197,9 @@ void showTerm(WidgetRef ref) {
                   onTap: () {
                     final newChecked = !allChecked;
 
-                    terms.value = [...terms.value]
-                        .map((item) => (newChecked, item.$2, item.$3, item.$4))
-                        .toList();
+                    terms.value = [
+                      ...terms.value,
+                    ].map((item) => (newChecked, item.$2)).toList();
                   },
                   child: Container(
                     height: 52.h,
@@ -219,9 +249,11 @@ void showTerm(WidgetRef ref) {
                           item: item,
                           onTap: () {
                             final tmp = [...terms.value];
-                            tmp[index] = (!item.$1, item.$2, item.$3, item.$4);
+                            tmp[index] = (!item.$1, item.$2);
                             terms.value = tmp;
                           },
+                          onDetailTap: () =>
+                              context.pushRoute(TermRoute(data: item.$2)),
                         ),
                       )
                       .toList(),
@@ -239,7 +271,21 @@ void showTerm(WidgetRef ref) {
                         enabled: onNextEnabled,
                         onTap: () {
                           context.pop();
-                          context.pushRoute(RegisterNicknameRoute());
+                          context.pushRoute(
+                            RegisterNicknameRoute(
+                              provider: provider,
+                              type: type,
+                              token: token,
+                              terms: terms.value
+                                  .map(
+                                    (data) => TermsAgreementRequest(
+                                      termId: data.$2.id,
+                                      agreed: data.$1,
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
+                          );
                         },
                       ),
                     ),
@@ -256,11 +302,16 @@ void showTerm(WidgetRef ref) {
 }
 
 class TermItem extends StatelessWidget {
-  // 체크 여부, 필수 여부, 텍스트, URL
-  final (bool, bool, String, String?) item;
+  final (bool, TermsResponse) item;
   final void Function() onTap;
+  final void Function() onDetailTap;
 
-  const TermItem({super.key, required this.item, required this.onTap});
+  const TermItem({
+    super.key,
+    required this.item,
+    required this.onTap,
+    required this.onDetailTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -278,7 +329,7 @@ class TermItem extends StatelessWidget {
                   MPCheckMark(checked: item.$1, size: 20),
                   Expanded(
                     child: Text(
-                      "${item.$3}(${item.$2 ? "필수" : "선택"})",
+                      "${item.$2.title}(${(item.$2.required_) ? "필수" : "선택"})",
                       style: Pretendard.medium.set(
                         size: 15,
                         color: ColorStyles.white,
@@ -290,7 +341,7 @@ class TermItem extends StatelessWidget {
             ),
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: onDetailTap,
             child: MPSvgImage(SvgImage.arrowRight, size: 18),
           ),
         ],

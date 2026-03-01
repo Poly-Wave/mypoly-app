@@ -18,3 +18,4 @@ part 'selector.dart';
 part 'button.dart';
 part 'appbar.dart';
 part 'input.dart';
+part 'loading.dart';

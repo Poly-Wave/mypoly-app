@@ -64,7 +64,7 @@ Future<void> main() async {
   }
 
   final env = Env(
-    apiUrl: dotenv.get('API_URL'),
+    baseApiUrl: dotenv.get('BASE_API_URL'),
     kakaoJsKey: dotenv.get('KAKAO_JS_KEY'),
     kakaoNativeKey: dotenv.get('KAKAO_NATIVE_KEY'),
   )..init();
@@ -97,21 +97,6 @@ class MainApp extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
 
-    final controller = useAnimationController(
-      duration: const Duration(milliseconds: 1200),
-    );
-
-    final rotation = Tween<double>(
-      begin: 0,
-      end: -1,
-    ).animate(CurvedAnimation(parent: controller, curve: Curves.linear));
-
-    useEffect(() {
-      controller.repeat();
-
-      return null;
-    }, []);
-
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: systemUiOverlayStyle,
       child: ScreenUtilInit(
@@ -122,12 +107,7 @@ class MainApp extends HookConsumerWidget {
             FontSizeResolvers.radius(fontSize, instance),
         child: GlobalLoaderOverlay(
           overlayColor: ColorStyles.dim,
-          overlayWidgetBuilder: (_) => Center(
-            child: RotationTransition(
-              turns: rotation,
-              child: MPImage(WebpImage.loading, size: 80),
-            ),
-          ),
+          overlayWidgetBuilder: (_) => Center(child: MPLoading()),
           child: MaterialApp.router(
             theme: ThemeData(
               brightness: Brightness.dark,

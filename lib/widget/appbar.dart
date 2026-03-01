@@ -31,7 +31,7 @@ class MPBackAppbar extends StatelessWidget implements PreferredSizeWidget {
             spacing: 24.w,
             children: [
               GestureDetector(
-                onTap: onBack ?? context.pop,
+                onTap: onBack ?? context.maybePop,
                 child: MPSvgImage(SvgImage.icBack, size: 32),
               ),
               Expanded(
