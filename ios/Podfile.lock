@@ -67,9 +67,6 @@ PODS:
     - FlutterMacOS
   - sign_in_with_apple (0.0.1):
     - Flutter
-  - sqflite_darwin (0.0.4):
-    - Flutter
-    - FlutterMacOS
 
 DEPENDENCIES:
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
@@ -82,7 +79,6 @@ DEPENDENCIES:
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - sign_in_with_apple (from `.symlinks/plugins/sign_in_with_apple/ios`)
-  - sqflite_darwin (from `.symlinks/plugins/sqflite_darwin/darwin`)
 
 SPEC REPOS:
   trunk:
@@ -118,8 +114,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
   sign_in_with_apple:
     :path: ".symlinks/plugins/sign_in_with_apple/ios"
-  sqflite_darwin:
-    :path: ".symlinks/plugins/sqflite_darwin/darwin"
 
 SPEC CHECKSUMS:
   AppAuth: 1c1a8afa7e12f2ec3a294d9882dfa5ab7d3cb063
@@ -142,7 +136,6 @@ SPEC CHECKSUMS:
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   shared_preferences_foundation: 7036424c3d8ec98dfe75ff1667cb0cd531ec82bb
   sign_in_with_apple: c5dcc141574c8c54d5ac99dd2163c0c72ad22418
-  sqflite_darwin: 20b2a3a3b70e43edae938624ce550a3cbf66a3d0
 
 PODFILE CHECKSUM: 53a6aebc29ccee84c41f92f409fc20cd4ca011f1
 

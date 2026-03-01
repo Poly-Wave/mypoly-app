@@ -88,7 +88,7 @@ class MPNetworkImage extends StatelessWidget {
       height: size?.r ?? height?.h,
       width: size?.r ?? width?.w,
       fit: fit,
-      errorWidget: (context, url, error) =>
+      errorBuilder: (context, error, stackTrace) =>
           Skeletonizer(child: Skeleton.replace(child: Container())),
       progressIndicatorBuilder: (context, url, progress) =>
           Skeletonizer(child: Skeleton.replace(child: Container())),

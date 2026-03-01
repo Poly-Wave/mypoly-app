@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mypoly/asset/index.dart';
+import 'package:mypoly/generate/bills/model/category_response.dart';
+import 'package:mypoly/provider/app_provider.dart';
 import 'package:mypoly/provider/router_provider.dart';
 import 'package:mypoly/style/index.dart';
 import 'package:mypoly/widget/index.dart';
@@ -15,30 +16,11 @@ class RegisterTopicView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final categories = useState([
-      (false, WebpImage.categoryDigital, "디지털"),
-      (false, WebpImage.categorySecurity, "보안"),
-      (false, WebpImage.categoryBangtong, "방통"),
+    final appCategories = ref.read(appCategoriesProvider);
 
-      (false, WebpImage.categoryEconomy, "경제"),
-      (false, WebpImage.categoryRealEstate, "부동산"),
-      (false, WebpImage.categoryTraffic, "교통"),
-
-      (false, WebpImage.categoryEnvironment, "환경"),
-      (false, WebpImage.categoryMedical, "의료"),
-      (false, WebpImage.categoryWelfare, "복지"),
-
-      (false, WebpImage.categoryEducation, "교육"),
-      (false, WebpImage.categoryLabor, "노동"),
-      (false, WebpImage.categoryFemale, "여성"),
-
-      (false, WebpImage.categoryFamily, "가족"),
-      (false, WebpImage.categoryChild, "아동"),
-      (false, WebpImage.categorySexCrime, "성범죄"),
-
-      (false, WebpImage.categoryDiplomacy, "외교안보"),
-      (false, WebpImage.categoryLaw, "법·행정"),
-    ]);
+    final categories = useState(
+      appCategories.map((category) => (false, category)).toList(),
+    );
 
     final onNextEnabled =
         categories.value.firstWhereOrNull((item) => item.$1) != null;
@@ -82,9 +64,9 @@ class RegisterTopicView extends HookConsumerWidget {
                         onTap: () {
                           final newChecked = !allChecked;
 
-                          categories.value = [...categories.value]
-                              .map((item) => (newChecked, item.$2, item.$3))
-                              .toList();
+                          categories.value = [
+                            ...categories.value,
+                          ].map((item) => (newChecked, item.$2)).toList();
                         },
                         child: Row(
                           mainAxisSize: .min,
@@ -120,7 +102,7 @@ class RegisterTopicView extends HookConsumerWidget {
                           item: item,
                           onTap: () {
                             final tmp = [...categories.value];
-                            tmp[index] = (!item.$1, item.$2, item.$3);
+                            tmp[index] = (!item.$1, item.$2);
                             categories.value = tmp;
                           },
                         );
@@ -165,8 +147,7 @@ class RegisterTopicView extends HookConsumerWidget {
 }
 
 class TopicItem extends StatelessWidget {
-  // 체크 여부, 이미지, 텍스트
-  final (bool, String, String) item;
+  final (bool, CategoryResponse) item;
   final void Function() onTap;
 
   const TopicItem({super.key, required this.item, required this.onTap});
@@ -193,7 +174,7 @@ class TopicItem extends StatelessWidget {
                         : null,
                   ),
                   alignment: .center,
-                  child: MPImage(item.$2, size: 40),
+                  child: MPNetworkImage(item.$2.iconUrl ?? "", size: 40),
                 ),
                 Positioned(
                   left: 4.r,
@@ -210,7 +191,7 @@ class TopicItem extends StatelessWidget {
           ),
           MPHeight(8),
           Text(
-            item.$3,
+            item.$2.name ?? "",
             textAlign: .center,
             style: Pretendard.medium.set(
               size: 15,

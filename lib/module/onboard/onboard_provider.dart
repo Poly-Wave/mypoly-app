@@ -139,7 +139,7 @@ Future<void> onLogin(WidgetRef ref, SocialProvider provider) async {
     if (!context.mounted) return;
     context.loaderOverlay.hide();
 
-    context.replaceRoute(MainRoute());
+    context.replaceRoute(RegisterTopicRoute());
   } on String catch (e) {
     if (!context.mounted) return;
     context.loaderOverlay.hide();
@@ -167,7 +167,7 @@ void showTerm(
 }) {
   final context = ref.context;
 
-  final appTerms = ref.read(appTermsProvider) ?? [];
+  final appTerms = ref.read(appTermsProvider);
 
   showMPBottomSheetModal(
     context,

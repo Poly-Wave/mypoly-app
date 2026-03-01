@@ -28,21 +28,17 @@ Env env(Ref ref) => throw UnimplementedError();
 @Riverpod(keepAlive: true)
 class AppTerms extends _$AppTerms {
   @override
-  List<TermsResponse>? build() => null;
+  List<TermsResponse> build() => [];
 
   Future<void> fetch() async =>
       state = await ref.read(termsServiceProvider).getTerms();
-
-  void reset() => state = null;
 }
 
 @Riverpod(keepAlive: true)
 class AppCategories extends _$AppCategories {
   @override
-  List<CategoryResponse>? build() => null;
+  List<CategoryResponse> build() => [];
 
   Future<void> fetch() async =>
       state = await ref.read(categoryServiceProvider).getCategories();
-
-  void reset() => state = null;
 }
