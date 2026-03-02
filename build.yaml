@@ -10,7 +10,7 @@ targets:
       retrofit_generator:
         generate_for:
           - lib/data/api/**.dart
-          - lib/generate/api/**.dart
+          - lib/generate/**/api/**.dart
 global_options:
   freezed:
     runs_before:

@@ -1,12 +1,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mypoly/asset/index.dart';
 import 'package:mypoly/module/onboard/register/more/register_more_provider.dart';
 import 'package:mypoly/style/index.dart';
 import 'package:mypoly/util/extension.dart';
+import 'package:mypoly/util/valid.dart';
 import 'package:mypoly/widget/index.dart';
 
 @RoutePage()
@@ -15,7 +18,15 @@ class RegisterMoreView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isMale = ref.watch(isMaleProvider);
+    useEffect(() {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        FlutterNativeSplash.remove();
+      });
+
+      return null;
+    }, []);
+
+    final gender = ref.watch(onboardGenderProvider);
     final birth = ref.watch(birthProvider);
     final residence = ref.watch(residenceProvider);
 
@@ -59,18 +70,18 @@ class RegisterMoreView extends HookConsumerWidget {
                           Expanded(
                             child: GestureDetector(
                               onTap: () => ref
-                                  .read(isMaleProvider.notifier)
-                                  .update(true),
+                                  .read(onboardGenderProvider.notifier)
+                                  .update(.man),
                               child: Row(
                                 spacing: 6.w,
                                 children: [
-                                  MPRadio(size: 18, checked: isMale),
+                                  MPRadio(size: 18, checked: gender == .man),
                                   Text(
                                     "남자",
                                     style: Pretendard.medium.set(
                                       size: 15,
                                       height: 1.45,
-                                      color: isMale
+                                      color: gender == .man
                                           ? ColorStyles.primary50
                                           : ColorStyles.white,
                                     ),
@@ -82,18 +93,18 @@ class RegisterMoreView extends HookConsumerWidget {
                           Expanded(
                             child: GestureDetector(
                               onTap: () => ref
-                                  .read(isMaleProvider.notifier)
-                                  .update(false),
+                                  .read(onboardGenderProvider.notifier)
+                                  .update(.woman),
                               child: Row(
                                 spacing: 6.w,
                                 children: [
-                                  MPRadio(size: 18, checked: !isMale),
+                                  MPRadio(size: 18, checked: gender == .woman),
                                   Text(
                                     "여자",
                                     style: Pretendard.medium.set(
                                       size: 15,
                                       height: 1.45,
-                                      color: !isMale
+                                      color: gender == .woman
                                           ? ColorStyles.primary50
                                           : ColorStyles.white,
                                     ),
@@ -145,6 +156,12 @@ class RegisterMoreView extends HookConsumerWidget {
                             innerRightConstraints: .tightForFinite(
                               width: (birth.isNotEmpty ? 24.r : 0) + 16.w,
                             ),
+                            message:
+                                (birth.length == 10 &&
+                                    !Valid.isBirthDate(birth))
+                                ? "올바른 생년월일을 입력해 주세요."
+                                : null,
+                            useMesssage: true,
                           ),
                         ],
                       ),
@@ -152,7 +169,9 @@ class RegisterMoreView extends HookConsumerWidget {
                       MPInputLabel("거주지역", required: true),
                       MPFakeInput(
                         hintText: "지역(읍/면/동)을 입력해 주세요.",
-                        value: residence,
+                        value: residence != null
+                            ? "${residence.sido} ${residence.sigungu} ${residence.emdName}"
+                            : null,
                         onTap: () => ref
                             .read(residenceProvider.notifier)
                             .onShowBottomSheet(context),

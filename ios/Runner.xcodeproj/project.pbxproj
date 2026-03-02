@@ -14,6 +14,7 @@
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
+		A1D7BEC62F4DF96F005FBC63 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A1D7BEC52F4DF96F005FBC63 /* GoogleService-Info.plist */; };
 		A1DD24EF2F1BA88F009EC669 /* Profile-Dev.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = A1DD24EB2F1BA88F009EC669 /* Profile-Dev.xcconfig */; };
 		A1DD24F02F1BA88F009EC669 /* Release-Dev.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = A1DD24ED2F1BA88F009EC669 /* Release-Dev.xcconfig */; };
 		A1DD24F12F1BA88F009EC669 /* Profile-Prod.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = A1DD24EC2F1BA88F009EC669 /* Profile-Prod.xcconfig */; };
@@ -71,6 +72,8 @@
 		97C146FD1CF9000F007C117D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A1D7BEC02F4DF05B005FBC63 /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
+		A1D7BEC52F4DF96F005FBC63 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A1DD24EB2F1BA88F009EC669 /* Profile-Dev.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Profile-Dev.xcconfig"; path = "Flutter/Profile-Dev.xcconfig"; sourceTree = "<group>"; };
 		A1DD24EC2F1BA88F009EC669 /* Profile-Prod.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Profile-Prod.xcconfig"; path = "Flutter/Profile-Prod.xcconfig"; sourceTree = "<group>"; };
 		A1DD24ED2F1BA88F009EC669 /* Release-Dev.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Release-Dev.xcconfig"; path = "Flutter/Release-Dev.xcconfig"; sourceTree = "<group>"; };
@@ -119,7 +122,6 @@
 				21FA8CCB0AE783B7C36BF297 /* Pods-RunnerTests.profile-prod.xcconfig */,
 				28472498B25B20F1F1CEEA9F /* Pods-RunnerTests.profile-dev.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -179,6 +181,8 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
+				A1D7BEC52F4DF96F005FBC63 /* GoogleService-Info.plist */,
+				A1D7BEC02F4DF05B005FBC63 /* Runner.entitlements */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
 				97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */,
@@ -218,6 +222,7 @@
 			buildConfigurationList = 97C147051CF9000F007C117D /* Build configuration list for PBXNativeTarget "Runner" */;
 			buildPhases = (
 				9003121A6075666129262DA2 /* [CP] Check Pods Manifest.lock */,
+				A1D7BEC72F4DF982005FBC63 /* Switch GoogleService-Info.plist */,
 				9740EEB61CF901F6004384FC /* Run Script */,
 				97C146EA1CF9000F007C117D /* Sources */,
 				97C146EB1CF9000F007C117D /* Frameworks */,
@@ -226,6 +231,7 @@
 				A1DD24F72F1BA962009EC669 /* Env to Info.plist */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				951E6676FDAA316E0FFAC702 /* [CP] Embed Pods Frameworks */,
+				1F481B99DAF5CE01EBE4EDBA /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -296,6 +302,7 @@
 				A1DD24F52F1BA895009EC669 /* Debug-Prod.xcconfig in Resources */,
 				A1DD24F62F1BA895009EC669 /* Debug-Dev.xcconfig in Resources */,
 				A1DD24F12F1BA88F009EC669 /* Profile-Prod.xcconfig in Resources */,
+				A1D7BEC62F4DF96F005FBC63 /* GoogleService-Info.plist in Resources */,
 				A1DD24F22F1BA88F009EC669 /* Release-Prod.xcconfig in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
 			);
@@ -324,6 +331,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		1F481B99DAF5CE01EBE4EDBA /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		3B06AD1E1E4923F5004D2608 /* Thin Binary */ = {
@@ -394,7 +418,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build";
+			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build\n";
+		};
+		A1D7BEC72F4DF982005FBC63 /* Switch GoogleService-Info.plist */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Switch GoogleService-Info.plist";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This script copies the right firebase configuration ( GoogleService-Info.plist file ) for the running flavor.\n# It must be run as a Build Phase. It assumes three flavors: \"dev\", \"stage\" and \"prod\".\n\nif [ \"${CONFIGURATION}\" == \"Debug-prod\" ] || [ \"${CONFIGURATION}\" == \"Release-prod\" ] || [ \"${CONFIGURATION}\" == \"Profile-prod\" ];\nthen\n  cp -r \"${PROJECT_DIR}/Runner/Prod/GoogleService-Info.plist\" \"${PROJECT_DIR}/Runner/GoogleService-Info.plist\"\nelif [ \"${CONFIGURATION}\" == \"Debug-dev\" ] || [ \"${CONFIGURATION}\" == \"Release-dev\" ] || [ \"${CONFIGURATION}\" == \"Profile-dev\" ]; \nthen\n  cp -r \"${PROJECT_DIR}/Runner/Dev/GoogleService-Info.plist\" \"${PROJECT_DIR}/Runner/GoogleService-Info.plist\"\nfi\n";
 		};
 		A1DD24F72F1BA962009EC669 /* Env to Info.plist */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -412,7 +454,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"${APP_FLAVOR}\" = \"prod\" ]; then\n  ENV_FILE=\"${SRCROOT}/../.env\"\nelse\n  ENV_FILE=\"${SRCROOT}/../.env.${APP_FLAVOR}\"\nfi\n\necho \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n\nif [ -f \"$ENV_FILE\" ]; then\n  APP_NAME=$(grep APP_NAME \"$ENV_FILE\" | cut -d '=' -f2)\n  /usr/libexec/PlistBuddy -c \"Set :CFBundleDisplayName $APP_NAME\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\nfi\n";
+			shellScript = "if [ \"${APP_FLAVOR}\" = \"prod\" ]; then\n  ENV_FILE=\"${SRCROOT}/../.env\"\nelse\n  ENV_FILE=\"${SRCROOT}/../.env.${APP_FLAVOR}\"\nfi\n\necho \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n\nif [ -f \"$ENV_FILE\" ]; then\n  APP_NAME=$(grep APP_NAME \"$ENV_FILE\" | cut -d '=' -f2)\n  /usr/libexec/PlistBuddy -c \"Set :CFBundleDisplayName $APP_NAME\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n    \n  KAKAO_SCHEME=$(grep KAKAO_SCHEME \"$ENV_FILE\" | cut -d '=' -f2 | tr -d '\"')\n  /usr/libexec/PlistBuddy -c \"Set :CFBundleURLTypes:0:CFBundleURLSchemes:0 $KAKAO_SCHEME\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n    \n  GOOGLE_SCHEME=$(grep GOOGLE_SCHEME \"$ENV_FILE\" | cut -d '=' -f2 | tr -d '\"')\n  /usr/libexec/PlistBuddy -c \"Set :CFBundleURLTypes:1:CFBundleURLSchemes:0 $GOOGLE_SCHEME\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n  GOOGLE_CLIENT_ID=$(grep GOOGLE_CLIENT_ID \"$ENV_FILE\" | cut -d '=' -f2)\n  /usr/libexec/PlistBuddy -c \"Set :GIDClientID $GOOGLE_CLIENT_ID\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -523,6 +565,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = M3KMTD49RM;
 				ENABLE_BITCODE = NO;
@@ -708,6 +751,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = M3KMTD49RM;
 				ENABLE_BITCODE = NO;
@@ -731,6 +775,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = M3KMTD49RM;
 				ENABLE_BITCODE = NO;
@@ -811,6 +856,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = M3KMTD49RM;
 				ENABLE_BITCODE = NO;
@@ -907,6 +953,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = M3KMTD49RM;
 				ENABLE_BITCODE = NO;
@@ -998,6 +1045,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = M3KMTD49RM;
 				ENABLE_BITCODE = NO;

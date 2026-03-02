@@ -58,3 +58,10 @@ service-account.json
 lib/**/*.freezed.dart
 lib/**/*.g.dart
 lib/**/*.gr.dart
+
+google-services.json
+GoogleService-Info.plist
+firebase.json
+firebase_options_dev.dart
+firebase_options_prod.dart
+*.salive

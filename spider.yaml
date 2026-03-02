@@ -25,3 +25,7 @@ groups:
     class_name: WebpImage
     file_name: webp
     types: [.webp]
+  - path: assets/lottie
+    class_name: LottieFile
+    file_name: lottie
+    types: [.json]

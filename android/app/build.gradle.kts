@@ -14,6 +14,9 @@ buildscript {
 
 plugins {
     id("com.android.application")
+    // START: FlutterFire Configuration
+    id("com.google.gms.google-services")
+    // END: FlutterFire Configuration
     id("kotlin-android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
@@ -86,12 +89,14 @@ android {
             applicationIdSuffix = ".dev"
 
             resValue("string", "APP_NAME", devEnv.get("APP_NAME", ""))
+            resValue("string", "KAKAO_SCHEME", devEnv.get("KAKAO_SCHEME", ""))
         }
 
         create("prod") {
             dimension = "flavor"
 
             resValue("string", "APP_NAME", prodEnv.get("APP_NAME", ""))
+            resValue("string", "KAKAO_SCHEME", devEnv.get("KAKAO_SCHEME", ""))
         }
     }
 }

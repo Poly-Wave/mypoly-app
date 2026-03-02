@@ -24,9 +24,6 @@ void main() {
     expect(File(WebpImage.categoryWelfare).existsSync(), isTrue);
     expect(File(WebpImage.loading).existsSync(), isTrue);
     expect(File(WebpImage.registerComplete).existsSync(), isTrue);
-    expect(File(WebpImage.registerOnboard1).existsSync(), isTrue);
-    expect(File(WebpImage.registerOnboard2).existsSync(), isTrue);
-    expect(File(WebpImage.registerOnboard3).existsSync(), isTrue);
-    expect(File(WebpImage.registerOnboard4).existsSync(), isTrue);
+    expect(File(WebpImage.registerOnboard).existsSync(), isTrue);
   });
 }
