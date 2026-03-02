@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mypoly/asset/index.dart';
+import 'package:mypoly/module/widget/carousel/carousel_indicator.dart';
 import 'package:mypoly/style/index.dart';
 import 'register_onboard_provider.dart';
 
@@ -56,6 +57,7 @@ class RegisterOnboardCarouselView extends HookConsumerWidget {
                 .toList(),
           ),
         ),
+        CarouselIndicator(count: 3, currentIndex: step),
         FadeTransition(
           opacity: textOpacityAnimation,
           child: Text(

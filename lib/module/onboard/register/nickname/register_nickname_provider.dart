@@ -5,6 +5,7 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'package:mypoly/data/provider/service_provider.dart';
 import 'package:mypoly/enum/social.dart';
 import 'package:mypoly/generate/users/model/terms_agreement_request.dart';
+import 'package:mypoly/provider/app_provider.dart';
 import 'package:mypoly/provider/router_provider.dart';
 import 'package:mypoly/util/extension.dart';
 import 'package:mypoly/util/valid.dart';
@@ -140,7 +141,7 @@ bool onNextEnabled(Ref ref) => ref.watch(nicknameCheckProvider);
 Future<void> onNext(
   WidgetRef ref, {
   required SocialProvider provider,
-  required SocialTokenType type,
+  required SocialTokenType tokenType,
   required String token,
   required List<TermsAgreementRequest> terms,
 }) async {
@@ -154,21 +155,18 @@ Future<void> onNext(
 
   try {
     await ref
-        .read(authServiceProvider)
+        .read(appUserProvider.notifier)
         .signUp(
           provider: provider,
-          tokenType: type,
+          tokenType: tokenType,
           token: token,
           nickname: nickname,
-          termAgreements: terms,
+          terms: terms,
         );
 
     if (!context.mounted) return;
     context.loaderOverlay.hide();
-    context.router.replaceAll([
-      MainRoute(),
-      RegisterOnboardRoute(nickname: nickname),
-    ]);
+    context.router.replaceAll([MainRoute(), RegisterOnboardRoute()]);
   } catch (e) {
     if (!context.mounted) return;
     context.loaderOverlay.hide();

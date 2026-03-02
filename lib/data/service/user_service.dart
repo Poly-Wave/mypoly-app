@@ -1,11 +1,16 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:mypoly/enum/gender.dart';
 import 'package:mypoly/generate/users/api/user_api.dart';
+import 'package:mypoly/generate/users/model/address_search_response.dart';
+import 'package:mypoly/generate/users/model/update_onboarding_status_request.dart';
+import 'package:mypoly/generate/users/model/user_me_response.dart';
+import 'package:mypoly/generate/users/model/user_update_profile_request.dart';
+import 'package:mypoly/provider/app_provider.dart';
 import 'package:mypoly/util/error.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 class UserService {
-  // ignore: unused_field
   final Ref _ref;
   final UserApi _userApi;
 
@@ -31,6 +36,83 @@ class UserService {
       final response = await _userApi.getRandomNickname();
 
       return response.nickname;
+    } on DioException catch (e) {
+      return Future.error(getErrorMessage(e));
+    } catch (e) {
+      debugPrint(e.toString());
+      return Future.error("error");
+    }
+  }
+
+  Future<UserMeResponse> getMe() async {
+    try {
+      return await _userApi.getMe();
+    } on DioException catch (e) {
+      return Future.error(getErrorMessage(e));
+    } catch (e) {
+      debugPrint(e.toString());
+      return Future.error("error");
+    }
+  }
+
+  Future<void> updateOnboardProfile({
+    required Gender gender,
+    required String birthDate,
+    required String sido,
+    required String sigungu,
+    required String emdName,
+  }) async {
+    try {
+      return await _userApi.updateProfile(
+        userUpdateProfileRequest: UserUpdateProfileRequest(
+          gender: gender.updateProfile,
+          birthDate: birthDate,
+          sido: sido,
+          sigungu: sigungu,
+          emdName: emdName,
+        ),
+      );
+    } on DioException catch (e) {
+      return Future.error(getErrorMessage(e));
+    } catch (e) {
+      debugPrint(e.toString());
+      return Future.error("error");
+    }
+  }
+
+  Future<void> updateOnboardStatus(
+    UpdateOnboardingStatusRequestOnboardingStatusEnum status,
+  ) async {
+    final userId = _ref.read(appUserProvider)?.userId ?? 0;
+
+    try {
+      return await _userApi.updateOnboardingStatus(
+        userId: userId,
+        updateOnboardingStatusRequest: UpdateOnboardingStatusRequest(
+          onboardingStatus: status,
+        ),
+      );
+    } on DioException catch (e) {
+      return Future.error(getErrorMessage(e));
+    } catch (e) {
+      debugPrint(e.toString());
+      return Future.error("error");
+    }
+  }
+
+  Future<AddressSearchResponse> searchAddress({
+    required String keyword,
+    required int page,
+    int size = 40,
+    CancelToken? cancelToken,
+  }) async {
+    try {
+      return await _userApi.searchAddress(
+        keyword: keyword,
+        currentPage: "$page",
+        countPerPage: "$size",
+        cancelToken: cancelToken,
+      );
     } on DioException catch (e) {
       return Future.error(getErrorMessage(e));
     } catch (e) {

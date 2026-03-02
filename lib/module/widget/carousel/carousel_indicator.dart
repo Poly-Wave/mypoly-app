@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mypoly/style/index.dart';
 
 class CarouselIndicator extends StatelessWidget {
@@ -20,17 +21,15 @@ class CarouselIndicator extends StatelessWidget {
       children: List.generate(count, (index) {
         final bool isActive = index == currentIndex;
 
-        return Container(
-          width: 8,
-          height: 8,
-          margin: EdgeInsets.only(
-            right: index == count - 1 ? 0 : 10,
-          ),
+        return AnimatedContainer(
+          width: 8.r,
+          height: 8.r,
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.fastOutSlowIn,
+          margin: EdgeInsets.only(right: index == count - 1 ? 0 : 10.w),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: isActive
-                ? ColorStyles.primary50
-                : ColorStyles.gray70,
+            color: isActive ? ColorStyles.primary50 : ColorStyles.gray70,
           ),
         );
       }),

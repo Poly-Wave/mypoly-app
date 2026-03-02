@@ -9,7 +9,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:mypoly/asset/index.dart';
-import 'package:mypoly/data/provider/service_provider.dart';
 import 'package:mypoly/enum/social.dart';
 import 'package:mypoly/generate/users/model/terms_agreement_request.dart';
 import 'package:mypoly/generate/users/model/terms_response.dart';
@@ -33,12 +32,12 @@ Future<void> onLogin(WidgetRef ref, SocialProvider provider) async {
 
   context.loaderOverlay.show();
 
-  late SocialTokenType type;
+  late SocialTokenType tokenType;
   late String token;
 
   switch (provider) {
     case SocialProvider.kakao:
-      type = .accessToken;
+      tokenType = .accessToken;
 
       try {
         late OAuthToken oAuthToken;
@@ -67,7 +66,7 @@ Future<void> onLogin(WidgetRef ref, SocialProvider provider) async {
       }
       break;
     case SocialProvider.apple:
-      type = .idToken;
+      tokenType = .idToken;
 
       if (Platform.isIOS) {
         try {
@@ -103,7 +102,7 @@ Future<void> onLogin(WidgetRef ref, SocialProvider provider) async {
 
       break;
     case SocialProvider.google:
-      type = .idToken;
+      tokenType = .idToken;
 
       try {
         final account = await GoogleSignIn.instance.authenticate();
@@ -132,21 +131,29 @@ Future<void> onLogin(WidgetRef ref, SocialProvider provider) async {
   }
 
   try {
-    await ref
-        .read(authServiceProvider)
-        .signIn(provider: provider, tokenType: type, token: token);
+    final response = await ref
+        .read(appUserProvider.notifier)
+        .signIn(provider: provider, tokenType: tokenType, token: token);
 
     if (!context.mounted) return;
     context.loaderOverlay.hide();
 
-    context.replaceRoute(RegisterTopicRoute());
+    switch (response.onboardingStatus) {
+      case .signup:
+        context.replaceRoute(RegisterOnboardRoute());
+        break;
+
+      default:
+        context.replaceRoute(MainRoute());
+        break;
+    }
   } on String catch (e) {
     if (!context.mounted) return;
     context.loaderOverlay.hide();
 
     switch (e) {
       case "USER_NOT_FOUND":
-        showTerm(ref, provider: provider, type: type, token: token);
+        showTerm(ref, provider: provider, tokenType: tokenType, token: token);
         break;
       default:
         showLoginError(context, provider);
@@ -162,7 +169,7 @@ Future<void> onLogin(WidgetRef ref, SocialProvider provider) async {
 void showTerm(
   WidgetRef ref, {
   required SocialProvider provider,
-  required SocialTokenType type,
+  required SocialTokenType tokenType,
   required String token,
 }) {
   final context = ref.context;
@@ -274,7 +281,7 @@ void showTerm(
                           context.pushRoute(
                             RegisterNicknameRoute(
                               provider: provider,
-                              type: type,
+                              tokenType: tokenType,
                               token: token,
                               terms: terms.value
                                   .map(

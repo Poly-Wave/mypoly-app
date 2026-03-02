@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mypoly/asset/index.dart';
+import 'package:mypoly/provider/app_provider.dart';
 import 'package:mypoly/style/index.dart';
 import 'package:mypoly/widget/index.dart';
 
-class RegisterOnboardIntroView extends HookWidget {
-  final String nickname;
+class RegisterOnboardIntroView extends HookConsumerWidget {
   final VoidCallback onStartTap;
 
-  const RegisterOnboardIntroView({
-    super.key,
-    required this.nickname,
-    required this.onStartTap,
-  });
+  const RegisterOnboardIntroView({super.key, required this.onStartTap});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(appUserProvider);
+
     final animationController = useAnimationController(
       duration: const Duration(milliseconds: 400),
     );
@@ -54,7 +53,7 @@ class RegisterOnboardIntroView extends HookWidget {
               ),
             ),
             Text(
-              "만나서 반가워요!\n$nickname님",
+              "만나서 반가워요!\n${user?.nickname ?? ""}님",
               textAlign: .center,
               style: Pretendard.semiBold.set(
                 size: 28,

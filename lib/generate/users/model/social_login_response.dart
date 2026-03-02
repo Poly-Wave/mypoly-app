@@ -28,6 +28,9 @@ abstract class SocialLoginResponse with _$SocialLoginResponse {
 
     /// Access Token(JWT). 다른 서비스(bill-service 등) 호출 시 Authorization 헤더로 전달
     @JsonKey(name: r'jwt') required String jwt,
+
+    /// Refresh Token(JWT). Access 만료 시 /auth/refresh 로 새 Access 발급에 사용
+    @JsonKey(name: r'refreshToken') required String refreshToken,
   }) = _SocialLoginResponse;
 
   factory SocialLoginResponse.fromJson(Map<String, dynamic> json) =>

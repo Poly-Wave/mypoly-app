@@ -12,19 +12,22 @@ Future<T?> showMPBottomSheetModal<T>(
     isScrollControlled: true,
     isDismissible: barrierDismissible,
     backgroundColor: ColorStyles.dim,
-    builder: (_) => PopScope(
+    builder: (innerContext) => PopScope(
       canPop: barrierDismissible,
-      child: Container(
-        decoration: BoxDecoration(
-          color: ColorStyles.black,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
-        ),
-        child: MPSafeColumn(
-          maintainBottomViewPadding: true,
-          bottom: true,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: children,
+      child: GestureDetector(
+        onTap: innerContext.unFocus,
+        child: Container(
+          decoration: BoxDecoration(
+            color: ColorStyles.black,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+          ),
+          child: MPSafeColumn(
+            maintainBottomViewPadding: true,
+            bottom: true,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: children,
+          ),
         ),
       ),
     ),

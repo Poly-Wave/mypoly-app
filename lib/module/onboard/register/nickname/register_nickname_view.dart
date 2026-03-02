@@ -16,14 +16,14 @@ import 'package:mypoly/widget/modal/index.dart';
 @RoutePage()
 class RegisterNicknameView extends HookConsumerWidget {
   final SocialProvider provider;
-  final SocialTokenType type;
+  final SocialTokenType tokenType;
   final String token;
   final List<TermsAgreementRequest> terms;
 
   const RegisterNicknameView({
     super.key,
     required this.provider,
-    required this.type,
+    required this.tokenType,
     required this.token,
     required this.terms,
   });
@@ -163,7 +163,7 @@ class RegisterNicknameView extends HookConsumerWidget {
                 onTap: () => onNext(
                   ref,
                   provider: provider,
-                  type: type,
+                  tokenType: tokenType,
                   token: token,
                   terms: terms,
                 ),

@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mypoly/generate/users/model/user_me_response.dart';
 import 'package:mypoly/provider/app_provider.dart';
 import 'package:mypoly/provider/router_provider.dart';
 import 'package:mypoly/widget/modal/index.dart';
@@ -46,11 +47,27 @@ class SplashView extends HookConsumerWidget {
         await Future.delayed(minDuration - elapsed);
       }
 
+      final router = ref.read(routerProvider);
       if (context.mounted) {
-        if (initResult.isLogin) {
-          ref.read(routerProvider).replace(MainRoute());
+        final user = initResult.user;
+
+        if (user != null) {
+          switch (user.onboardingStatus) {
+            case .signup:
+              router.replace(RegisterOnboardRoute());
+              break;
+            case .onboarding:
+              router.replace(RegisterTopicRoute());
+              break;
+            case .category:
+              router.replace(RegisterMoreRoute());
+              break;
+            default:
+              router.replace(MainRoute());
+              break;
+          }
         } else {
-          ref.read(routerProvider).replace(OnboardRoute());
+          router.replace(OnboardRoute());
         }
       }
     }
@@ -96,11 +113,24 @@ class SplashView extends HookConsumerWidget {
       }
 
       await Future.wait([
+        ref.read(appAccessTokenProvider.notifier).init(),
+        ref.read(appRefreshTokenProvider.notifier).init(),
+      ]);
+
+      await Future.wait([
         ref.read(appCategoriesProvider.notifier).fetch(),
         ref.read(appTermsProvider.notifier).fetch(),
       ]);
 
-      return InitResult(success: true, isLogin: false);
+      UserMeResponse? user;
+
+      try {
+        user = await ref.read(appUserProvider.notifier).fetch();
+      } catch (e) {
+        debugPrint("$e");
+      }
+
+      return InitResult(success: true, user: user);
     } catch (e) {
       debugPrint('Initialization error: $e');
 
@@ -126,10 +156,10 @@ class SplashView extends HookConsumerWidget {
 
 class InitResult {
   final bool success;
-  final bool isLogin;
+  final UserMeResponse? user;
   final ErrorType? errorType;
 
-  InitResult({required this.success, this.isLogin = false, this.errorType});
+  InitResult({required this.success, this.user, this.errorType});
 }
 
 enum ErrorType { network, unknown }

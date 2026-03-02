@@ -10,6 +10,7 @@ import 'package:mypoly/generate/users/model/nickname_availability_response.dart'
 import 'package:mypoly/generate/users/model/onboarding_status_response.dart';
 import 'package:mypoly/generate/users/model/random_nickname_response.dart';
 import 'package:mypoly/generate/users/model/update_onboarding_status_request.dart';
+import 'package:mypoly/generate/users/model/user_me_response.dart';
 import 'package:mypoly/generate/users/model/user_update_profile_request.dart';
 
 part 'user_api.g.dart';
@@ -30,6 +31,15 @@ abstract class UserApi {
     @Query('nickname') required String nickname,
     CancelToken? cancelToken,
   });
+
+  /// 내 정보 조회
+  /// 로그인한 사용자의 정보를 조회합니다.  포함 정보 - 온보딩 상태 - 닉네임 - 프로필(성별/생년월일/프로필 이미지/주소)  인증 - JWT 인증이 필요합니다. - Swagger 우측 상단 Authorize에 &#x60;Bearer {jwt}&#x60; 입력 후 호출하세요.
+  ///
+  /// Parameters:
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  ///
+  @GET('/me')
+  Future<UserMeResponse> getMe({CancelToken? cancelToken});
 
   /// 온보딩 상태 조회
   /// 사용자의 온보딩 상태를 조회합니다.

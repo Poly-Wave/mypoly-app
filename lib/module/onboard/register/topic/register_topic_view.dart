@@ -2,13 +2,17 @@ import 'package:auto_route/auto_route.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:loader_overlay/loader_overlay.dart';
+import 'package:mypoly/data/provider/service_provider.dart';
 import 'package:mypoly/generate/bills/model/category_response.dart';
 import 'package:mypoly/provider/app_provider.dart';
 import 'package:mypoly/provider/router_provider.dart';
 import 'package:mypoly/style/index.dart';
 import 'package:mypoly/widget/index.dart';
+import 'package:mypoly/widget/modal/index.dart';
 
 @RoutePage()
 class RegisterTopicView extends HookConsumerWidget {
@@ -16,6 +20,14 @@ class RegisterTopicView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    useEffect(() {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        FlutterNativeSplash.remove();
+      });
+
+      return null;
+    }, []);
+
     final appCategories = ref.read(appCategoriesProvider);
 
     final categories = useState(
@@ -116,8 +128,33 @@ class RegisterTopicView extends HookConsumerWidget {
           MPBottomButton(
             "다 골랐어요",
             enabled: onNextEnabled,
-            onTap: () {
-              context.replaceRoute(RegisterMoreRoute());
+            onTap: () async {
+              context.loaderOverlay.show();
+
+              final categoryIds = categories.value
+                  .where((data) => data.$1)
+                  .map((data) => data.$2.id)
+                  .nonNulls
+                  .toList();
+
+              try {
+                await ref
+                    .read(categoryServiceProvider)
+                    .updateCategories(
+                      categoryIds: categoryIds,
+                      isOnboard: true,
+                    );
+
+                if (!context.mounted) return;
+                context.loaderOverlay.hide();
+                context.replaceRoute(RegisterMoreRoute());
+              } catch (e) {
+                context.loaderOverlay.hide();
+                showMPAlertModal(
+                  context,
+                  title: "관심주제 선택에 실패하였습니다.\n잠시 후 다시 시도해 주세요.",
+                );
+              }
             },
             children: [
               MPHeight(4),
