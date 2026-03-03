@@ -93,7 +93,7 @@ class MainApp extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final router = ref.watch(routerProvider);
+    final router = ref.read(routerProvider);
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: systemUiOverlayStyle,
