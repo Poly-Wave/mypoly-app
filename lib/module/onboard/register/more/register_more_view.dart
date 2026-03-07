@@ -33,7 +33,7 @@ class RegisterMoreView extends HookConsumerWidget {
     return GestureDetector(
       onTap: context.unFocus,
       child: Scaffold(
-        appBar: MPBackAppbar(context, text: "가까워지는 과정"),
+        appBar: MPAppbar(context, text: "가까워지는 과정", isBackEnabled: false),
         body: Column(
           crossAxisAlignment: .stretch,
           children: [

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mypoly/enum/gender.dart';
 import 'package:mypoly/generate/users/api/user_api.dart';
 import 'package:mypoly/generate/users/model/address_search_response.dart';
+import 'package:mypoly/generate/users/model/nickname_availability_response.dart';
 import 'package:mypoly/generate/users/model/update_onboarding_status_request.dart';
 import 'package:mypoly/generate/users/model/user_me_response.dart';
 import 'package:mypoly/generate/users/model/user_update_profile_request.dart';
@@ -16,13 +17,15 @@ class UserService {
 
   UserService(this._ref, this._userApi);
 
-  Future<bool> checkNickname(String nickname) async {
+  Future<NicknameAvailabilityResponseStatusEnum> checkNickname(
+    String nickname,
+  ) async {
     try {
       final response = await _userApi.checkNicknameAvailability(
         nickname: nickname,
       );
 
-      return response.available;
+      return response.status;
     } on DioException catch (e) {
       return Future.error(getErrorMessage(e));
     } catch (e) {

@@ -454,7 +454,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"${APP_FLAVOR}\" = \"prod\" ]; then\n  ENV_FILE=\"${SRCROOT}/../.env\"\nelse\n  ENV_FILE=\"${SRCROOT}/../.env.${APP_FLAVOR}\"\nfi\n\necho \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n\nif [ -f \"$ENV_FILE\" ]; then\n  APP_NAME=$(grep APP_NAME \"$ENV_FILE\" | cut -d '=' -f2)\n  /usr/libexec/PlistBuddy -c \"Set :CFBundleDisplayName $APP_NAME\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n    \n  KAKAO_SCHEME=$(grep KAKAO_SCHEME \"$ENV_FILE\" | cut -d '=' -f2 | tr -d '\"')\n  /usr/libexec/PlistBuddy -c \"Set :CFBundleURLTypes:0:CFBundleURLSchemes:0 $KAKAO_SCHEME\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n    \n  GOOGLE_SCHEME=$(grep GOOGLE_SCHEME \"$ENV_FILE\" | cut -d '=' -f2 | tr -d '\"')\n  /usr/libexec/PlistBuddy -c \"Set :CFBundleURLTypes:1:CFBundleURLSchemes:0 $GOOGLE_SCHEME\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n  GOOGLE_CLIENT_ID=$(grep GOOGLE_CLIENT_ID \"$ENV_FILE\" | cut -d '=' -f2)\n  /usr/libexec/PlistBuddy -c \"Set :GIDClientID $GOOGLE_CLIENT_ID\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\nfi\n";
+			shellScript = "ENV_FILE=\"${SRCROOT}/../.env.${FLAVOR}\"\n\n# 환경 파일에서 값을 읽고 정제하는 함수\nget_env_value() {\n  local key=$1\n  local env_file=$2\n  grep \"^$key\" \"$env_file\" | cut -d '=' -f2 | xargs | tr -d \"'\\\"\"\n}\n\n# Plist에 값을 설정하는 함수\nset_plist_value() {\n  local plist_path=$1\n  local key_path=$2\n  local value=$3\n  \n  if [ -n \"$value\" ]; then\n    /usr/libexec/PlistBuddy -c \"Set $key_path \\\"$value\\\"\" \"$plist_path\"\n  fi\n}\n\nif [ -f \"$ENV_FILE\" ]; then\n  PLIST_PATH=\"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n  \n  APP_NAME=$(get_env_value \"APP_NAME\" \"$ENV_FILE\")\n  set_plist_value \"$PLIST_PATH\" \":CFBundleDisplayName\" \"$APP_NAME\"\n  \n  KAKAO_SCHEME=$(get_env_value \"KAKAO_SCHEME\" \"$ENV_FILE\")\n  set_plist_value \"$PLIST_PATH\" \":CFBundleURLTypes:0:CFBundleURLSchemes:0\" \"$KAKAO_SCHEME\"\n  \n  GOOGLE_SCHEME=$(get_env_value \"GOOGLE_SCHEME\" \"$ENV_FILE\")\n  set_plist_value \"$PLIST_PATH\" \":CFBundleURLTypes:1:CFBundleURLSchemes:0\" \"$GOOGLE_SCHEME\"\n  \n  GOOGLE_CLIENT_ID=$(get_env_value \"GOOGLE_CLIENT_ID\" \"$ENV_FILE\")\n  set_plist_value \"$PLIST_PATH\" \":GIDClientID\" \"$GOOGLE_CLIENT_ID\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -510,7 +510,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				APP_FLAVOR = prod;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -569,6 +568,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = M3KMTD49RM;
 				ENABLE_BITCODE = NO;
+				FLAVOR = prod;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -636,7 +636,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				APP_FLAVOR = prod;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -694,7 +693,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				APP_FLAVOR = prod;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -755,6 +753,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = M3KMTD49RM;
 				ENABLE_BITCODE = NO;
+				FLAVOR = prod;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -779,6 +778,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = M3KMTD49RM;
 				ENABLE_BITCODE = NO;
+				FLAVOR = prod;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -796,7 +796,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				APP_FLAVOR = dev;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -896,7 +895,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				APP_FLAVOR = dev;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -990,7 +988,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				APP_FLAVOR = dev;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";

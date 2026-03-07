@@ -102,8 +102,8 @@ flutter:
   uses-material-design: true
 
   assets:
-    - .env
     - .env.dev
+    - .env.prod
     - assets/svg/
     - assets/webp/
     - assets/lottie/

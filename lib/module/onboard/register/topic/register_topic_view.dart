@@ -40,7 +40,7 @@ class RegisterTopicView extends HookConsumerWidget {
     final allChecked = !categories.value.map((item) => item.$1).contains(false);
 
     return Scaffold(
-      appBar: MPBackAppbar(context, text: "관심주제 선택"),
+      appBar: MPAppbar(context, isBackEnabled: false, text: "관심주제 선택"),
       body: Column(
         crossAxisAlignment: .stretch,
         children: [
@@ -161,7 +161,22 @@ class RegisterTopicView extends HookConsumerWidget {
               Padding(
                 padding: .symmetric(horizontal: 20.w),
                 child: GestureDetector(
-                  onTap: context.pop,
+                  onTap: () async {
+                    context.loaderOverlay.show();
+
+                    try {
+                      await ref
+                          .read(userServiceProvider)
+                          .updateOnboardStatus(.category);
+
+                      if (!context.mounted) return;
+                      context.loaderOverlay.hide();
+                      context.replaceRoute(RegisterMoreRoute());
+                    } catch (e) {
+                      context.loaderOverlay.hide();
+                      context.replaceRoute(RegisterMoreRoute());
+                    }
+                  },
                   child: Container(
                     height: 51,
                     alignment: .center,

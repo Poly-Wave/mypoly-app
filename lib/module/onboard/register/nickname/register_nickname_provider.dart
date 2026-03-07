@@ -53,7 +53,7 @@ class Nickname extends _$Nickname {
 
       if (!context.mounted) return;
       context.loaderOverlay.hide();
-      ref.read(nicknameCheckProvider.notifier).onReset();
+      ref.read(nicknameCheckProvider.notifier).update(true);
       controller.text = nickname;
       state = nickname;
     } catch (e) {
@@ -84,24 +84,34 @@ class NicknameCheck extends _$NicknameCheck {
     try {
       context.loaderOverlay.show();
 
-      final available = await ref
+      final status = await ref
           .read(userServiceProvider)
           .checkNickname(nickname);
 
       if (!context.mounted) return;
       context.loaderOverlay.hide();
 
-      state = available;
-      if (available) {
-        ref.read(nicknameInputMessageProvider.notifier).onUpdate((
-          "사용할 수 있어요.",
-          .default_,
-        ));
-      } else {
-        ref.read(nicknameInputMessageProvider.notifier).onUpdate((
-          "이미 사용 중인 이름이에요.",
-          .error,
-        ));
+      state = status == .available;
+
+      switch (status) {
+        case .available:
+          ref.read(nicknameInputMessageProvider.notifier).onUpdate((
+            "사용할 수 있어요.",
+            .default_,
+          ));
+          break;
+        case .duplicated:
+          ref.read(nicknameInputMessageProvider.notifier).onUpdate((
+            "이미 사용 중인 별명이에요.",
+            .error,
+          ));
+          break;
+        case .forbidden:
+          ref.read(nicknameInputMessageProvider.notifier).onUpdate((
+            "사용할 수 없는 별명이에요.",
+            .error,
+          ));
+          break;
       }
     } catch (e) {
       if (!context.mounted) return;
@@ -114,6 +124,8 @@ class NicknameCheck extends _$NicknameCheck {
       ));
     }
   }
+
+  void update(bool value) => state = value;
 
   void onReset() {
     state = false;
@@ -166,7 +178,7 @@ Future<void> onNext(
 
     if (!context.mounted) return;
     context.loaderOverlay.hide();
-    context.router.replaceAll([MainRoute(), RegisterOnboardRoute()]);
+    context.replaceRoute(RegisterOnboardRoute());
   } catch (e) {
     if (!context.mounted) return;
     context.loaderOverlay.hide();

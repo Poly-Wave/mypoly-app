@@ -1,17 +1,19 @@
 part of 'index.dart';
 
-class MPBackAppbar extends StatelessWidget implements PreferredSizeWidget {
+class MPAppbar extends StatelessWidget implements PreferredSizeWidget {
   final BuildContext context;
   final Color color;
+  final bool isBackEnabled;
   final void Function()? onBack;
   final String text;
   final List<Widget>? left;
   final List<Widget>? right;
 
-  const MPBackAppbar(
+  const MPAppbar(
     this.context, {
     super.key,
     this.color = ColorStyles.black,
+    this.isBackEnabled = true,
     this.onBack,
     this.text = "",
     this.left,
@@ -30,10 +32,12 @@ class MPBackAppbar extends StatelessWidget implements PreferredSizeWidget {
           child: Row(
             spacing: 24.w,
             children: [
-              GestureDetector(
-                onTap: onBack ?? context.maybePop,
-                child: MPSvgImage(SvgImage.icBack, size: 32),
-              ),
+              isBackEnabled
+                  ? GestureDetector(
+                      onTap: onBack ?? context.maybePop,
+                      child: MPSvgImage(SvgImage.icBack, size: 32),
+                    )
+                  : MPWidth(32),
               Expanded(
                 child: Text(
                   text,
@@ -44,7 +48,7 @@ class MPBackAppbar extends StatelessWidget implements PreferredSizeWidget {
                   ),
                 ),
               ),
-              Container(width: 32.r),
+              MPWidth(32),
             ],
           ),
         ),

@@ -49,6 +49,11 @@ android {
     
     val flutterRoot = rootProject.projectDir.parentFile
 
+    val appEnv = dotenv {
+        directory = flutterRoot.absolutePath
+        filename = ".env"
+    }
+
     val devEnv = dotenv {
         directory = flutterRoot.absolutePath
         filename = ".env.dev"
@@ -56,21 +61,21 @@ android {
 
     val prodEnv = dotenv {
         directory = flutterRoot.absolutePath
-        filename = ".env"
+        filename = ".env.prod"
     }
 
     signingConfigs {
         getByName("debug") {
-            keyAlias = devEnv.get("KEY_ALIAS", "")
-            keyPassword = devEnv.get("KEY_PASSWORD", "")
-            storeFile = file(devEnv.get("STORE_FILE", ""))
-            storePassword = devEnv.get("STORE_PASSWORD", "")
+            keyAlias = appEnv.get("DEBUG_KEY_ALIAS", "")
+            keyPassword = appEnv.get("DEBUG_KEY_PASSWORD", "")
+            storeFile = file(appEnv.get("DEBUG_STORE_FILE", ""))
+            storePassword = appEnv.get("DEBUG_STORE_PASSWORD", "")
         }
         create("release") {
-            keyAlias = prodEnv.get("KEY_ALIAS", "")
-            keyPassword = prodEnv.get("KEY_PASSWORD", "")
-            storeFile = file(prodEnv.get("STORE_FILE", ""))
-            storePassword = prodEnv.get("STORE_PASSWORD", "")
+            keyAlias = appEnv.get("RELEASE_KEY_ALIAS", "")
+            keyPassword = appEnv.get("RELEASE_KEY_PASSWORD", "")
+            storeFile = file(appEnv.get("RELEASE_STORE_FILE", ""))
+            storePassword = appEnv.get("RELEASE_STORE_PASSWORD", "")
         }
     }
 

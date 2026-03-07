@@ -49,6 +49,7 @@ app.*.map.json
 
 .env*
 !.env.example
+!.env.{flavor}.example
 !.env.script.example
 
 service-account.json

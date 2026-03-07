@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mypoly/asset/index.dart';
+import 'package:mypoly/provider/router_provider.dart';
 import 'package:mypoly/style/index.dart';
 import 'package:mypoly/util/extension.dart';
 import 'package:mypoly/widget/index.dart';
@@ -16,7 +17,7 @@ class RegisterCompleteView extends HookConsumerWidget {
     return GestureDetector(
       onTap: context.unFocus,
       child: Scaffold(
-        appBar: MPBackAppbar(context),
+        appBar: MPAppbar(context, isBackEnabled: false),
         body: MPSafeColumn(
           bottom: true,
           crossAxisAlignment: .stretch,
@@ -50,7 +51,10 @@ class RegisterCompleteView extends HookConsumerWidget {
             MPHeight(20),
             Padding(
               padding: .symmetric(horizontal: 20.w),
-              child: MPButton("시작하기", onTap: context.pop),
+              child: MPButton(
+                "시작하기",
+                onTap: () => context.replaceRoute(MainRoute()),
+              ),
             ),
             MPHeight(20),
           ],
