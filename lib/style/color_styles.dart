@@ -16,6 +16,8 @@ class ColorStyles {
   static const Color primary90 = Color(0xFF032529);
   static const Color primary100 = Color(0xFF021012);
 
+  static const Color divider = Color(0xFF222324);
+
   static const Color white = Color(0xFFFFFFFF);
   static const Color gray10 = Color(0xFFF5F8FD);
   static const Color gray20 = Color(0xFFD5DBE2);

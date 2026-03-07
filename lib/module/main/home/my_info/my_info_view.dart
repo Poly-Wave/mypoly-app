@@ -55,7 +55,7 @@ class MyInfoView extends HookConsumerWidget {
                     ],
                   ),
                   MPHeight(40),
-                  Container(height: 6.h, color: Color(0xFF222324)),
+                  Container(height: 6.h, color: ColorStyles.divider),
                   MPHeight(40),
                   MyInfoGroup(
                     children: [
@@ -86,7 +86,10 @@ class MyInfoView extends HookConsumerWidget {
                         "약관",
                         onTap: () => context.pushRoute(TermRoute()),
                       ),
-                      MyInfoGroupItem("오픈소스 라이선스", onTap: () {}),
+                      MyInfoGroupItem(
+                        "오픈소스 라이선스",
+                        onTap: () => context.pushRoute(OSSRoute()),
+                      ),
                     ],
                   ),
                   MPHeight(20),

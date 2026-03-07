@@ -48,7 +48,7 @@ enum MPButtonStyle {
         return BoxDecoration(
           borderRadius: .circular(12.r),
           border: Border.all(width: 1.r, color: ColorStyles.gray60),
-          color: Color(0xFF222324),
+          color: ColorStyles.divider,
         );
       case MPButtonStyle.text:
         return BoxDecoration(
