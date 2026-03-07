@@ -18,10 +18,7 @@ class PopularSubsidyCard extends StatelessWidget {
         gradient: RadialGradient(
           center: Alignment.center,
           radius: 0.4,
-          colors: [
-            ColorStyles.white,
-            ColorStyles.primary10,
-          ],
+          colors: [ColorStyles.white, ColorStyles.primary10],
         ),
       ),
       child: Column(
@@ -31,10 +28,7 @@ class PopularSubsidyCard extends StatelessWidget {
             children: [
               Container(
                 height: 24,
-                padding: EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 2,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   color: ColorStyles.gray70,
@@ -56,7 +50,7 @@ class PopularSubsidyCard extends StatelessWidget {
                 data.applyPeriod, // 접수기간
                 style: Pretendard.semiBold.set(
                   size: 15,
-                  color: Color(0xFF222324),
+                  color: ColorStyles.divider,
                 ),
               ),
 
@@ -80,7 +74,7 @@ class PopularSubsidyCard extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: Pretendard.semiBold.set(
               size: 18,
-              color: Color(0xFF222324),
+              color: ColorStyles.divider,
             ),
           ),
 
@@ -92,7 +86,7 @@ class PopularSubsidyCard extends StatelessWidget {
             style: Pretendard.medium.set(
               size: 15,
               height: 1.4,
-              color: Color(0xFF222324),
+              color: ColorStyles.divider,
             ),
           ),
 

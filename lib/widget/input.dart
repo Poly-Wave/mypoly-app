@@ -67,7 +67,7 @@ class MPFakeInput extends StatelessWidget {
         height: 52.h,
         decoration: BoxDecoration(
           borderRadius: .circular(8.r),
-          color: Color(0xFF222324),
+          color: ColorStyles.divider,
         ),
         padding: .symmetric(horizontal: 16.w),
         child: Row(
@@ -176,7 +176,7 @@ class MPInput extends StatelessWidget {
                 decoration: InputDecoration(
                   isDense: true,
                   filled: true,
-                  fillColor: Color(0xFF222324),
+                  fillColor: ColorStyles.divider,
                   border: border,
                   enabledBorder: border,
                   disabledBorder: border,

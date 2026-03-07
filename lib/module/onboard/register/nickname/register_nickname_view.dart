@@ -201,7 +201,7 @@ class RegisterNicknameButton extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: .circular(8.r),
           border: .all(width: 1.r, color: ColorStyles.gray60),
-          color: enabled ? ColorStyles.gray70 : Color(0xFF222324),
+          color: enabled ? ColorStyles.gray70 : ColorStyles.divider,
         ),
         child: Text(
           text,

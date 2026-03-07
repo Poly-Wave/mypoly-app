@@ -71,7 +71,9 @@ Future<void> main() async {
 
   runApp(
     ProviderScope(
-      observers: [ProviderLogger()],
+      observers: [
+        ProviderLogger(ignoreKeywords: ["termHtml"]),
+      ],
       overrides: [
         flavorProvider.overrideWithValue(flavor),
         secureStorageProvider.overrideWithValue(secureStorage),

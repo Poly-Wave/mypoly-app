@@ -26,12 +26,15 @@ import 'package:mypoly/module/onboard/register/complete/register_complete_view.d
 import 'package:mypoly/module/main/main_view.dart';
 
 // Home
+import 'package:mypoly/module/main/home/notification/notification_view.dart';
+
 import 'package:mypoly/module/main/home/my_info/my_info_view.dart';
 import 'package:mypoly/module/main/home/my_info/edit/my_info_edit_view.dart';
 import 'package:mypoly/module/main/home/my_info/detail/my_info_detail_view.dart';
 import 'package:mypoly/module/main/home/my_info/term/term_view.dart';
 import 'package:mypoly/module/main/home/my_info/notice/notice_view.dart';
 import 'package:mypoly/module/main/home/my_info/notice/detail/notice_detail_view.dart';
+import 'package:mypoly/module/main/home/my_info/oss/oss_view.dart';
 
 // Agenda
 
@@ -69,12 +72,15 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: MainRoute.page),
 
     // Home
+    AutoRoute(page: NotificationRoute.page),
+
     AutoRoute(page: MyInfoRoute.page),
     AutoRoute(page: MyInfoEditRoute.page),
     AutoRoute(page: MyInfoDetailRoute.page),
     AutoRoute(page: TermRoute.page),
     AutoRoute(page: NoticeRoute.page),
     AutoRoute(page: NoticeDetailRoute.page),
+    AutoRoute(page: OSSRoute.page),
 
     // Agenda
 

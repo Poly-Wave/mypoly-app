@@ -1,14 +1,13 @@
 include: package:flutter_lints/flutter.yaml
 
 analyzer:
-  plugins:
-    - custom_lint
   exclude:
     - "**/*.g.dart"
     - "**/*.freezed.dart"
     - "**/generate/**/*.dart"
     - "scripts/*.dart"
     - "test/*.dart"
+    - "lib/oss_licenses.dart"
   errors:
     invalid_annotation_target: ignore
     depend_on_referenced_packages: ignore
