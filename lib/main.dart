@@ -43,11 +43,7 @@ Future<void> main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   final flavor = Flavor.fromString(appFlavor ?? "prod");
-  if (flavor == .prod) {
-    await dotenv.load(fileName: ".env");
-  } else {
-    await dotenv.load(fileName: ".env.${flavor.name}");
-  }
+  await dotenv.load(fileName: ".env.${flavor.name}");
 
   final firebaseOptions = flavor == .prod
       ? prod.DefaultFirebaseOptions.currentPlatform
