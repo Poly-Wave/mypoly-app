@@ -5,7 +5,7 @@ import 'package:mypoly/generate/users/model/terms_response.dart';
 import 'package:mypoly/widget/modal/index.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'term_provider.g.dart';
+part 'term_detail_provider.g.dart';
 
 @riverpod
 TermsResponse term(Ref ref) => throw UnimplementedError();

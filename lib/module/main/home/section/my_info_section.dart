@@ -1,6 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mypoly/asset/index.dart';
+import 'package:mypoly/provider/router_provider.dart';
 import 'package:mypoly/style/index.dart';
 import 'package:mypoly/widget/index.dart';
 
@@ -24,24 +26,17 @@ class MyInfoSection extends StatelessWidget {
                     height: 1.3,
                     color: ColorStyles.white,
                   ),
-                )
+                ),
               ),
 
               GestureDetector(
-                onTap: (){
-                  // 내정보 보기 이동
-                },
+                onTap: () => context.pushRoute(MyInfoRoute()),
                 child: Container(
-                  padding: .symmetric(
-                    horizontal: 10.w,
-                    vertical: 6.h,
-                  ),
+                  padding: .symmetric(horizontal: 10.w, vertical: 6.h),
                   decoration: BoxDecoration(
                     color: ColorStyles.gray70,
                     borderRadius: .circular(8.r),
-                    border: Border.all(
-                      color: ColorStyles.gray60,
-                    ),
+                    border: Border.all(color: ColorStyles.gray60),
                   ),
                   child: Text(
                     "내정보 보기",
@@ -96,26 +91,17 @@ class MyInfoButton extends StatelessWidget {
           gradient: const LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              Color(0xFFA5FFEF),
-              Color(0xFF256D86),
-            ],
+            colors: [Color(0xFFA5FFEF), Color(0xFF256D86)],
           ),
         ),
         child: Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: 10.w,
-            vertical: 12.h,
-          ),
+          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 12.h),
           decoration: BoxDecoration(
             borderRadius: .circular(10.r),
             gradient: const LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [
-                Color(0xFFA5FFEF),
-                Color(0xFF256D86),
-              ],
+              colors: [Color(0xFFA5FFEF), Color(0xFF256D86)],
             ),
           ),
           child: Row(

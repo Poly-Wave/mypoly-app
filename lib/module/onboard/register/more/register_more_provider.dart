@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -76,10 +77,12 @@ class Birth extends _$Birth {
 class Keyword extends _$Keyword {
   final controller = TextEditingController();
   final focusNode = FocusNode();
+  Timer? _debounceTimer;
 
   @override
   String build() {
     ref.onDispose(() {
+      _debounceTimer?.cancel();
       controller.dispose();
       focusNode.dispose();
     });
@@ -88,22 +91,25 @@ class Keyword extends _$Keyword {
   }
 
   void onChanged(String value) {
-    ref.read(lastKeywordProvider.notifier).onReset();
-    if (state != value) {
-      if (value.isNotEmpty) {
-        ref.read(addressesPagingProvider.notifier).onRefresh();
-      } else {
-        ref.read(addressesPagingProvider.notifier).onReset();
-      }
+    _debounceTimer?.cancel();
+
+    if (value.isEmpty) {
+      ref.read(addressesPagingProvider.notifier).onReset();
+      state = "";
+      return;
     }
 
     state = value;
+
+    _debounceTimer = Timer(const Duration(milliseconds: 300), () {
+      ref.read(addressesPagingProvider.notifier).onRefresh();
+    });
   }
 
   void onReset() {
+    _debounceTimer?.cancel();
     controller.text = "";
     state = "";
-    ref.read(lastKeywordProvider.notifier).onReset();
     ref.read(addressesPagingProvider.notifier).onReset();
   }
 }
@@ -218,7 +224,7 @@ class Residence extends _$Residence {
                         children: [
                           if (keyword.isNotEmpty) ...[
                             GestureDetector(
-                              onTap: ref.read(birthProvider.notifier).onReset,
+                              onTap: ref.read(keywordProvider.notifier).onReset,
                               child: MPSvgImage(SvgImage.icReset, size: 24),
                             ),
                           ],

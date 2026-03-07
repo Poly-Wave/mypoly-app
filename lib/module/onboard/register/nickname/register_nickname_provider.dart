@@ -178,7 +178,7 @@ Future<void> onNext(
 
     if (!context.mounted) return;
     context.loaderOverlay.hide();
-    context.replaceRoute(OnboardRoute());
+    context.replaceRoute(RegisterOnboardRoute());
   } catch (e) {
     if (!context.mounted) return;
     context.loaderOverlay.hide();

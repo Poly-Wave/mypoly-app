@@ -142,7 +142,12 @@ Future<void> onLogin(WidgetRef ref, SocialProvider provider) async {
       case .signup:
         context.replaceRoute(RegisterOnboardRoute());
         break;
-
+      case .onboarding:
+        context.replaceRoute(RegisterTopicRoute());
+        break;
+      case .category:
+        context.replaceRoute(RegisterMoreRoute());
+        break;
       default:
         context.replaceRoute(MainRoute());
         break;
@@ -260,7 +265,7 @@ void showTerm(
                             terms.value = tmp;
                           },
                           onDetailTap: () =>
-                              context.pushRoute(TermRoute(data: item.$2)),
+                              context.pushRoute(TermDetailRoute(data: item.$2)),
                         ),
                       )
                       .toList(),

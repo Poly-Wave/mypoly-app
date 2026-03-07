@@ -5,14 +5,14 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mypoly/generate/users/model/terms_response.dart';
-import 'package:mypoly/module/common/term/term_provider.dart';
+import 'package:mypoly/module/common/term_detail/term_detail_provider.dart';
 import 'package:mypoly/widget/index.dart';
 
 @RoutePage()
-class TermProviderView extends StatelessWidget {
+class TermDetailProviderView extends StatelessWidget {
   final TermsResponse data;
 
-  const TermProviderView({super.key, required this.data});
+  const TermDetailProviderView({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +21,13 @@ class TermProviderView extends StatelessWidget {
         termProvider.overrideWithValue(data),
         termHtmlProvider.overrideWith(TermHtml.new),
       ],
-      child: TermView(),
+      child: TermDetailView(),
     );
   }
 }
 
-class TermView extends HookConsumerWidget {
-  const TermView({super.key});
+class TermDetailView extends HookConsumerWidget {
+  const TermDetailView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -44,13 +44,13 @@ class TermView extends HookConsumerWidget {
 
     if (termHtml == null) {
       return Scaffold(
-        appBar: MPBackAppbar(context, text: term.title),
+        appBar: MPAppbar(context, text: term.title),
         body: MPSafeBox(bottom: true, child: Center(child: MPLoading())),
       );
     }
 
     return Scaffold(
-      appBar: MPBackAppbar(context, text: term.title),
+      appBar: MPAppbar(context, text: term.title),
       body: Column(
         crossAxisAlignment: .stretch,
         children: [
