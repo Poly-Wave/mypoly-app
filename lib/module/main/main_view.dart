@@ -26,7 +26,6 @@ class MainView extends HookConsumerWidget {
       return null;
     }, []);
 
-    final controller = ref.read(mainPageProvider.notifier).pageController;
     final mainPage = ref.watch(mainPageProvider);
 
     return Scaffold(
@@ -34,10 +33,8 @@ class MainView extends HookConsumerWidget {
         crossAxisAlignment: .stretch,
         children: [
           Expanded(
-            child: PageView(
-              controller: controller,
-              onPageChanged: ref.read(mainPageProvider.notifier).update,
-              physics: const NeverScrollableScrollPhysics(),
+            child: IndexedStack(
+              index: mainPage,
               children: [MainAgendaView(), MainHomeView(), MainSubsidyView()],
             ),
           ),
@@ -59,19 +56,22 @@ class MainView extends HookConsumerWidget {
                 child: Row(
                   children: [
                     MainNavItem(
-                      onTap: () => controller.jumpToPage(0),
+                      onTap: () =>
+                          ref.read(mainPageProvider.notifier).update(0),
                       isActive: mainPage == 0,
                       text: "안건",
                       image: SvgImage.mainAgenda,
                     ),
                     MainNavItem(
-                      onTap: () => controller.jumpToPage(1),
+                      onTap: () =>
+                          ref.read(mainPageProvider.notifier).update(1),
                       isActive: mainPage == 1,
                       text: "홈",
                       image: SvgImage.mainHome,
                     ),
                     MainNavItem(
-                      onTap: () => controller.jumpToPage(2),
+                      onTap: () =>
+                          ref.read(mainPageProvider.notifier).update(2),
                       isActive: mainPage == 2,
                       text: "보조금",
                       image: SvgImage.mainSubsidy,
@@ -105,7 +105,7 @@ class MainNavItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Center(
-        child: GestureDetector(
+        child: InkWell(
           onTap: onTap,
           child: Column(
             crossAxisAlignment: .stretch,

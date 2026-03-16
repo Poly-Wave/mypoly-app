@@ -11,44 +11,37 @@ class NoticeSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 48.h,
-      padding: .symmetric(horizontal: 12.w),
-      decoration: BoxDecoration(
-        color: ColorStyles.gray80,
-        borderRadius: .circular(8.r),
-      ),
-      child: Row(
-        children: [
-          MPSvgImage(
-            SvgImage.noticeSectionLogo,
-            size: 24,
-          ),
+      decoration: BoxDecoration(color: ColorStyles.gray80),
+      child: Padding(
+        padding: .symmetric(horizontal: 20.w),
+        child: Row(
+          children: [
+            MPSvgImage(SvgImage.noticeSectionLogo, size: 24),
 
-          SizedBox(width: 10.w),
+            SizedBox(width: 10.w),
 
-          Expanded(
-            child: Text(
-              '북마크한 보조금 신청기간입니다.',
-              style: Pretendard.medium.set(
-                size: 15,
-                color: ColorStyles.white,
+            Expanded(
+              child: Text(
+                '북마크한 보조금 신청기간입니다.',
+                style: Pretendard.medium.set(
+                  size: 15,
+                  color: ColorStyles.white,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
             ),
-          ),
 
-          SizedBox(width: 10.w),
+            SizedBox(width: 10.w),
 
-          GestureDetector(
-            onTap: () {
-              // 공지 상세 이동
-            },
-            child: MPSvgImage(
-              SvgImage.arrowRight,
-              size: 20,
+            GestureDetector(
+              onTap: () {
+                // 공지 상세 이동
+              },
+              child: MPSvgImage(SvgImage.arrowRight, size: 20),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

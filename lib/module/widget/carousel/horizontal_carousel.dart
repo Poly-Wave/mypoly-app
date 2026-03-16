@@ -26,9 +26,7 @@ class HorizontalCarouselState extends State<HorizontalCarousel> {
   @override
   void initState() {
     super.initState();
-    controller = PageController(
-      viewportFraction: widget.viewportFraction,
-    );
+    controller = PageController(viewportFraction: widget.viewportFraction);
   }
 
   @override
@@ -45,6 +43,7 @@ class HorizontalCarouselState extends State<HorizontalCarousel> {
           height: widget.height,
           child: PageView.builder(
             controller: controller,
+            padEnds: false,
             itemCount: widget.items.length,
             onPageChanged: (index) {
               setState(() => currentIndex = index);

@@ -14,7 +14,7 @@ class MyInfoSection extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: .symmetric(vertical: 20.h, horizontal: 20.w),
+          padding: .symmetric(vertical: 20.h),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -51,23 +51,20 @@ class MyInfoSection extends StatelessWidget {
           ),
         ),
 
-        Padding(
-          padding: .symmetric(horizontal: 20.w),
-          child: Row(
-            children: [
-              Expanded(
-                child: MyInfoButton(
-                  item: ("보관함", SvgImage.homeStore, ColorStyles.white, () {}),
-                ),
+        Row(
+          children: [
+            Expanded(
+              child: MyInfoButton(
+                item: ("보관함", SvgImage.homeStore, ColorStyles.white, () {}),
               ),
-              SizedBox(width: 10.w),
-              Expanded(
-                child: MyInfoButton(
-                  item: ("참여투표", SvgImage.homeVote, ColorStyles.white, () {}),
-                ),
+            ),
+            SizedBox(width: 10.w),
+            Expanded(
+              child: MyInfoButton(
+                item: ("참여투표", SvgImage.homeVote, ColorStyles.white, () {}),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ],
     );

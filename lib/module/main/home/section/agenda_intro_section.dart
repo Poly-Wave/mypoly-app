@@ -12,107 +12,85 @@ class AgendaIntroSection extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final agendaItems = useState<List<(int, String, int, int, int, VoidCallback)>>([]);
-    
+    final agendaItems =
+        useState<List<(int, String, int, int, int, VoidCallback)>>([]);
+
     useEffect(() {
       // 안건 리스트 요청(서버)
 
       agendaItems.value = [
-        (
-          1,
-          "소득세법 일부개정법률안(대안)(기획재정위원장)",
-          90,
-          10,
-          500,
-          () {},
-        ),
-        (
-          2,
-          "소득세법 일부개정법률안(대안)(기획재정위원장)",
-          99,
-          1,
-          500,
-          () {},
-        ),
+        (1, "소득세법 일부개정법률안(대안)(기획재정위원장)", 90, 10, 500, () {}),
+        (2, "소득세법 일부개정법률안(대안)(기획재정위원장)", 99, 1, 500, () {}),
       ];
 
       return null;
     }, []);
 
-    return Padding(
-      padding: .symmetric(horizontal: 20.w),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: .symmetric(horizontal: 10.w),
-            child: Padding(
-              padding: .symmetric(vertical: 10.h),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      "다양한 안건 소개",
-                      style: Pretendard.semiBold.set(
-                        size: 20,
-                        color: ColorStyles.gray10,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Padding(
+          padding: .symmetric(vertical: 10.h),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  "다양한 안건 소개",
+                  style: Pretendard.semiBold.set(
+                    size: 20,
+                    color: ColorStyles.gray10,
+                  ),
+                ),
+              ),
+
+              GestureDetector(
+                onTap: () {
+                  // 더보기 기능
+                },
+                behavior: HitTestBehavior.translucent,
+                child: Row(
+                  spacing: 4.w,
+                  children: [
+                    Text(
+                      "더보기",
+                      style: Pretendard.medium.set(
+                        size: 14,
+                        color: ColorStyles.gray30,
                       ),
                     ),
-                  ),
-
-                  GestureDetector(
-                    onTap: () {
-                      // 더보기 기능
-                    },
-                    behavior: HitTestBehavior.translucent,
-                    child: Row(
-                      spacing: 4.w,
-                      children: [
-                        Text(
-                          "더보기",
-                          style: Pretendard.medium.set(
-                            size: 14,
-                            color: ColorStyles.gray30,
-                          ),
-                        ),
-                        MPSvgImage(
-                          SvgImage.arrowRight,
-                          size: 16,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                    MPSvgImage(SvgImage.arrowRight, size: 16),
+                  ],
+                ),
               ),
-            ),
+            ],
           ),
+        ),
 
-          Padding(
-            padding: .symmetric(horizontal: 12.w, vertical: 12.h),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ("쟁쟁한", true),
-                ("맞춤형", false),
-                ("요즘 핫한", false),
-                ("이번달 인기", false),
-              ].map((item) => AgendaCategoryButton(item: item)).toList(),
-            ),
+        Padding(
+          padding: .symmetric(vertical: 12.h),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ("쟁쟁한", true),
+              ("맞춤형", false),
+              ("요즘 핫한", false),
+              ("이번달 인기", false),
+            ].map((item) => AgendaCategoryButton(item: item)).toList(),
           ),
+        ),
 
-          Padding(
-            padding: .only(top: 12.h),
-            child: Column(
-              children: agendaItems.value.map((item) {
-                return Padding(
-                  padding: EdgeInsets.only(bottom: 30),
-                  child: AgendaIntroItem(item: item),
-                );
-              }).toList(),
-            ),
+        Padding(
+          padding: .only(top: 12.h),
+          child: Column(
+            children: agendaItems.value.map((item) {
+              return Padding(
+                padding: EdgeInsets.only(bottom: 30),
+                child: AgendaIntroItem(item: item),
+              );
+            }).toList(),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -125,8 +103,7 @@ class AgendaCategoryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-      },
+      onTap: () {},
       child: Container(
         padding: .symmetric(horizontal: 12.w, vertical: 6.h),
         alignment: Alignment.center,
@@ -134,9 +111,7 @@ class AgendaCategoryButton extends StatelessWidget {
           color: Colors.transparent,
           borderRadius: .circular(99.r),
           border: Border.all(
-            color: item.$2
-                ? ColorStyles.primary50
-                : ColorStyles.gray60,
+            color: item.$2 ? ColorStyles.primary50 : ColorStyles.gray60,
           ),
         ),
         child: Text(
@@ -145,9 +120,7 @@ class AgendaCategoryButton extends StatelessWidget {
           softWrap: false,
           style: Pretendard.medium.set(
             size: 13,
-            color: item.$2
-                ? ColorStyles.primary60
-                : ColorStyles.gray20,
+            color: item.$2 ? ColorStyles.primary60 : ColorStyles.gray20,
           ),
         ),
       ),

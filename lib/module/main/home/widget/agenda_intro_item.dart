@@ -18,94 +18,75 @@ class AgendaIntroItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: .symmetric(horizontal: 12.w),
-      child: Column(
-        spacing: 14.h,
-        crossAxisAlignment: .start,
-        children: [
-          Row(
-            crossAxisAlignment: .start,
-            spacing: 12.w,
-            children: [
-              Container(
-                padding: .symmetric(horizontal: 10.w, vertical: 10.h),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.r),
-                  border: Border.all(
-                    color: ColorStyles.primary50,
-                  ),
-                ),
-                child: Text(
-                  "${item.$1}위",
-                  style: Pretendard.semiBold.set(
-                    size: 13,
-                    color: ColorStyles.white,
-                  ),
+    return Column(
+      spacing: 14.h,
+      crossAxisAlignment: .start,
+      children: [
+        Row(
+          crossAxisAlignment: .start,
+          spacing: 12.w,
+          children: [
+            Container(
+              padding: .symmetric(horizontal: 10.w, vertical: 10.h),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.r),
+                border: Border.all(color: ColorStyles.primary50),
+              ),
+              child: Text(
+                "${item.$1}위",
+                style: Pretendard.semiBold.set(
+                  size: 13,
+                  color: ColorStyles.white,
                 ),
               ),
+            ),
 
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: .start,
-                  spacing: 6.h,
-                  children: [
-                    Text(
-                      item.$2,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Pretendard.medium.set(
-                        size: 16,
-                        color: ColorStyles.white,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: .start,
+                spacing: 6.h,
+                children: [
+                  Text(
+                    item.$2,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Pretendard.medium.set(
+                      size: 16,
+                      color: ColorStyles.white,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        "투표완료 · ",
+                        style: Pretendard.medium.set(
+                          size: 13,
+                          color: ColorStyles.gray30,
+                        ),
                       ),
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          "투표완료 · ",
-                          style: Pretendard.medium.set(
-                            size: 13,
-                            color: ColorStyles.gray30,
-                          ),
+                      Text(
+                        "응원해요",
+                        style: Pretendard.medium.set(
+                          size: 13,
+                          color: ColorStyles.gray30,
                         ),
-                        Text(
-                          "응원해요",
-                          style: Pretendard.medium.set(
-                            size: 13,
-                            color: ColorStyles.gray30,
-                          ),
-                        ),
-                        MPSvgImage(
-                          SvgImage.arrowRight,
-                          size: 16,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                      MPSvgImage(SvgImage.arrowRight, size: 16),
+                    ],
+                  ),
+                ],
               ),
-            ],
-          ),
-
-          VoteProgressBar(
-            item: (
-              item.$3,
-              item.$4,
-              (){
-
-              }
             ),
-          ),
+          ],
+        ),
 
-          Text(
-            "${item.$5}명 투표",
-            style: Pretendard.medium.set(
-              size: 13,
-              color: ColorStyles.gray50,
-            ),
-          ),
-        ],
-      ),
+        VoteProgressBar(item: (item.$3, item.$4, () {})),
+
+        Text(
+          "${item.$5}명 투표",
+          style: Pretendard.medium.set(size: 13, color: ColorStyles.gray50),
+        ),
+      ],
     );
   }
 }

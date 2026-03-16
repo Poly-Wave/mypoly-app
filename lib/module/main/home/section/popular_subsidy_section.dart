@@ -34,52 +34,46 @@ class PopularSubsidySection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          child: Row(
-            children: [
-              Text(
-                '역삼2동', // TODO - 지역명
-                style: Pretendard.semiBold.set(
-                  size: 20,
-                  color: ColorStyles.primary50,
-                ),
+        Row(
+          children: [
+            Text(
+              '역삼2동', // TODO - 지역명
+              style: Pretendard.semiBold.set(
+                size: 20,
+                color: ColorStyles.primary50,
               ),
+            ),
 
-              Text(
-                ' 인기 보조금 혜택',
-                style: Pretendard.semiBold.set(
-                  size: 20,
-                  color: ColorStyles.white,
-                ),
+            Text(
+              ' 인기 보조금 혜택',
+              style: Pretendard.semiBold.set(
+                size: 20,
+                color: ColorStyles.white,
               ),
+            ),
 
-              Spacer(),
+            Spacer(),
 
-              GestureDetector(
-                onTap: () {
-                  // TODO - 더보기 이동
-                },
-                behavior: HitTestBehavior.translucent,
-                child: Row(
-                  children: [
-                    Text(
-                      '더보기',
-                      style: Pretendard.medium.set(
-                        size: 14,
-                        color: ColorStyles.gray30,
-                      ),
+            GestureDetector(
+              onTap: () {
+                // TODO - 더보기 이동
+              },
+              behavior: HitTestBehavior.translucent,
+              child: Row(
+                children: [
+                  Text(
+                    '더보기',
+                    style: Pretendard.medium.set(
+                      size: 14,
+                      color: ColorStyles.gray30,
                     ),
-                    SizedBox(width: 4),
-                    MPSvgImage(
-                      SvgImage.arrowRight,
-                      size: 16,
-                    ),
-                  ],
-                ),
+                  ),
+                  SizedBox(width: 4),
+                  MPSvgImage(SvgImage.arrowRight, size: 16),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
 
         SizedBox(height: 16),
@@ -87,13 +81,13 @@ class PopularSubsidySection extends StatelessWidget {
         HorizontalCarousel(
           height: 200,
           items: dummyPopularSubsidies
-            .map<Widget>((data) => 
-              Padding(
-                padding: EdgeInsets.only(right: 25),
-                child: PopularSubsidyCard(data: data),
+              .map<Widget>(
+                (data) => Padding(
+                  padding: EdgeInsets.only(right: 25),
+                  child: PopularSubsidyCard(data: data),
+                ),
               )
-            )
-            .toList(),
+              .toList(),
         ),
       ],
     );
