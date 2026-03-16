@@ -19,12 +19,34 @@ class MyInfoSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
-                child: Text(
-                  "안녕하세요\n동글동글한너구리님",
-                  style: Pretendard.semiBold.set(
-                    size: 25,
-                    height: 1.3,
-                    color: ColorStyles.white,
+                child: RichText(
+                  text: TextSpan(
+                    style: Pretendard.semiBold.set(
+                      size: 25,
+                      height: 1.3,
+                      color: ColorStyles.white,
+                    ),
+                    children: [
+                      const TextSpan(text: "안녕하세요\n"),
+                      TextSpan(
+                        text: "동글동글한너구리",
+                        style: Pretendard.semiBold
+                            .set(size: 25, height: 1.3)
+                            .copyWith(
+                              foreground: Paint()
+                                ..shader =
+                                    const LinearGradient(
+                                      colors: [
+                                        ColorStyles.primary40,
+                                        ColorStyles.primary10,
+                                      ],
+                                    ).createShader(
+                                      const Rect.fromLTWH(0, 0, 200, 70),
+                                    ),
+                            ),
+                      ),
+                      const TextSpan(text: "님"),
+                    ],
                   ),
                 ),
               ),
