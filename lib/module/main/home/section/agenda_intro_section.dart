@@ -69,13 +69,18 @@ class AgendaIntroSection extends HookConsumerWidget {
         Padding(
           padding: .symmetric(vertical: 12.h),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ("쟁쟁한", true),
-              ("맞춤형", false),
-              ("요즘 핫한", false),
-              ("이번달 인기", false),
-            ].map((item) => AgendaCategoryButton(item: item)).toList(),
+            children:
+                [
+                  ("쟁쟁한", true),
+                  ("맞춤형", false),
+                  ("요즘 핫한", false),
+                  ("이번달 인기", false),
+                ].map((item) {
+                  return Padding(
+                    padding: EdgeInsets.only(right: 8.w),
+                    child: AgendaCategoryButton(item: item),
+                  );
+                }).toList(),
           ),
         ),
 
@@ -105,6 +110,7 @@ class AgendaCategoryButton extends StatelessWidget {
     return GestureDetector(
       onTap: () {},
       child: Container(
+        height: 32.h,
         padding: .symmetric(horizontal: 12.w, vertical: 6.h),
         alignment: Alignment.center,
         decoration: BoxDecoration(
