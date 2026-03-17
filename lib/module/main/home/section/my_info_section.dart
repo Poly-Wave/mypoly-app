@@ -103,25 +103,22 @@ class MyInfoButton extends StatelessWidget {
     return GestureDetector(
       onTap: item.$4,
       child: Container(
-        padding: EdgeInsets.all(1.5),
+        padding: EdgeInsets.all(1),
+        width: 155.w,
         height: 48.h,
         decoration: BoxDecoration(
           borderRadius: .circular(10.r),
           gradient: const LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xFFA5FFEF), Color(0xFF256D86)],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [Color(0xFF2E5C66), Color(0xFF769999)],
           ),
         ),
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 12.h),
+          padding: .symmetric(horizontal: 10.w, vertical: 12.h),
           decoration: BoxDecoration(
+            color: ColorStyles.gray70,
             borderRadius: .circular(10.r),
-            gradient: const LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Color(0xFFA5FFEF), Color(0xFF256D86)],
-            ),
           ),
           child: Row(
             mainAxisAlignment: .center,
@@ -131,7 +128,7 @@ class MyInfoButton extends StatelessWidget {
               Text(
                 item.$1,
                 style: Pretendard.semiBold.set(
-                  size: 14,
+                  size: 16,
                   color: ColorStyles.white,
                 ),
               ),

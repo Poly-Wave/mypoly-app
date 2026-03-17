@@ -26,6 +26,9 @@ class MainHomeView extends HookConsumerWidget {
                 MPHeight(50),
 
                 AgendaIntroSection(), // 안건 소개
+
+                MPHeight(50),
+
                 PopularSubsidySection(), // 인기 보조금
               ],
             ),

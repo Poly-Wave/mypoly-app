@@ -85,14 +85,31 @@ class AgendaIntroSection extends HookConsumerWidget {
         ),
 
         Padding(
-          padding: .only(top: 12.h),
+          padding: EdgeInsets.only(top: 12.h),
           child: Column(
-            children: agendaItems.value.map((item) {
-              return Padding(
-                padding: EdgeInsets.only(bottom: 30),
-                child: AgendaIntroItem(item: item),
+            children: List.generate(agendaItems.value.length, (index) {
+              final item = agendaItems.value[index];
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (index != 0) SizedBox(height: 24.h),
+
+                  if (index != 0)
+                    Center(
+                      child: Container(
+                        width: 320.w,
+                        height: 1,
+                        color: ColorStyles.divider,
+                      ),
+                    ),
+
+                  if (index != 0) SizedBox(height: 24.h),
+
+                  AgendaIntroItem(item: item),
+                ],
               );
-            }).toList(),
+            }),
           ),
         ),
       ],

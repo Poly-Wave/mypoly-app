@@ -19,7 +19,6 @@ class AgendaIntroItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      spacing: 14.h,
       crossAxisAlignment: .start,
       children: [
         Row(
@@ -27,9 +26,15 @@ class AgendaIntroItem extends StatelessWidget {
           spacing: 12.w,
           children: [
             Container(
-              padding: .symmetric(horizontal: 10.w, vertical: 10.h),
+              width: 42.w,
+              height: 42.w,
+              padding: const EdgeInsets.all(1),
+              alignment: .center,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8.r),
+                gradient: const LinearGradient(
+                  colors: [Color(0xFF2E5C66), Color(0xFF769999)],
+                ),
                 border: Border.all(color: ColorStyles.primary50),
               ),
               child: Text(
@@ -37,6 +42,7 @@ class AgendaIntroItem extends StatelessWidget {
                 style: Pretendard.semiBold.set(
                   size: 13,
                   color: ColorStyles.white,
+                  height: 1.0,
                 ),
               ),
             ),
@@ -80,7 +86,11 @@ class AgendaIntroItem extends StatelessWidget {
           ],
         ),
 
+        SizedBox(height: 16.h),
+
         VoteProgressBar(item: (item.$3, item.$4, () {})),
+
+        SizedBox(height: 6.h),
 
         Text(
           "${item.$5}명 투표",
