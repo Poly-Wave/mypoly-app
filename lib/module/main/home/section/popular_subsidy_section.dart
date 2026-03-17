@@ -80,14 +80,16 @@ class PopularSubsidySection extends StatelessWidget {
 
         HorizontalCarousel(
           height: 200,
-          items: dummyPopularSubsidies
-              .map<Widget>(
-                (data) => Padding(
-                  padding: EdgeInsets.only(right: 25),
-                  child: PopularSubsidyCard(data: data),
-                ),
-              )
-              .toList(),
+          items: List.generate(dummyPopularSubsidies.length, (index) {
+            final data = dummyPopularSubsidies[index];
+
+            return Padding(
+              padding: EdgeInsets.only(
+                right: index == dummyPopularSubsidies.length - 1 ? 0 : 20,
+              ),
+              child: PopularSubsidyCard(data: data),
+            );
+          }),
         ),
       ],
     );

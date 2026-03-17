@@ -6,13 +6,15 @@ class HorizontalCarousel extends StatefulWidget {
   final double height;
   final double viewportFraction;
   final bool showIndicator;
+  final EdgeInsetsGeometry padding;
 
   const HorizontalCarousel({
     super.key,
     required this.items,
     required this.height,
-    this.viewportFraction = 0.85,
+    this.viewportFraction = 1.0,
     this.showIndicator = true,
+    this.padding = EdgeInsets.zero,
   });
 
   @override
@@ -41,16 +43,19 @@ class HorizontalCarouselState extends State<HorizontalCarousel> {
       children: [
         SizedBox(
           height: widget.height,
-          child: PageView.builder(
-            controller: controller,
-            padEnds: false,
-            itemCount: widget.items.length,
-            onPageChanged: (index) {
-              setState(() => currentIndex = index);
-            },
-            itemBuilder: (context, index) {
-              return widget.items[index];
-            },
+          child: Padding(
+            padding: widget.padding,
+            child: PageView.builder(
+              controller: controller,
+              padEnds: false,
+              itemCount: widget.items.length,
+              onPageChanged: (index) {
+                setState(() => currentIndex = index);
+              },
+              itemBuilder: (context, index) {
+                return widget.items[index];
+              },
+            ),
           ),
         ),
 
