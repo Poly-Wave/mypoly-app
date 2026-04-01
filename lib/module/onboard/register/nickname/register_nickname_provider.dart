@@ -7,6 +7,7 @@ import 'package:mypoly/enum/social.dart';
 import 'package:mypoly/generate/users/model/terms_agreement_request.dart';
 import 'package:mypoly/provider/app_provider.dart';
 import 'package:mypoly/provider/router_provider.dart';
+import 'package:mypoly/util/event.dart';
 import 'package:mypoly/util/extension.dart';
 import 'package:mypoly/util/valid.dart';
 import 'package:mypoly/widget/index.dart';
@@ -17,6 +18,8 @@ part 'register_nickname_provider.g.dart';
 
 @riverpod
 class Nickname extends _$Nickname {
+  bool isRecommended = false;
+
   final controller = TextEditingController();
   final focusNode = FocusNode();
 
@@ -31,6 +34,7 @@ class Nickname extends _$Nickname {
   }
 
   void onChanged(String value) {
+    isRecommended = false;
     if (state != value) {
       ref.read(nicknameCheckProvider.notifier).onReset();
     }
@@ -38,6 +42,7 @@ class Nickname extends _$Nickname {
   }
 
   void onReset() {
+    isRecommended = false;
     ref.read(nicknameCheckProvider.notifier).onReset();
     controller.text = "";
     state = "";
@@ -50,6 +55,8 @@ class Nickname extends _$Nickname {
 
     try {
       final nickname = await ref.read(userServiceProvider).randomeNickname();
+
+      isRecommended = true;
 
       if (!context.mounted) return;
       context.loaderOverlay.hide();
@@ -162,6 +169,7 @@ Future<void> onNext(
   context.unFocus();
 
   final nickname = ref.read(nicknameProvider);
+  final isRecommended = ref.read(nicknameProvider.notifier).isRecommended;
 
   context.loaderOverlay.show();
 
@@ -175,6 +183,12 @@ Future<void> onNext(
           nickname: nickname,
           terms: terms,
         );
+
+    await Event.send(name: "signup_completed");
+    await Event.send(
+      name: "nickname_set_next_btn_click",
+      parameters: {"input_type": isRecommended ? "recommended" : "manual"},
+    );
 
     if (!context.mounted) return;
     context.loaderOverlay.hide();

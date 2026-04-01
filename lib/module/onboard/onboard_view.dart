@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mypoly/asset/index.dart';
 import 'package:mypoly/module/onboard/onboard_provider.dart';
 import 'package:mypoly/style/index.dart';
+import 'package:mypoly/util/event.dart';
 import 'package:mypoly/widget/index.dart';
 
 @RoutePage()
@@ -18,6 +19,8 @@ class OnboardView extends HookConsumerWidget {
     useEffect(() {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         FlutterNativeSplash.remove();
+
+        await Event.send(name: "login_pv");
       });
 
       return null;

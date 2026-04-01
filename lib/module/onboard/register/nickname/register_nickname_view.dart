@@ -9,6 +9,7 @@ import 'package:mypoly/enum/social.dart';
 import 'package:mypoly/generate/users/model/terms_agreement_request.dart';
 import 'package:mypoly/module/onboard/register/nickname/register_nickname_provider.dart';
 import 'package:mypoly/style/index.dart';
+import 'package:mypoly/util/event.dart';
 import 'package:mypoly/util/extension.dart';
 import 'package:mypoly/widget/index.dart';
 import 'package:mypoly/widget/modal/index.dart';
@@ -35,6 +36,12 @@ class RegisterNicknameView extends HookConsumerWidget {
 
     final isPop = useState(false);
 
+    useEffect(() {
+      Event.send(name: "nickname_set_pv");
+
+      return null;
+    }, []);
+
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
@@ -42,11 +49,17 @@ class RegisterNicknameView extends HookConsumerWidget {
           return;
         }
 
+        Event.send(
+          name: "exit_popup_pv",
+          parameters: {"page_name": "nickname"},
+        );
+
         showMPConfirmModal(
           context,
           title: "지금 나가면 처음부터 다시해야 해요.\n그만하고 나가시겠어요?",
           okText: "그만하기",
           onOkTap: () {
+            Event.send(name: "exit_popup_exit_btn_click");
             isPop.value = true;
             context.pop();
             context.pop();

@@ -11,6 +11,7 @@ import 'package:mypoly/generate/users/model/onboarding_status_response.dart';
 import 'package:mypoly/generate/users/model/random_nickname_response.dart';
 import 'package:mypoly/generate/users/model/update_onboarding_status_request.dart';
 import 'package:mypoly/generate/users/model/user_me_response.dart';
+import 'package:mypoly/generate/users/model/user_update_basic_profile_request.dart';
 import 'package:mypoly/generate/users/model/user_update_profile_request.dart';
 
 part 'user_api.g.dart';
@@ -31,6 +32,15 @@ abstract class UserApi {
     @Query('nickname') required String nickname,
     CancelToken? cancelToken,
   });
+
+  /// [DEV/LOCAL] 내 계정 탈퇴
+  /// 개발/테스트 환경에서만 임시로 사용하는 회원 탈퇴 API입니다. - &#x60;user.dev-delete.enabled&#x3D;true&#x60; 일 때만 활성화됩니다. - JWT로 로그인한 본인 계정을 삭제합니다. - Swagger 우측 상단 Authorize에 &#x60;Bearer {jwt}&#x60; 입력 후 호출하세요.  주의 - user-service 내부의 사용자 데이터만 삭제합니다. - 다른 서비스(bill-service 등)에 남아 있는 userId 연관 데이터는 별도 정리가 필요할 수 있습니다.
+  ///
+  /// Parameters:
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  ///
+  @DELETE('/dev-users/me')
+  Future<void> deleteMe({CancelToken? cancelToken});
 
   /// 내 정보 조회
   /// 로그인한 사용자의 정보를 조회합니다.  포함 정보 - 온보딩 상태 - 닉네임 - 프로필(성별/생년월일/프로필 이미지/주소)  인증 - JWT 인증이 필요합니다. - Swagger 우측 상단 Authorize에 &#x60;Bearer {jwt}&#x60; 입력 후 호출하세요.
@@ -77,6 +87,21 @@ abstract class UserApi {
     @Query('keyword') required String keyword,
     @Query('currentPage') String? currentPage = '1',
     @Query('countPerPage') String? countPerPage = '10',
+    CancelToken? cancelToken,
+  });
+
+  /// 내 기본 정보 수정
+  /// 로그인한 사용자의 기본 정보를 수정합니다. - 수정 항목: 별명, 성별, 생년월일, 거주지역(시도/시군구/읍면동) - 온보딩이 완료된(COMPLETE) 사용자만 호출할 수 있습니다. - 닉네임 변경 시 금칙어/중복 검사가 적용됩니다. - 온보딩 상태는 변경되지 않습니다.  인증 - JWT 인증이 필요합니다. - Swagger 우측 상단 Authorize에 &#x60;Bearer {jwt}&#x60; 입력 후 호출하세요.
+  ///
+  /// Parameters:
+  /// * [userUpdateBasicProfileRequest] - 수정할 기본 정보
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  ///
+  @PATCH('/me/basic-profile')
+  @Headers(<String, dynamic>{'Content-Type': 'application/json'})
+  Future<void> updateBasicProfile({
+    @Body()
+    required UserUpdateBasicProfileRequest userUpdateBasicProfileRequest,
     CancelToken? cancelToken,
   });
 

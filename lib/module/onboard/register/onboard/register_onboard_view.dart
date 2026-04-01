@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:mypoly/data/provider/service_provider.dart';
 import 'package:mypoly/provider/router_provider.dart';
+import 'package:mypoly/util/event.dart';
 import 'package:mypoly/widget/index.dart';
 import 'register_onboard_intro_view.dart';
 import 'register_onboard_carousel_view.dart';
@@ -21,6 +22,8 @@ class RegisterOnboardView extends HookConsumerWidget {
     useEffect(() {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         FlutterNativeSplash.remove();
+
+        Event.send(name: "onboarding_1_pv");
       });
 
       return null;
@@ -64,11 +67,24 @@ class RegisterOnboardView extends HookConsumerWidget {
             child: Padding(
               padding: .symmetric(horizontal: 20.w),
               child: isIntro.value
-                  ? MPButton("시작하기", onTap: () => isIntro.value = false)
+                  ? MPButton(
+                      "시작하기",
+                      onTap: () {
+                        Event.send(name: "onboarding_1_start_btn_click");
+                        Event.send(name: "onboarding_2-1_pv");
+                        isIntro.value = false;
+                      },
+                    )
                   : MPButton(
                       "다음",
                       onTap: () async {
+                        Event.send(
+                          name: "onboarding_2-${step + 1}_next_btn_click",
+                        );
+
                         if (step != 2) {
+                          Event.send(name: "onboarding_2-${step + 2}_pv");
+
                           pageController.nextPage(
                             duration: const Duration(milliseconds: 200),
                             curve: Curves.easeInOut,

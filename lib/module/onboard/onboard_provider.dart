@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -15,6 +16,7 @@ import 'package:mypoly/generate/users/model/terms_response.dart';
 import 'package:mypoly/provider/app_provider.dart';
 import 'package:mypoly/provider/router_provider.dart';
 import 'package:mypoly/style/index.dart';
+import 'package:mypoly/util/event.dart';
 import 'package:mypoly/widget/index.dart';
 import 'package:mypoly/widget/modal/index.dart';
 import 'package:collection/collection.dart';
@@ -31,6 +33,11 @@ Future<void> onLogin(WidgetRef ref, SocialProvider provider) async {
   final context = ref.context;
 
   context.loaderOverlay.show();
+
+  await Event.send(
+    name: "login_btn_click",
+    parameters: {"platform": provider.name},
+  );
 
   late SocialTokenType tokenType;
   late String token;
@@ -96,6 +103,7 @@ Future<void> onLogin(WidgetRef ref, SocialProvider provider) async {
           showLoginError(context, provider);
         }
       } else {
+        if (!context.mounted) return;
         context.loaderOverlay.hide();
         showLoginError(context, provider);
       }
@@ -135,6 +143,8 @@ Future<void> onLogin(WidgetRef ref, SocialProvider provider) async {
         .read(appUserProvider.notifier)
         .signIn(provider: provider, tokenType: tokenType, token: token);
 
+    await Event.send(name: "login_completed");
+
     if (!context.mounted) return;
     context.loaderOverlay.hide();
 
@@ -171,12 +181,12 @@ Future<void> onLogin(WidgetRef ref, SocialProvider provider) async {
   }
 }
 
-void showTerm(
+Future<void> showTerm(
   WidgetRef ref, {
   required SocialProvider provider,
   required SocialTokenType tokenType,
   required String token,
-}) {
+}) async {
   final context = ref.context;
 
   final appTerms = ref.read(appTermsProvider);
@@ -189,6 +199,12 @@ void showTerm(
         padding: .symmetric(horizontal: 20.w),
         child: HookBuilder(
           builder: (_) {
+            useEffect(() {
+              Event.send(name: "terms_pv");
+
+              return null;
+            }, []);
+
             final terms = useState(
               appTerms.map((term) => (false, term)).toList(),
             );
@@ -310,7 +326,9 @@ void showTerm(
       ),
       MPHeight(20),
     ],
-  );
+  ).then((_) {
+    Event.send(name: "terms_close_btn_click");
+  });
 }
 
 class TermItem extends StatelessWidget {
