@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mypoly/style/index.dart';
-import 'package:mypoly/module/main/home/model/popular_subsidy_model.dart';
+import 'package:mypoly/module/main/home/model/popular_subsidy_item.dart';
 
 class PopularSubsidyCard extends StatelessWidget {
   final PopularSubsidy data;

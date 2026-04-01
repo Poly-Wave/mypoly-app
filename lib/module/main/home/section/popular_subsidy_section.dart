@@ -3,7 +3,7 @@ import 'package:mypoly/asset/index.dart';
 import 'package:mypoly/style/index.dart';
 import 'package:mypoly/widget/index.dart';
 import 'package:mypoly/module/widget/carousel/horizontal_carousel.dart';
-import 'package:mypoly/module/main/home/model/popular_subsidy_model.dart';
+import 'package:mypoly/module/main/home/model/popular_subsidy_item.dart';
 import 'package:mypoly/module/main/home/widget/popular_subsidy_card.dart';
 
 class PopularSubsidySection extends StatelessWidget {
