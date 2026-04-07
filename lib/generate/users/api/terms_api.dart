@@ -15,7 +15,7 @@ abstract class TermsApi {
   factory TermsApi(Dio dio, {String? baseUrl}) = _TermsApi;
 
   /// 최신 버전 약관 목록 조회
-  /// 최신 버전 기준으로 약관 메타데이터 목록을 조회합니다.  - 본문(content)은 포함하지 않습니다. - 본문이 필요하면 &#x60;GET /terms/{termsId}/html&#x60;을 사용하세요.
+  /// 최신 버전 기준으로 약관 메타데이터 목록을 조회합니다.  - 본문(content)은 포함하지 않습니다. - &#x60;isMarketing&#x3D;true&#x60; 이면 marketing_agreed 대상 약관입니다. - 본문이 필요하면 &#x60;GET /terms/{termsId}/html&#x60;을 사용하세요.
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -37,7 +37,7 @@ abstract class TermsApi {
   });
 
   /// 약관 메타데이터 단건 조회
-  /// 약관 ID로 약관의 메타데이터를 조회합니다.  - 본문(content)은 포함하지 않습니다. - 본문이 필요하면 &#x60;GET /terms/{termsId}/html&#x60;을 사용하세요.
+  /// 약관 ID로 약관의 메타데이터를 조회합니다.  - 본문(content)은 포함하지 않습니다. - &#x60;isMarketing&#x3D;true&#x60; 이면 marketing_agreed 대상 약관입니다. - 본문이 필요하면 &#x60;GET /terms/{termsId}/html&#x60;을 사용하세요.
   ///
   /// Parameters:
   /// * [termsId]
