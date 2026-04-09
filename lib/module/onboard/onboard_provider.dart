@@ -298,6 +298,17 @@ Future<void> showTerm(
                         "동의",
                         enabled: onNextEnabled,
                         onTap: () {
+                          Event.send(
+                            name: "terms_agree_btn_click",
+                            parameters: {
+                              "marketing_agreed":
+                                  terms.value.firstWhereOrNull(
+                                    (term) => term.$1 && term.$2.isMarketing,
+                                  ) !=
+                                  null,
+                            },
+                          );
+
                           context.pop();
                           context.pushRoute(
                             RegisterNicknameRoute(

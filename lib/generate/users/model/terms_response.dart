@@ -26,6 +26,9 @@ abstract class TermsResponse with _$TermsResponse {
     /// 필수 여부
     @JsonKey(name: r'required') required bool required_,
 
+    /// 마케팅 약관 여부 (marketing_agreed 매핑용)
+    @JsonKey(name: r'isMarketing') required bool isMarketing,
+
     /// 적용 시작일
     @JsonKey(name: r'effectiveFrom') required DateTime effectiveFrom,
   }) = _TermsResponse;
