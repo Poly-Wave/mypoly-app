@@ -26,6 +26,7 @@ import 'package:mypoly/module/onboard/register/complete/register_complete_view.d
 import 'package:mypoly/module/main/main_view.dart';
 
 // Home
+import 'package:mypoly/module/main/home/main_home_view.dart';
 import 'package:mypoly/module/main/home/notification/notification_view.dart';
 
 import 'package:mypoly/module/main/home/my_info/my_info_view.dart';
@@ -37,6 +38,7 @@ import 'package:mypoly/module/main/home/my_info/notice/detail/notice_detail_view
 import 'package:mypoly/module/main/home/my_info/oss/oss_view.dart';
 
 // Agenda
+import 'package:mypoly/module/main/agenda/main_agenda_view.dart';
 
 // Subsidy
 
