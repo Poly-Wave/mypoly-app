@@ -1,12 +1,25 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mypoly/module/main/home/section/agenda_intro_section.dart';
-import 'package:mypoly/module/main/home/section/my_info_section.dart';
-import 'package:mypoly/module/main/home/section/notice_section.dart';
-import 'package:mypoly/module/main/home/section/popular_subsidy_section.dart';
-import 'package:mypoly/module/widget/common/horizontal_padding.dart';
 import 'package:mypoly/widget/index.dart';
+import 'package:mypoly/asset/index.dart';
+import 'package:mypoly/style/index.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mypoly/provider/router_provider.dart';
+import 'package:mypoly/module/widget/common/horizontal_padding.dart';
+import 'package:mypoly/module/main/home/model/popular_subsidy_item.dart';
+import 'package:mypoly/module/main/home/widget/popular_subsidy_card.dart';
+import 'package:mypoly/module/widget/carousel/horizontal_carousel.dart';
+import 'package:mypoly/generate/bills/api/agenda_api.dart';
+import 'package:mypoly/generate/bills/model/pageable.dart';
+import 'package:mypoly/data/provider/dio_provider.dart';
+import 'package:mypoly/provider/app_provider.dart';
+import 'package:mypoly/module/main/home/widget/agenda_intro_item.dart';
+import 'package:mypoly/module/main/home/widget/my_info_button.dart';
+import 'package:mypoly/module/main/home/widget/agenda_category_button.dart';
 
+@RoutePage()
 class MainHomeView extends HookConsumerWidget {
   const MainHomeView({super.key});
 
@@ -29,6 +42,370 @@ class MainHomeView extends HookConsumerWidget {
               PopularSubsidySection(), // 인기 보조금
             ],
           ),
+        ),
+      ],
+    );
+  }
+}
+
+// 공지사항
+class NoticeSection extends StatelessWidget {
+  const NoticeSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 48.h,
+      decoration: BoxDecoration(color: ColorStyles.gray80),
+      child: Padding(
+        padding: .symmetric(horizontal: 20.w),
+        child: Row(
+          children: [
+            MPSvgImage(SvgImage.noticeSectionLogo, size: 24),
+
+            SizedBox(width: 10.w),
+
+            Expanded(
+              child: Text(
+                '북마크한 보조금 신청기간입니다.',
+                style: Pretendard.medium.set(
+                  size: 15,
+                  color: ColorStyles.white,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+
+            SizedBox(width: 10.w),
+
+            GestureDetector(
+              onTap: () {
+                // 공지 상세 이동
+              },
+              child: MPSvgImage(SvgImage.arrowRight, size: 20),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// 내 정보
+class MyInfoSection extends StatelessWidget {
+  const MyInfoSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: .symmetric(vertical: 20.h),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: RichText(
+                  text: TextSpan(
+                    style: Pretendard.semiBold.set(
+                      size: 25,
+                      height: 1.3,
+                      color: ColorStyles.white,
+                    ),
+                    children: [
+                      const TextSpan(text: "안녕하세요\n"),
+                      TextSpan(
+                        text: "동글동글한너구리",
+                        style: Pretendard.semiBold
+                            .set(size: 25, height: 1.3)
+                            .copyWith(
+                              foreground: Paint()
+                                ..shader =
+                                    const LinearGradient(
+                                      colors: [
+                                        ColorStyles.primary40,
+                                        ColorStyles.primary10,
+                                      ],
+                                    ).createShader(
+                                      const Rect.fromLTWH(0, 0, 200, 70),
+                                    ),
+                            ),
+                      ),
+                      const TextSpan(text: "님"),
+                    ],
+                  ),
+                ),
+              ),
+
+              GestureDetector(
+                onTap: () => context.pushRoute(MyInfoRoute()),
+                child: Container(
+                  padding: .symmetric(horizontal: 10.w, vertical: 6.h),
+                  decoration: BoxDecoration(
+                    color: ColorStyles.gray70,
+                    borderRadius: .circular(8.r),
+                    border: Border.all(color: ColorStyles.gray60),
+                  ),
+                  child: Text(
+                    "내정보 보기",
+                    style: Pretendard.medium.set(
+                      size: 13,
+                      color: ColorStyles.white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        Row(
+          children: [
+            Expanded(
+              child: MyInfoButton(
+                item: ("보관함", SvgImage.homeStore, ColorStyles.white, () {}),
+              ),
+            ),
+            SizedBox(width: 10.w),
+            Expanded(
+              child: MyInfoButton(
+                item: ("참여투표", SvgImage.homeVote, ColorStyles.white, () {}),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+// 안건 소개
+class AgendaIntroSection extends HookConsumerWidget {
+  const AgendaIntroSection({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final agendaItems =
+        useState<List<(int, String, int, int, int, VoidCallback)>>([]);
+
+    final selectedTab = useState("HOT_DEBATE");
+
+    useEffect(() {
+      // 안건 리스트 요청(서버)
+
+      // agendaItems.value = [
+      //   (1, "소득세법 일부개정법률안(대안)(기획재정위원장)", 90, 10, 500, () {}),
+      //   (2, "소득세법 일부개정법률안(대안)(기획재정위원장)", 99, 1, 500, () {}),
+      // ];
+      Future(() async {
+        try {
+          final dio = ref.read(dioProvider);
+          final api = AgendaApi(dio, baseUrl: ref.read(envProvider).baseApiUrl);
+
+          final result = await api.getAgendasByTab(
+            tabCode: selectedTab.value,
+            pageable: Pageable(page: 0, size: 10),
+          );
+
+          agendaItems.value = result.map((e) {
+            final agree = ((e.agreeRatio ?? 0) * 100).toInt();
+            final disagree = ((e.disagreeRatio ?? 0) * 100).toInt();
+
+            return (
+              e.billId ?? 0,
+              e.officialTitle ?? '',
+              agree,
+              disagree,
+              e.totalVoteCount ?? 0,
+              () {},
+            );
+          }).toList();
+        } catch (e) {
+          debugPrint('안건 조회 실패: $e');
+        }
+      });
+
+      return null;
+    }, [selectedTab.value]);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Padding(
+          padding: .symmetric(vertical: 10.h),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  "다양한 안건 소개",
+                  style: Pretendard.semiBold.set(
+                    size: 20,
+                    color: ColorStyles.gray10,
+                  ),
+                ),
+              ),
+
+              GestureDetector(
+                onTap: () {
+                  // 더보기 기능
+                },
+                behavior: HitTestBehavior.translucent,
+                child: Row(
+                  spacing: 4.w,
+                  children: [
+                    Text(
+                      "더보기",
+                      style: Pretendard.medium.set(
+                        size: 14,
+                        color: ColorStyles.gray30,
+                      ),
+                    ),
+                    MPSvgImage(SvgImage.arrowRight, size: 16),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        Padding(
+          padding: .symmetric(vertical: 12.h),
+          child: Row(
+            children:
+                [
+                  ("쟁쟁한", "HOT_DEBATE"),
+                  ("맞춤형", "PERSONALIZED"),
+                  ("요즘 핫한", "TRENDING"),
+                ].map((item) {
+                  final isSelected = selectedTab.value == item.$2;
+
+                  return Padding(
+                    padding: EdgeInsets.only(right: 8.w),
+                    child: AgendaCategoryButton(item: (item.$1, isSelected)),
+                  );
+                }).toList(),
+          ),
+        ),
+
+        Padding(
+          padding: EdgeInsets.only(top: 12.h),
+          child: Column(
+            children: List.generate(agendaItems.value.length, (index) {
+              final item = agendaItems.value[index];
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (index != 0) SizedBox(height: 24.h),
+
+                  if (index != 0)
+                    Center(
+                      child: Container(
+                        width: 320.w,
+                        height: 1,
+                        color: ColorStyles.divider,
+                      ),
+                    ),
+
+                  if (index != 0) SizedBox(height: 24.h),
+
+                  AgendaIntroItem(item: item),
+                ],
+              );
+            }),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// 인기 보조금
+class PopularSubsidySection extends StatelessWidget {
+  const PopularSubsidySection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final List<PopularSubsidy> dummyPopularSubsidies = [
+      PopularSubsidy(
+        status: '예정',
+        applyPeriod: '접수기간별 상이',
+        remainingPeriod: '30일 전',
+        title: '근로 장려금',
+        description: '근로 중인 20대라면?\n최대 수백만 원, 정부가 지원합니다.',
+        subsidyAmount: '165',
+      ),
+
+      PopularSubsidy(
+        status: '예정',
+        applyPeriod: '접수기간별 상이',
+        remainingPeriod: '30일 전',
+        title: '근로 장려금',
+        description: '근로 중인 20대라면?\n최대 수백만 원, 정부가 지원합니다.',
+        subsidyAmount: '165',
+      ),
+    ];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
+          children: [
+            Text(
+              '역삼2동', // TODO - 지역명
+              style: Pretendard.semiBold.set(
+                size: 20,
+                color: ColorStyles.primary50,
+              ),
+            ),
+
+            Text(
+              ' 인기 보조금 혜택',
+              style: Pretendard.semiBold.set(
+                size: 20,
+                color: ColorStyles.white,
+              ),
+            ),
+
+            Spacer(),
+
+            GestureDetector(
+              onTap: () {
+                // TODO - 더보기 이동
+              },
+              behavior: HitTestBehavior.translucent,
+              child: Row(
+                children: [
+                  Text(
+                    '더보기',
+                    style: Pretendard.medium.set(
+                      size: 14,
+                      color: ColorStyles.gray30,
+                    ),
+                  ),
+                  SizedBox(width: 4),
+                  MPSvgImage(SvgImage.arrowRight, size: 16),
+                ],
+              ),
+            ),
+          ],
+        ),
+
+        SizedBox(height: 16),
+
+        HorizontalCarousel(
+          height: 200,
+          items: List.generate(dummyPopularSubsidies.length, (index) {
+            final data = dummyPopularSubsidies[index];
+
+            return Padding(
+              padding: EdgeInsets.only(
+                right: index == dummyPopularSubsidies.length - 1 ? 0 : 20,
+              ),
+              child: PopularSubsidyCard(data: data),
+            );
+          }),
         ),
       ],
     );
