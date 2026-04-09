@@ -35,7 +35,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(title, style: TextStyle(fontSize: 24)),
+            Text(title, style: Pretendard.semiBold.set(size: 24)),
             Row(
               children: [
                 SizedBox(
