@@ -25,25 +25,28 @@ class MainHomeView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ListView(
-      children: [
-        NoticeSection(), // 공지사항
-        HorizontalPadding(
-          child: Column(
-            children: [
-              MyInfoSection(), // 내 정보
+    return Container(
+      color: ColorStyles.black,
+      child: ListView(
+        children: [
+          NoticeSection(), // 공지사항
+          HorizontalPadding(
+            child: Column(
+              children: [
+                MyInfoSection(), // 내 정보
 
-              MPHeight(50),
+                MPHeight(50),
 
-              AgendaIntroSection(), // 안건 소개
+                AgendaIntroSection(), // 안건 소개
 
-              MPHeight(50),
+                MPHeight(50),
 
-              PopularSubsidySection(), // 인기 보조금
-            ],
+                PopularSubsidySection(), // 인기 보조금
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -56,7 +59,7 @@ class NoticeSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 48.h,
-      decoration: BoxDecoration(color: ColorStyles.gray80),
+      decoration: BoxDecoration(color: ColorStyles.divider),
       child: Padding(
         padding: .symmetric(horizontal: 20.w),
         child: Row(
@@ -201,7 +204,10 @@ class AgendaIntroSection extends HookConsumerWidget {
       Future(() async {
         try {
           final dio = ref.read(dioProvider);
-          final api = AgendaApi(dio, baseUrl: ref.read(envProvider).baseApiUrl);
+          final api = AgendaApi(
+            dio,
+            baseUrl: ref.read(envProvider).buillsApiUrl,
+          );
 
           final result = await api.getAgendasByTab(
             tabCode: selectedTab.value,
