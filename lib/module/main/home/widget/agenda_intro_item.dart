@@ -23,16 +23,14 @@ class AgendaIntroItem extends StatelessWidget {
       children: [
         Row(
           crossAxisAlignment: .start,
-          spacing: 12.w,
           children: [
             Container(
               width: 42.w,
               height: 42.w,
-              padding: const EdgeInsets.all(1),
               alignment: .center,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8.r),
-                gradient: const LinearGradient(
+                gradient: LinearGradient(
                   colors: [Color(0xFF2E5C66), Color(0xFF769999)],
                 ),
                 border: Border.all(color: ColorStyles.primary50),
@@ -47,31 +45,27 @@ class AgendaIntroItem extends StatelessWidget {
               ),
             ),
 
+            SizedBox(width: 12.w),
+
             Expanded(
               child: Column(
                 crossAxisAlignment: .start,
-                spacing: 6.h,
                 children: [
                   Text(
                     item.$2,
-                    maxLines: 1,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: Pretendard.medium.set(
                       size: 16,
                       color: ColorStyles.white,
+                      height: 1.45,
                     ),
                   ),
+
                   Row(
                     children: [
                       Text(
-                        "투표완료 · ",
-                        style: Pretendard.medium.set(
-                          size: 13,
-                          color: ColorStyles.gray30,
-                        ),
-                      ),
-                      Text(
-                        "응원해요",
+                        "투표 완료",
                         style: Pretendard.medium.set(
                           size: 13,
                           color: ColorStyles.gray30,
@@ -90,11 +84,16 @@ class AgendaIntroItem extends StatelessWidget {
 
         VoteProgressBar(item: (item.$3, item.$4, () {})),
 
-        SizedBox(height: 6.h),
+        SizedBox(height: 8.h),
 
-        Text(
-          "${item.$5}명 투표",
-          style: Pretendard.medium.set(size: 13, color: ColorStyles.gray50),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Text(
+              "${item.$5}명 투표",
+              style: Pretendard.medium.set(size: 13, color: ColorStyles.gray40),
+            ),
+          ],
         ),
       ],
     );
