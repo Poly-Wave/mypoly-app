@@ -15,80 +15,58 @@ class VoteProgressBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final int agree = item.$1;
+    final int disagree = item.$2;
+
     final double ratio = (item.$1 / 100).clamp(0.0, 1.0);
 
-    return SizedBox(
-      height: 40,
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          final double width = constraints.maxWidth * ratio;
-
-          return Stack(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: ColorStyles.white,
-                  borderRadius: BorderRadius.circular(18),
-                ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: .spaceBetween,
+          children: [
+            Text(
+              '응원해요 ${agree}%',
+              style: Pretendard.medium.set(
+                size: 13,
+                color: ColorStyles.primary50,
               ),
+            ),
+            Text(
+              '아쉬워요${disagree}%',
+              style: Pretendard.medium.set(size: 13, color: ColorStyles.gray10),
+            ),
+          ],
+        ),
 
-              ClipRRect(
-                borderRadius: BorderRadius.circular(18),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: SizedBox(
-                    width: width,
-                    height: double.infinity,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                          colors: [
-                            Color(0xFF5AFEFF),
-                            Color(0xFFA5FEF0),
-                          ],
-                        ),
-                        borderRadius: BorderRadius.horizontal(
-                          left: Radius.circular(18),
-                          right: ratio == 1
-                              ? Radius.circular(18)
-                              : Radius.zero,
-                        ),
-                      ),
-                    ),
+        SizedBox(height: 8),
+
+        LayoutBuilder(
+          builder: (context, constraints) {
+            return Stack(
+              children: [
+                Container(
+                  height: 8,
+                  decoration: BoxDecoration(
+                    color: ColorStyles.white,
+                    borderRadius: BorderRadius.circular(4),
                   ),
                 ),
-              ),
 
-              Center(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 14),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '응원해요 ${item.$1}%',
-                        style: Pretendard.semiBold.set(
-                          size: 14,
-                          color: ColorStyles.black,
-                        ),
-                      ),
-                      Text(
-                        '아쉬워요 ${item.$2}%',
-                        style: Pretendard.semiBold.set(
-                          size: 14,
-                          color: ColorStyles.black,
-                        ),
-                      ),
-                    ],
+                Container(
+                  width: (229 * ratio),
+                  height: 8,
+                  decoration: BoxDecoration(
+                    color: ColorStyles.primary40,
+                    borderRadius: BorderRadius.circular(4),
                   ),
                 ),
-              ),
-            ],
-          );
-        },
-      ),
+              ],
+            );
+          },
+        ),
+      ],
     );
   }
 }
