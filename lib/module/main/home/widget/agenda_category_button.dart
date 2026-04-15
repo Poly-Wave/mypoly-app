@@ -9,27 +9,24 @@ class AgendaCategoryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {},
-      child: Container(
-        height: 32.h,
-        padding: .symmetric(horizontal: 12.w, vertical: 6.h),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: Colors.transparent,
-          borderRadius: .circular(99.r),
-          border: Border.all(
-            color: item.$2 ? ColorStyles.primary50 : ColorStyles.gray60,
-          ),
+    return Container(
+      height: 32.h,
+      padding: .symmetric(horizontal: 12.w, vertical: 6.h),
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: Colors.transparent,
+        borderRadius: .circular(99.r),
+        border: Border.all(
+          color: item.$2 ? ColorStyles.primary50 : ColorStyles.gray60,
         ),
-        child: Text(
-          item.$1,
-          maxLines: 1,
-          softWrap: false,
-          style: Pretendard.medium.set(
-            size: 13,
-            color: item.$2 ? ColorStyles.primary60 : ColorStyles.gray20,
-          ),
+      ),
+      child: Text(
+        item.$1,
+        maxLines: 1,
+        softWrap: false,
+        style: Pretendard.medium.set(
+          size: 13,
+          color: item.$2 ? ColorStyles.primary60 : ColorStyles.gray20,
         ),
       ),
     );

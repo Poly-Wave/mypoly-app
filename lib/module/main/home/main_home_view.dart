@@ -288,7 +288,12 @@ class AgendaIntroSection extends HookConsumerWidget {
 
                   return Padding(
                     padding: EdgeInsets.only(right: 8.w),
-                    child: AgendaCategoryButton(item: (item.$1, isSelected)),
+                    child: GestureDetector(
+                      onTap: () {
+                        selectedTab.value = item.$2;
+                      },
+                      child: AgendaCategoryButton(item: (item.$1, isSelected)),
+                    ),
                   );
                 }).toList(),
           ),
