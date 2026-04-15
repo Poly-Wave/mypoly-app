@@ -192,15 +192,11 @@ class AgendaIntroSection extends HookConsumerWidget {
     final agendaItems =
         useState<List<(int, String, int, int, int, VoidCallback)>>([]);
 
-    final selectedTab = useState("HOT_DEBATE");
+    final selectedTab = useState<String?>(null);
+    final categories = useState<List<(String code, String label)>>([]);
 
     useEffect(() {
-      // 안건 리스트 요청(서버)
-
-      // agendaItems.value = [
-      //   (1, "소득세법 일부개정법률안(대안)(기획재정위원장)", 90, 10, 500, () {}),
-      //   (2, "소득세법 일부개정법률안(대안)(기획재정위원장)", 99, 1, 500, () {}),
-      // ];
+      // 카테고리 조회(서버)
       Future(() async {
         try {
           final dio = ref.read(dioProvider);
@@ -209,8 +205,40 @@ class AgendaIntroSection extends HookConsumerWidget {
             baseUrl: ref.read(envProvider).buillsApiUrl,
           );
 
+          final result = await api.getTabs();
+
+          categories.value = result
+              .map<(String, String)>((e) => (e.code ?? '', e.label ?? ''))
+              .toList();
+          if (categories.value.isNotEmpty && selectedTab.value == null) {
+            selectedTab.value = categories.value.first.$1;
+          }
+        } catch (e) {
+          debugPrint('카테고리 조회 실패: $e');
+        }
+      });
+
+      return null;
+    }, []);
+
+    useEffect(() {
+      // 안건 리스트 요청(서버)
+
+      // agendaItems.value = [
+      //   (1, "소득세법 일부개정법률안(대안)(기획재정위원장)", 90, 10, 500, () {}),
+      //   (2, "소득세법 일부개정법률안(대안)(기획재정위원장)", 99, 1, 500, () {}),
+      // ];
+      if (selectedTab.value == null) return null;
+
+      Future(() async {
+        try {
+          final dio = ref.read(dioProvider);
+          final api = AgendaApi(
+            dio,
+            baseUrl: ref.read(envProvider).buillsApiUrl,
+          );
           final result = await api.getAgendasByTab(
-            tabCode: selectedTab.value,
+            tabCode: selectedTab.value!,
             pageable: Pageable(page: 0, size: 10),
           );
 
@@ -275,29 +303,27 @@ class AgendaIntroSection extends HookConsumerWidget {
           ),
         ),
 
-        Padding(
-          padding: .symmetric(vertical: 12.h),
-          child: Row(
-            children:
-                [
-                  ("쟁쟁한", "HOT_DEBATE"),
-                  ("맞춤형", "PERSONALIZED"),
-                  ("요즘 핫한", "TRENDING"),
-                ].map((item) {
-                  final isSelected = selectedTab.value == item.$2;
+        if (categories.value.isNotEmpty)
+          Padding(
+            padding: .symmetric(vertical: 12.h),
+            child: Row(
+              children: categories.value.map((item) {
+                final code = item.$1;
+                final label = item.$2;
+                final isSelected = selectedTab.value == code;
 
-                  return Padding(
-                    padding: EdgeInsets.only(right: 8.w),
-                    child: GestureDetector(
-                      onTap: () {
-                        selectedTab.value = item.$2;
-                      },
-                      child: AgendaCategoryButton(item: (item.$1, isSelected)),
-                    ),
-                  );
-                }).toList(),
+                return Padding(
+                  padding: EdgeInsets.only(right: 8.w),
+                  child: GestureDetector(
+                    onTap: () {
+                      selectedTab.value = code;
+                    },
+                    child: AgendaCategoryButton(item: (label, isSelected)),
+                  ),
+                );
+              }).toList(),
+            ),
           ),
-        ),
 
         Padding(
           padding: EdgeInsets.only(top: 12.h),
