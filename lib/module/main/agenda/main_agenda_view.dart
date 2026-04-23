@@ -191,10 +191,14 @@ class _AgendaListSection extends HookConsumerWidget {
 
     return Container(
       color: color,
-      child: Image.network(
-        url,
-        fit: BoxFit.cover,
-        errorBuilder: (_, __, ___) => Icon(Icons.image),
+      child: Center(
+        child: Image.network(
+          url,
+          width: 32,
+          height: 32,
+          fit: BoxFit.contain,
+          errorBuilder: (_, __, ___) => Icon(Icons.image, size: 32),
+        ),
       ),
     );
   }
@@ -211,25 +215,7 @@ class _AgendaListSection extends HookConsumerWidget {
             color: ColorStyles.gray10,
           ),
         ),
-        GestureDetector(
-          onTap: () => _showSheet(context, sortOptions, (v) {
-            sort.value = v;
-          }),
-          child: Row(
-            children: [
-              Text(
-                sort.value,
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: ColorStyles.gray30,
-                ),
-              ),
-              SizedBox(width: 4),
-              MPSvgImage(SvgImage.arrowDown, width: 18),
-            ],
-          ),
-        ),
+        _buildSortButtons(sort),
       ],
     );
   }
@@ -344,6 +330,55 @@ class _AgendaListSection extends HookConsumerWidget {
   }
 }
 
+Widget _buildSortButtons(ValueNotifier<String> sort) {
+  return Row(
+    children: [
+      _sortButton(
+        label: '인기순',
+        isSelected: sort.value == '인기순',
+        onTap: () => sort.value = '인기순',
+      ),
+      const SizedBox(width: 4),
+      _sortButton(
+        label: '최신순',
+        isSelected: sort.value == '최신순',
+        onTap: () => sort.value = '최신순',
+      ),
+    ],
+  );
+}
+
+Widget _sortButton({
+  required String label,
+  required bool isSelected,
+  required VoidCallback onTap,
+}) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      width: 44,
+      height: 20,
+      alignment: Alignment.center,
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      decoration: BoxDecoration(
+        color: isSelected ? ColorStyles.primary20 : ColorStyles.divider,
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Text(
+          label,
+          style: Pretendard.semiBold.set(
+            size: 12,
+            height: 1,
+            color: isSelected ? ColorStyles.gray70 : ColorStyles.gray40,
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
 class AgendaListItem extends StatelessWidget {
   final String category;
   final String title;
@@ -430,7 +465,7 @@ class AgendaListItem extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w500,
-                  color: Color(0xFFB2BCC5),
+                  color: ColorStyles.gray30,
                 ),
               ),
 
@@ -441,7 +476,7 @@ class AgendaListItem extends StatelessWidget {
                   SizedBox(width: 4),
                   Text(
                     viewCount.toString(),
-                    style: TextStyle(fontSize: 13, color: Color(0xFFB2BCC5)),
+                    style: TextStyle(fontSize: 13, color: ColorStyles.gray30),
                   ),
 
                   SizedBox(width: 8),
@@ -451,7 +486,7 @@ class AgendaListItem extends StatelessWidget {
                   SizedBox(width: 4),
                   Text(
                     voteCount.toString(),
-                    style: TextStyle(fontSize: 13, color: Color(0xFFB2BCC5)),
+                    style: TextStyle(fontSize: 13, color: ColorStyles.gray30),
                   ),
                 ],
               ),
