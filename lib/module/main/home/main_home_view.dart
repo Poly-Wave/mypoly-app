@@ -242,12 +242,15 @@ class AgendaIntroSection extends HookConsumerWidget {
             pageable: Pageable(page: 0, size: 10),
           );
 
-          agendaItems.value = result.map((e) {
+          agendaItems.value = result.asMap().entries.map((entry) {
+            final index = entry.key;
+            final e = entry.value;
+
             final agree = ((e.agreeRatio ?? 0) * 100).toInt();
             final disagree = ((e.disagreeRatio ?? 0) * 100).toInt();
 
             return (
-              e.billId ?? 0,
+              index + 1,
               e.officialTitle ?? '',
               agree,
               disagree,
