@@ -7,6 +7,10 @@ import 'package:mypoly/style/index.dart';
 import 'package:mypoly/widget/index.dart';
 import 'package:mypoly/module/widget/common/horizontal_padding.dart';
 import '../agenda/widget/agenda_topic_card.dart';
+import 'package:mypoly/generate/bills/api/agenda_api.dart';
+import 'package:mypoly/generate/bills/model/pageable.dart';
+import 'package:mypoly/data/provider/dio_provider.dart';
+import 'package:mypoly/provider/app_provider.dart';
 
 @RoutePage()
 class MainAgendaView extends HookConsumerWidget {
@@ -65,9 +69,37 @@ class _AgendaListSection extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final agendas = useState<List<dynamic>>([]);
+
     final sort = useState('최신순');
     final category = useState('지역');
     final field = useState('주제');
+    final aiRecommended = useState(false);
+
+    useEffect(() {
+      Future(() async {
+        try {
+          final dio = ref.read(dioProvider);
+          final api = AgendaApi(
+            dio,
+            baseUrl: ref.read(envProvider).buillsApiUrl,
+          );
+
+          final result = await api.getAgendasBymain(
+            aiRecommended: aiRecommended.value,
+            pageable: Pageable(page: 0, size: 10, sort: _mapSort(sort.value)),
+          );
+
+          debugPrint('result: $result');
+
+          agendas.value = result;
+        } catch (e) {
+          debugPrint('메인 안건 조회 실패: $e');
+        }
+      });
+
+      return null;
+    }, [sort.value, aiRecommended.value]);
 
     return Padding(
       padding: EdgeInsets.only(top: 24),
@@ -76,33 +108,93 @@ class _AgendaListSection extends HookConsumerWidget {
         children: [
           _buildHeader(context, sort),
           SizedBox(height: 12),
-          _buildFilterRow(context, category, field),
+          _buildFilterRow(context, category, field, aiRecommended),
 
           SizedBox(height: 16),
 
-          ListView.separated(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: 10,
-            separatorBuilder: (_, __) => Center(
-              child: Container(
-                width: 320,
-                height: 1,
-                color: ColorStyles.divider,
-              ),
-            ),
-            itemBuilder: (_, i) {
-              return AgendaListItem(
-                category: '정책',
-                title: '타이틀이 들어올 수 있는 자리입니다.\n그 이상은 말줄임 됩니다.',
-                date: '2026.12.31',
-                views: 23,
-                votes: 999,
-                thumbnail: MPSvgImage(SvgImage.logo, width: 64, height: 64),
+          Column(
+            children: List.generate(agendas.value.length, (i) {
+              final item = agendas.value[i];
+
+              return Column(
+                children: [
+                  if (i != 0)
+                    Center(
+                      child: Container(
+                        width: 320,
+                        height: 1,
+                        color: ColorStyles.divider,
+                      ),
+                    ),
+
+                  AgendaListItem(
+                    category: item.categoryName ?? '',
+                    title: item.title ?? '',
+                    date: _formatDate(item.registeredDate ?? ''),
+                    viewCount: item.viewCount ?? 0,
+                    voteCount: item.voteCount ?? 0,
+                    thumbnail: _buildThumbnail(
+                      item.categoryIconUrl ?? '',
+                      item.categoryBackgroundColor ?? 'FFFFFF',
+                    ),
+                  ),
+                ],
               );
-            },
+            }),
           ),
+
+          // ListView.separated(
+          //   shrinkWrap: true,
+          //   physics: NeverScrollableScrollPhysics(),
+          //   itemCount: 10,
+          //   separatorBuilder: (_, __) => Center(
+          //     child: Container(
+          //       width: 320,
+          //       height: 1,
+          //       color: ColorStyles.divider,
+          //     ),
+          //   ),
+          //   itemBuilder: (_, i) {
+          //     return AgendaListItem(
+          //       category: '정책',
+          //       title: '타이틀이 들어올 수 있는 자리입니다.\n그 이상은 말줄임 됩니다.',
+          //       date: '2026.12.31',
+          //       viewCount: 23,
+          //       voteCount: 999,
+          //       thumbnail: MPSvgImage(SvgImage.logo, width: 64, height: 64),
+          //     );
+          //   },
+          // ),
         ],
+      ),
+    );
+  }
+
+  List<String> _mapSort(String sortLabel) {
+    switch (sortLabel) {
+      case '인기순':
+        return ['POPULAR'];
+      case '최신순':
+      default:
+        return ['LATEST'];
+    }
+  }
+
+  String _formatDate(String raw) {
+    if (raw.isEmpty) return '';
+    final date = DateTime.parse(raw);
+    return '${date.year}.${date.month.toString().padLeft(2, '0')}.${date.day.toString().padLeft(2, '0')}';
+  }
+
+  Widget _buildThumbnail(String url, String bgColor) {
+    final color = Color(int.parse('0xFF$bgColor'));
+
+    return Container(
+      color: color,
+      child: Image.network(
+        url,
+        fit: BoxFit.cover,
+        errorBuilder: (_, __, ___) => Icon(Icons.image),
       ),
     );
   }
@@ -146,25 +238,35 @@ class _AgendaListSection extends HookConsumerWidget {
     BuildContext context,
     ValueNotifier<String> category,
     ValueNotifier<String> field,
+    ValueNotifier<bool> aiRecommended,
   ) {
     return Row(
       children: [
         /// AI추천
-        Container(
-          width: 62,
-          height: 32,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [ColorStyles.primary50, ColorStyles.primary20],
+        GestureDetector(
+          onTap: () {
+            aiRecommended.value = !aiRecommended.value;
+          },
+          child: Container(
+            width: 62,
+            height: 32,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: aiRecommended.value
+                    ? [ColorStyles.primary50, ColorStyles.primary20]
+                    : [ColorStyles.gray60, ColorStyles.gray60],
+              ),
+              borderRadius: BorderRadius.circular(999),
             ),
-            borderRadius: BorderRadius.circular(999),
-          ),
-          child: Text(
-            'AI추천',
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              color: ColorStyles.primary100,
+            child: Text(
+              'AI추천',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                color: aiRecommended.value
+                    ? ColorStyles.primary100
+                    : ColorStyles.gray30,
+              ),
             ),
           ),
         ),
@@ -246,8 +348,8 @@ class AgendaListItem extends StatelessWidget {
   final String category;
   final String title;
   final String date;
-  final int views;
-  final int votes;
+  final int viewCount;
+  final int voteCount;
   final Widget thumbnail;
 
   const AgendaListItem({
@@ -255,8 +357,8 @@ class AgendaListItem extends StatelessWidget {
     required this.category,
     required this.title,
     required this.date,
-    required this.views,
-    required this.votes,
+    required this.viewCount,
+    required this.voteCount,
     required this.thumbnail,
   });
 
@@ -338,7 +440,7 @@ class AgendaListItem extends StatelessWidget {
                   MPSvgImage(SvgImage.logo, width: 14.03, height: 9.6),
                   SizedBox(width: 4),
                   Text(
-                    views.toString(),
+                    viewCount.toString(),
                     style: TextStyle(fontSize: 13, color: Color(0xFFB2BCC5)),
                   ),
 
@@ -348,7 +450,7 @@ class AgendaListItem extends StatelessWidget {
                   MPSvgImage(SvgImage.logo, width: 16),
                   SizedBox(width: 4),
                   Text(
-                    votes.toString(),
+                    voteCount.toString(),
                     style: TextStyle(fontSize: 13, color: Color(0xFFB2BCC5)),
                   ),
                 ],

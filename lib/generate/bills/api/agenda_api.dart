@@ -6,6 +6,7 @@ import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:mypoly/generate/bills/model/agenda_response.dart';
 import 'package:mypoly/generate/bills/model/agenda_tab_response.dart';
+import 'package:mypoly/generate/bills/model/agenda_main_response.dart';
 import 'package:mypoly/generate/bills/model/error_response.dart';
 import 'package:mypoly/generate/bills/model/pageable.dart';
 
@@ -38,4 +39,19 @@ abstract class AgendaApi {
   ///
   @GET('/agendas/tabs')
   Future<List<AgendaTabResponse>> getTabs({CancelToken? cancelToken});
+
+  /// 안건 메인 목록 조회
+  /// 안건 메인 화면용 목록을 반환합니다. 로그인한 사용자만 호출 가능합니다.
+  ///
+  /// Parameters:
+  /// * [aiRecommended] - Default value : false
+  /// * [pageable] {  "page": 0,  "size": 1,  "sort": [    "string"  ]}
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  ///
+  @GET('/agendas/main')
+  Future<List<AgendaMainResponse>> getAgendasBymain({
+    @Query('aiRecommended') bool aiRecommended = false,
+    @Query('pageable') required Pageable pageable,
+    CancelToken? cancelToken,
+  });
 }
