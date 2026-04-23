@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mypoly/style/index.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mypoly/module/main/home/model/popular_subsidy_item.dart';
 
 class PopularSubsidyCard extends StatelessWidget {
@@ -10,8 +11,8 @@ class PopularSubsidyCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 264,
-      height: 200,
+      width: 264.w,
+      height: 200.h,
       padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
