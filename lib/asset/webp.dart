@@ -5,6 +5,11 @@ class WebpImage {
 
   static const String emptyProfile = 'assets/webp/empty_profile.webp';
   static const String loading = 'assets/webp/loading.webp';
+  static const String popular1 = 'assets/webp/popular1.webp';
+  static const String popular2 = 'assets/webp/popular2.webp';
+  static const String popular3 = 'assets/webp/popular3.webp';
   static const String registerComplete = 'assets/webp/register_complete.webp';
   static const String registerOnboard = 'assets/webp/register_onboard.webp';
+  static const String viewCount = 'assets/webp/view_count.webp';
+  static const String voteCount = 'assets/webp/vote_count.webp';
 }

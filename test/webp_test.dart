@@ -7,7 +7,12 @@ void main() {
   test('webp assets test', () {
     expect(File(WebpImage.emptyProfile).existsSync(), isTrue);
     expect(File(WebpImage.loading).existsSync(), isTrue);
+    expect(File(WebpImage.popular1).existsSync(), isTrue);
+    expect(File(WebpImage.popular2).existsSync(), isTrue);
+    expect(File(WebpImage.popular3).existsSync(), isTrue);
     expect(File(WebpImage.registerComplete).existsSync(), isTrue);
     expect(File(WebpImage.registerOnboard).existsSync(), isTrue);
+    expect(File(WebpImage.viewCount).existsSync(), isTrue);
+    expect(File(WebpImage.voteCount).existsSync(), isTrue);
   });
 }

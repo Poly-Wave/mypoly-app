@@ -3,7 +3,7 @@ import 'package:mypoly/widget/index.dart';
 import 'package:mypoly/style/index.dart';
 
 class AgendaTopicCard extends StatelessWidget {
-  final (String title, MPSvgImage image) item;
+  final (String title, MPImage image) item;
 
   const AgendaTopicCard({super.key, required this.item});
 

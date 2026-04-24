@@ -39,10 +39,10 @@ class _AgendaTopicSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final items = <(String, MPSvgImage)>[
-      ('20대\n제일 인기 안건', MPSvgImage(SvgImage.logo, width: 32)),
-      ('강남 2동\n제일 인기 안건', MPSvgImage(SvgImage.logo, width: 32)),
-      ('오늘 활발하게\n투표중인 안건', MPSvgImage(SvgImage.logo, width: 32)),
+    final items = <(String, MPImage)>[
+      ('20대\n제일 인기 안건', MPImage(WebpImage.popular1, width: 32)),
+      ('강남 2동\n제일 인기 안건', MPImage(WebpImage.popular2, width: 32)),
+      ('오늘 활발하게\n투표중인 안건', MPImage(WebpImage.popular3, width: 32)),
     ];
 
     return SizedBox(
@@ -472,7 +472,7 @@ class AgendaListItem extends StatelessWidget {
               Row(
                 children: [
                   /// 조회수
-                  MPSvgImage(SvgImage.logo, width: 14.03, height: 9.6),
+                  MPImage(WebpImage.viewCount, width: 14.03, height: 9.6),
                   SizedBox(width: 4),
                   Text(
                     viewCount.toString(),
@@ -482,7 +482,7 @@ class AgendaListItem extends StatelessWidget {
                   SizedBox(width: 8),
 
                   /// 투표수
-                  MPSvgImage(SvgImage.logo, width: 16),
+                  MPImage(WebpImage.voteCount, width: 16),
                   SizedBox(width: 4),
                   Text(
                     voteCount.toString(),
