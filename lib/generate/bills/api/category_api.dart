@@ -21,7 +21,7 @@ abstract class CategoryApi {
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   ///
   @GET('/categories')
-  Future<CategoryResponse> getCategories({CancelToken? cancelToken});
+  Future<List<CategoryResponse>> getCategories({CancelToken? cancelToken});
 
   /// 내 관심 카테고리 저장(갱신)
   /// 로그인 사용자의 관심 카테고리 목록을 저장합니다. (JWT 인증 필요)  동작 규칙 - 요청으로 받은 &#x60;categoryIds&#x60;를 기준으로 **사용자의 관심 카테고리를 갱신**합니다.   - 기존 관심사 중 요청에 없는 항목은 삭제   - 요청에 새로 추가된 항목은 추가 - **중복 ID는 자동으로 제거**됩니다. - **존재하지 않거나 비활성화된 카테고리 ID는 무시**됩니다. (에러로 실패시키지 않음)  인증 - Swagger 우측 상단 Authorize에 &#x60;Bearer {jwt}&#x60; 입력 후 호출하세요.
