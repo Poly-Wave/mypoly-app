@@ -25,7 +25,7 @@ abstract class AgendaApi {
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   ///
   @GET('/agendas/tabs/{tabCode}')
-  Future<AgendaResponse> getAgendasByTab({
+  Future<List<AgendaResponse>> getAgendasByTab({
     @Path('tabCode') required String tabCode,
     @Query('pageable') required Pageable pageable,
     CancelToken? cancelToken,
@@ -40,7 +40,7 @@ abstract class AgendaApi {
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   ///
   @GET('/agendas/main')
-  Future<MainAgendaResponse> getMainAgendas({
+  Future<List<MainAgendaResponse>> getMainAgendas({
     @Query('pageable') required Pageable pageable,
     @Query('aiRecommended') bool? aiRecommended = false,
     CancelToken? cancelToken,
@@ -53,5 +53,5 @@ abstract class AgendaApi {
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   ///
   @GET('/agendas/tabs')
-  Future<AgendaTabResponse> getTabs({CancelToken? cancelToken});
+  Future<List<AgendaTabResponse>> getTabs({CancelToken? cancelToken});
 }

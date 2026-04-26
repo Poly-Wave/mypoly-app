@@ -85,7 +85,7 @@ class _AgendaListSection extends HookConsumerWidget {
             baseUrl: ref.read(envProvider).buillsApiUrl,
           );
 
-          final result = await api.getAgendasBymain(
+          final result = await api.getMainAgendas(
             aiRecommended: aiRecommended.value,
             pageable: Pageable(page: 0, size: 10, sort: _mapSort(sort.value)),
           );

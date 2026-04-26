@@ -131,9 +131,9 @@ class RegisterTopicView extends HookConsumerWidget {
             onTap: () async {
               context.loaderOverlay.show();
 
-              final categoryIds = categories.value
+              final categoryCodes = categories.value
                   .where((data) => data.$1)
-                  .map((data) => data.$2.id)
+                  .map((data) => data.$2.code)
                   .nonNulls
                   .toList();
 
@@ -141,7 +141,7 @@ class RegisterTopicView extends HookConsumerWidget {
                 await ref
                     .read(categoryServiceProvider)
                     .updateCategories(
-                      categoryIds: categoryIds,
+                      categoryCodes: categoryCodes,
                       isOnboard: true,
                     );
 

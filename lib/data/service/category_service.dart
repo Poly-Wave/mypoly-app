@@ -27,20 +27,20 @@ class CategoryService {
   }
 
   Future<void> updateCategories({
-    required List<int> categoryIds,
+    required List<String> categoryCodes,
     bool isOnboard = false,
   }) async {
     try {
       if (isOnboard) {
         await _categoryApi.updateOnboardingInterests(
           categoryInterestUpdateRequest: CategoryInterestUpdateRequest(
-            categoryIds: categoryIds,
+            categoryCodes: categoryCodes,
           ),
         );
       } else {
         await _categoryApi.updateInterests(
           categoryInterestUpdateRequest: CategoryInterestUpdateRequest(
-            categoryIds: categoryIds,
+            categoryCodes: categoryCodes,
           ),
         );
       }
