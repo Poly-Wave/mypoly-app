@@ -14,7 +14,7 @@ abstract class BillVoteSummaryResponse with _$BillVoteSummaryResponse {
     /// 현재 사용자의 투표 여부
     @JsonKey(name: r'hasVoted') bool? hasVoted,
 
-    /// 현재 사용자의 투표값
+    /// 현재 사용자의 투표값. hasVoted=false인 경우 아직 투표하지 않은 상태이므로 null입니다. 가능한 값: AGREE, DISAGREE
     @JsonKey(name: r'myVoteResult') String? myVoteResult,
 
     /// 찬성 수

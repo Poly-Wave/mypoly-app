@@ -33,6 +33,12 @@ abstract class BillDetailResponse with _$BillDetailResponse {
 
     /// 원문 URL
     @JsonKey(name: r'detailUrl') String? detailUrl,
+
+    /// 조회수
+    @JsonKey(name: r'viewCount') int? viewCount,
+
+    /// 현재 사용자의 보관 여부
+    @JsonKey(name: r'bookmarked') bool? bookmarked,
     @JsonKey(name: r'stage') BillStageResponse? stage,
     @JsonKey(name: r'aiSummary') BillAiSummaryResponse? aiSummary,
 

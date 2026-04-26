@@ -11,9 +11,6 @@ part 'category_response.g.dart';
 @freezed
 abstract class CategoryResponse with _$CategoryResponse {
   const factory CategoryResponse({
-    /// 카테고리 ID
-    @JsonKey(name: r'id') int? id,
-
     /// 카테고리 코드(고유)
     @JsonKey(name: r'code') String? code,
 

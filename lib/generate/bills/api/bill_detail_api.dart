@@ -4,6 +4,7 @@
 
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart' hide Headers;
+import 'package:mypoly/generate/bills/model/bill_bookmark_status_response.dart';
 import 'package:mypoly/generate/bills/model/bill_detail_response.dart';
 import 'package:mypoly/generate/bills/model/bill_status_history_response.dart';
 import 'package:mypoly/generate/bills/model/bill_vote_summary_response.dart';
@@ -16,8 +17,21 @@ part 'bill_detail_api.g.dart';
 abstract class BillDetailApi {
   factory BillDetailApi(Dio dio, {String? baseUrl}) = _BillDetailApi;
 
+  /// 의안 보관하기
+  /// 현재 로그인 사용자의 보관함에 의안을 추가합니다. 이미 보관된 의안이면 그대로 성공 처리합니다.
+  ///
+  /// Parameters:
+  /// * [billId] - 의안 ID
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  ///
+  @POST('/{billId}/bookmark')
+  Future<BillBookmarkStatusResponse> bookmarkBill({
+    @Path('billId') required int billId,
+    CancelToken? cancelToken,
+  });
+
   /// 의안 상세 조회
-  /// 의안 상세 화면에 필요한 기본 정보, AI 요약, 카테고리, 현재 단계, 투표 요약 정보를 반환합니다.
+  /// 의안 상세 화면에 필요한 기본 정보, AI 요약, 카테고리, 현재 단계, 투표 요약, 보관 여부 정보를 반환합니다.
   ///
   /// Parameters:
   /// * [billId] - 의안 ID
@@ -69,6 +83,19 @@ abstract class BillDetailApi {
     @Path('billId') required int billId,
     @Query('sortType') String? sortType,
     @Query('size') int? size = 5,
+    CancelToken? cancelToken,
+  });
+
+  /// 의안 보관 해제
+  /// 현재 로그인 사용자의 보관함에서 의안을 제거합니다. 이미 보관되어 있지 않아도 성공 처리합니다.
+  ///
+  /// Parameters:
+  /// * [billId] - 의안 ID
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  ///
+  @DELETE('/{billId}/bookmark')
+  Future<BillBookmarkStatusResponse> unbookmarkBill({
+    @Path('billId') required int billId,
     CancelToken? cancelToken,
   });
 }

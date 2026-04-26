@@ -28,9 +28,6 @@ abstract class AgendaResponse with _$AgendaResponse {
 
     /// 현재 사용자의 투표 여부
     @JsonKey(name: r'hasVoted') bool? hasVoted,
-
-    /// 메인 리스트 카테고리 이미지 URL
-    @JsonKey(name: r'iconUrl') String? iconUrl,
   }) = _AgendaResponse;
 
   factory AgendaResponse.fromJson(Map<String, dynamic> json) =>
