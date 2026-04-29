@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mypoly/asset/index.dart';
 import 'package:mypoly/style/index.dart';
 import 'package:mypoly/widget/index.dart';
+import 'package:mypoly/widget/overlay/index.dart';
 
 class MainBottomBar extends StatelessWidget {
   final int currentIndex;
@@ -46,7 +47,11 @@ class MainBottomBar extends StatelessWidget {
                 image: SvgImage.mainHome,
               ),
               MainNavItem(
-                onTap: () => onTap(2),
+                onTap: () => showMPSnackBar(
+                  context,
+                  message: "곧 오픈예정인 서비스 입니다 👀",
+                  bottomMargin: 79,
+                ),
                 isActive: currentIndex == 2,
                 text: "보조금",
                 image: SvgImage.mainSubsidy,
