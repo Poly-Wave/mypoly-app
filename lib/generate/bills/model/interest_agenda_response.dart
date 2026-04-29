@@ -5,12 +5,12 @@
 // ignore_for_file: unused_element
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'main_agenda_response.freezed.dart';
-part 'main_agenda_response.g.dart';
+part 'interest_agenda_response.freezed.dart';
+part 'interest_agenda_response.g.dart';
 
 @freezed
-abstract class MainAgendaResponse with _$MainAgendaResponse {
-  const factory MainAgendaResponse({
+abstract class InterestAgendaResponse with _$InterestAgendaResponse {
+  const factory InterestAgendaResponse({
     /// 주제 코드
     @JsonKey(name: r'categoryCode') String? categoryCode,
 
@@ -31,14 +31,8 @@ abstract class MainAgendaResponse with _$MainAgendaResponse {
 
     /// 등록일자
     @JsonKey(name: r'registeredDate') required DateTime registeredDate,
+  }) = _InterestAgendaResponse;
 
-    /// 조회수
-    @JsonKey(name: r'viewCount') required int viewCount,
-
-    /// 투표수
-    @JsonKey(name: r'voteCount') required int voteCount,
-  }) = _MainAgendaResponse;
-
-  factory MainAgendaResponse.fromJson(Map<String, dynamic> json) =>
-      _$MainAgendaResponseFromJson(json);
+  factory InterestAgendaResponse.fromJson(Map<String, dynamic> json) =>
+      _$InterestAgendaResponseFromJson(json);
 }

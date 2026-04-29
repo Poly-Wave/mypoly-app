@@ -7,6 +7,7 @@ import 'package:dio/dio.dart' hide Headers;
 import 'package:mypoly/generate/bills/model/agenda_response.dart';
 import 'package:mypoly/generate/bills/model/agenda_tab_response.dart';
 import 'package:mypoly/generate/bills/model/error_response.dart';
+import 'package:mypoly/generate/bills/model/interest_agenda_response.dart';
 import 'package:mypoly/generate/bills/model/main_agenda_response.dart';
 import 'package:mypoly/generate/bills/model/pageable.dart';
 
@@ -31,18 +32,31 @@ abstract class AgendaApi {
     CancelToken? cancelToken,
   });
 
-  /// 안건 메인 목록 조회
-  /// 안건 메인 화면용 목록을 반환합니다. 로그인한 사용자만 호출 가능합니다. - sort&#x3D;LATEST: 최신 등록일 기준 내림차순 (기본값) - sort&#x3D;POPULAR: 조회 수 기준 내림차순 - aiRecommended&#x3D;true: 사용자 관심 주제와 일치하는 카테고리만 필터링 - aiRecommended&#x3D;false: 전체 목록 반환
+  /// 관심 주제 안건 목록 조회
+  /// 관심 주제 기반 안건 목록을 반환합니다. 로그인한 사용자만 호출 가능합니다. - sort&#x3D;LATEST: 최신 등록일 기준 내림차순 (기본값) - sort&#x3D;POPULAR: 최근 7일 투표 완료 수(배치 스냅샷) 기준 내림차순 - 사용자 관심 주제와 일치하는 카테고리만 필터링됩니다. - 본 API는 조회수/투표수를 반환하지 않습니다.
   ///
   /// Parameters:
   /// * [pageable]
-  /// * [aiRecommended] - AI 추천 필터 on/off
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  ///
+  @GET('/agendas/interests')
+  Future<List<InterestAgendaResponse>> getInterestAgendas({
+    @Query('pageable') required Pageable pageable,
+    CancelToken? cancelToken,
+  });
+
+  /// 안건 메인 목록 조회
+  /// 안건 메인 화면용 목록을 반환합니다. 로그인한 사용자만 호출 가능합니다. - sort&#x3D;LATEST: 최신 등록일 기준 내림차순 (기본값) - sort&#x3D;POPULAR: 최근 7일 투표 완료 수(배치 스냅샷) 기준 내림차순 - categoryCodes 미지정 시: 사용자 관심 주제와 일치하는 카테고리만 상시 필터링됩니다. - categoryCodes 지정 시: 전달된 주제 코드 목록으로 필터링합니다.
+  ///
+  /// Parameters:
+  /// * [pageable]
+  /// * [categoryCodes] - 주제 코드 목록(선택). 지정 시 해당 주제들만 조회
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   ///
   @GET('/agendas/main')
   Future<List<MainAgendaResponse>> getMainAgendas({
     @Query('pageable') required Pageable pageable,
-    @Query('aiRecommended') bool? aiRecommended = false,
+    @Query('categoryCodes') List<String>? categoryCodes,
     CancelToken? cancelToken,
   });
 
