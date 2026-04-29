@@ -18,6 +18,8 @@ import 'package:mypoly/provider/app_provider.dart';
 import 'package:mypoly/module/main/home/widget/agenda_intro_item.dart';
 import 'package:mypoly/module/main/home/widget/my_info_button.dart';
 import 'package:mypoly/module/main/home/widget/agenda_category_button.dart';
+import 'package:mypoly/module/main/home/widget/sort_button.dart';
+import 'package:mypoly/module/main/home/widget/favorite_agenda_item.dart';
 
 @RoutePage()
 class MainHomeView extends HookConsumerWidget {
@@ -41,7 +43,8 @@ class MainHomeView extends HookConsumerWidget {
 
                 MPHeight(50),
 
-                PopularSubsidySection(), // 인기 보조금
+                FavoriteTopicSection(), // 관심 주제 안건
+                //PopularSubsidySection(), // 인기 보조금
               ],
             ),
           ),
@@ -355,6 +358,65 @@ class AgendaIntroSection extends HookConsumerWidget {
               );
             }),
           ),
+        ),
+      ],
+    );
+  }
+}
+
+// 관심 주제 안건
+class FavoriteTopicSection extends HookConsumerWidget {
+  const FavoriteTopicSection({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedSortIndex = useState(0);
+
+    final favoriteAgendas = List.generate(3, (index) => index);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Container(
+          height: 47.h,
+          padding: EdgeInsets.symmetric(vertical: 10.h),
+          child: Row(
+            children: [
+              Text(
+                "관심 주제 안건",
+                style: Pretendard.semiBold.set(
+                  size: 20,
+                  color: ColorStyles.white,
+                ),
+              ),
+              const Spacer(),
+              Row(
+                children: [
+                  SortButton(
+                    label: "인기순",
+                    isSelected: selectedSortIndex.value == 0,
+                    onTap: () => selectedSortIndex.value = 0,
+                  ),
+                  SizedBox(width: 4.w),
+                  SortButton(
+                    label: "최신순",
+                    isSelected: selectedSortIndex.value == 1,
+                    onTap: () => selectedSortIndex.value = 1,
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+
+        ListView.separated(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: favoriteAgendas.length,
+          separatorBuilder: (context, index) => SizedBox(height: 12.h),
+          itemBuilder: (context, index) {
+            return const FavoriteAgendaItem();
+          },
         ),
       ],
     );
