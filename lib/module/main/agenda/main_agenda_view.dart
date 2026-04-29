@@ -74,7 +74,6 @@ class _AgendaListSection extends HookConsumerWidget {
     final sort = useState('최신순');
     final category = useState('지역');
     final field = useState('주제');
-    final aiRecommended = useState(false);
 
     useEffect(() {
       Future(() async {
@@ -86,7 +85,7 @@ class _AgendaListSection extends HookConsumerWidget {
           );
 
           final result = await api.getMainAgendas(
-            aiRecommended: aiRecommended.value,
+            aiRecommended: true,
             pageable: Pageable(page: 0, size: 10, sort: _mapSort(sort.value)),
           );
 
@@ -99,7 +98,7 @@ class _AgendaListSection extends HookConsumerWidget {
       });
 
       return null;
-    }, [sort.value, aiRecommended.value]);
+    }, [sort.value]);
 
     return Padding(
       padding: EdgeInsets.only(top: 24),
@@ -108,7 +107,7 @@ class _AgendaListSection extends HookConsumerWidget {
         children: [
           _buildHeader(context, sort),
           SizedBox(height: 12),
-          _buildFilterRow(context, category, field, aiRecommended),
+          _buildFilterRow(context, category, field),
 
           SizedBox(height: 16),
 
@@ -180,9 +179,8 @@ class _AgendaListSection extends HookConsumerWidget {
     }
   }
 
-  String _formatDate(String raw) {
-    if (raw.isEmpty) return '';
-    final date = DateTime.parse(raw);
+  String _formatDate(DateTime? date) {
+    if (date == null) return '';
     return '${date.year}.${date.month.toString().padLeft(2, '0')}.${date.day.toString().padLeft(2, '0')}';
   }
 
@@ -224,35 +222,25 @@ class _AgendaListSection extends HookConsumerWidget {
     BuildContext context,
     ValueNotifier<String> category,
     ValueNotifier<String> field,
-    ValueNotifier<bool> aiRecommended,
   ) {
     return Row(
       children: [
         /// AI추천
-        GestureDetector(
-          onTap: () {
-            aiRecommended.value = !aiRecommended.value;
-          },
-          child: Container(
-            width: 62,
-            height: 32,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: aiRecommended.value
-                    ? [ColorStyles.primary50, ColorStyles.primary20]
-                    : [ColorStyles.gray60, ColorStyles.gray60],
-              ),
-              borderRadius: BorderRadius.circular(999),
+        Container(
+          width: 62,
+          height: 32,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [ColorStyles.primary50, ColorStyles.primary20],
             ),
-            child: Text(
-              'AI추천',
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                color: aiRecommended.value
-                    ? ColorStyles.primary100
-                    : ColorStyles.gray30,
-              ),
+            borderRadius: BorderRadius.circular(999),
+          ),
+          child: Text(
+            'AI추천',
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              color: ColorStyles.primary100,
             ),
           ),
         ),
