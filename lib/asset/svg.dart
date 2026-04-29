@@ -7,8 +7,6 @@ class SvgImage {
   static const String arrowLeft = 'assets/svg/arrow_left.svg';
   static const String arrowRight = 'assets/svg/arrow_right.svg';
   static const String arrowUp = 'assets/svg/arrow_up.svg';
-  static const String homeStore = 'assets/svg/home_store.svg';
-  static const String homeVote = 'assets/svg/home_vote.svg';
   static const String icBack = 'assets/svg/ic_back.svg';
   static const String icChange = 'assets/svg/ic_change.svg';
   static const String icClose = 'assets/svg/ic_close.svg';

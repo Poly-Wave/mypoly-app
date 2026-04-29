@@ -29,6 +29,9 @@ import 'package:mypoly/module/main/main_view.dart';
 import 'package:mypoly/module/main/home/main_home_view.dart';
 import 'package:mypoly/module/main/home/notification/notification_view.dart';
 
+import 'package:mypoly/module/main/home/bookmark/bookmark_view.dart';
+import 'package:mypoly/module/main/home/vote/vote_view.dart';
+
 import 'package:mypoly/module/main/home/my_info/my_info_view.dart';
 import 'package:mypoly/module/main/home/my_info/edit/my_info_edit_view.dart';
 import 'package:mypoly/module/main/home/my_info/detail/my_info_detail_view.dart';
@@ -75,6 +78,9 @@ class AppRouter extends RootStackRouter {
 
     // Home
     AutoRoute(page: NotificationRoute.page),
+
+    AutoRoute(page: BookmarkRoute.page),
+    AutoRoute(page: VoteRoute.page),
 
     AutoRoute(page: MyInfoRoute.page),
     AutoRoute(page: MyInfoEditRoute.page),

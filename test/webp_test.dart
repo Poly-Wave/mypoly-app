@@ -5,6 +5,8 @@ import 'package:mypoly/asset/index.dart';
 
 void main() {
   test('webp assets test', () {
+    expect(File(WebpImage.btnMainHomeBookmark).existsSync(), isTrue);
+    expect(File(WebpImage.btnMainHomeVote).existsSync(), isTrue);
     expect(File(WebpImage.emptyProfile).existsSync(), isTrue);
     expect(File(WebpImage.loading).existsSync(), isTrue);
     expect(File(WebpImage.popular1).existsSync(), isTrue);
