@@ -12,10 +12,10 @@ part 'bill_ai_summary_response.g.dart';
 abstract class BillAiSummaryResponse with _$BillAiSummaryResponse {
   const factory BillAiSummaryResponse({
     /// AI 헤드라인
-    @JsonKey(name: r'headline') String? headline,
+    @JsonKey(name: r'headline') required String headline,
 
     /// AI 요약 본문
-    @JsonKey(name: r'summary') String? summary,
+    @JsonKey(name: r'summary') required String summary,
   }) = _BillAiSummaryResponse;
 
   factory BillAiSummaryResponse.fromJson(Map<String, dynamic> json) =>

@@ -12,10 +12,10 @@ part 'bill_bookmark_status_response.g.dart';
 abstract class BillBookmarkStatusResponse with _$BillBookmarkStatusResponse {
   const factory BillBookmarkStatusResponse({
     /// 의안 ID
-    @JsonKey(name: r'billId') int? billId,
+    @JsonKey(name: r'billId') required int billId,
 
     /// 현재 사용자의 보관 여부
-    @JsonKey(name: r'bookmarked') bool? bookmarked,
+    @JsonKey(name: r'bookmarked') required bool bookmarked,
   }) = _BillBookmarkStatusResponse;
 
   factory BillBookmarkStatusResponse.fromJson(Map<String, dynamic> json) =>

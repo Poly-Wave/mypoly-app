@@ -12,16 +12,16 @@ part 'bill_category_summary_response.g.dart';
 abstract class BillCategorySummaryResponse with _$BillCategorySummaryResponse {
   const factory BillCategorySummaryResponse({
     /// 카테고리 ID
-    @JsonKey(name: r'categoryId') int? categoryId,
+    @JsonKey(name: r'categoryId') required int categoryId,
 
     /// 카테고리 코드
-    @JsonKey(name: r'categoryCode') String? categoryCode,
+    @JsonKey(name: r'categoryCode') required String categoryCode,
 
     /// 카테고리명
-    @JsonKey(name: r'categoryName') String? categoryName,
+    @JsonKey(name: r'categoryName') required String categoryName,
 
     /// 카테고리 순위
-    @JsonKey(name: r'rankOrder') int? rankOrder,
+    @JsonKey(name: r'rankOrder') required int rankOrder,
   }) = _BillCategorySummaryResponse;
 
   factory BillCategorySummaryResponse.fromJson(Map<String, dynamic> json) =>
