@@ -153,3 +153,98 @@ Future<void> showBoolBottomSheetModal(
     ],
   );
 }
+
+Future<void> showWrapBottomSheetModal<T>(
+  BuildContext context, {
+  required List<(T, String)> values,
+  List<T> value = const [],
+  bool multiple = true,
+  String title = "주제",
+  required void Function(List<T>) onChanged,
+}) async {
+  showMPBottomSheetModal(
+    context,
+    children: [
+      MPBottomSheetCloseHeader(),
+      HookBuilder(
+        builder: (context) {
+          final newValue = useState(value);
+
+          void toggleValue(T value) {
+            if (multiple) {
+              newValue.value = newValue.value.contains(value)
+                  ? newValue.value.where((item) => item != value).toList()
+                  : [...newValue.value, value];
+              return;
+            }
+
+            newValue.value = newValue.value.contains(value) ? [] : [value];
+          }
+
+          return Padding(
+            padding: .symmetric(horizontal: 20.w),
+            child: Column(
+              crossAxisAlignment: .stretch,
+              children: [
+                Text(
+                  title,
+                  style: Pretendard.semiBold.set(
+                    size: 16,
+                    height: 1.45,
+                    color: ColorStyles.white,
+                  ),
+                ),
+                MPHeight(12),
+                Wrap(
+                  spacing: 8.w,
+                  runSpacing: 8.h,
+                  children: [
+                    MPChip(
+                      text: "전체",
+                      isActive: newValue.value.isEmpty,
+                      onTap: () => newValue.value = [],
+                    ),
+                    ...values.map(
+                      (item) => MPChip(
+                        text: item.$2,
+                        isActive: newValue.value.contains(item.$1),
+                        onTap: () => toggleValue(item.$1),
+                      ),
+                    ),
+                  ],
+                ),
+                MPHeight(50),
+                Row(
+                  spacing: 20.w,
+                  children: [
+                    Expanded(
+                      child: MPButton(
+                        "초기화",
+                        style: .gray,
+                        onTap: () {
+                          onChanged([]);
+                          context.pop();
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: MPButton(
+                        "적용",
+                        enabled: newValue.value.isNotEmpty,
+                        onTap: () {
+                          onChanged(newValue.value);
+                          context.pop();
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                MPHeight(20),
+              ],
+            ),
+          );
+        },
+      ),
+    ],
+  );
+}

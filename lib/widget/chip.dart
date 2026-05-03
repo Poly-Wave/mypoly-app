@@ -39,6 +39,7 @@ class MPChip extends StatelessWidget {
           ),
         ),
         child: Row(
+          mainAxisSize: .min,
           mainAxisAlignment: .center,
           children: [
             AnimatedDefaultTextStyle(

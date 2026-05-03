@@ -59,6 +59,7 @@ class VoteView extends HookConsumerWidget {
               ],
             ),
           ),
+          Container(height: 1.h, color: ColorStyles.gray80),
         ],
       ),
     );
