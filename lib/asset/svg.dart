@@ -4,6 +4,7 @@ class SvgImage {
   SvgImage._();
 
   static const String arrowDown = 'assets/svg/arrow_down.svg';
+  static const String arrowDownFilter = 'assets/svg/arrow_down_filter.svg';
   static const String arrowLeft = 'assets/svg/arrow_left.svg';
   static const String arrowRight = 'assets/svg/arrow_right.svg';
   static const String arrowUp = 'assets/svg/arrow_up.svg';

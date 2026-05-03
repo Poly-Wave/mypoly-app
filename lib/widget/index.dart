@@ -19,3 +19,5 @@ part 'button.dart';
 part 'appbar.dart';
 part 'input.dart';
 part 'loading.dart';
+part 'chip.dart';
+part 'switch.dart';

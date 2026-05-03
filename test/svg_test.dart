@@ -6,6 +6,7 @@ import 'package:mypoly/asset/index.dart';
 void main() {
   test('svg assets test', () {
     expect(File(SvgImage.arrowDown).existsSync(), isTrue);
+    expect(File(SvgImage.arrowDownFilter).existsSync(), isTrue);
     expect(File(SvgImage.arrowLeft).existsSync(), isTrue);
     expect(File(SvgImage.arrowRight).existsSync(), isTrue);
     expect(File(SvgImage.arrowUp).existsSync(), isTrue);
