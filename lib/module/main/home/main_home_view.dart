@@ -16,7 +16,6 @@ import 'package:mypoly/generate/bills/model/pageable.dart';
 import 'package:mypoly/data/provider/dio_provider.dart';
 import 'package:mypoly/provider/app_provider.dart';
 import 'package:mypoly/module/main/home/widget/agenda_intro_item.dart';
-import 'package:mypoly/module/main/home/widget/my_info_button.dart';
 import 'package:mypoly/module/main/home/widget/agenda_category_button.dart';
 import 'package:mypoly/module/main/home/widget/sort_button.dart';
 import 'package:mypoly/module/main/home/widget/favorite_agenda_item.dart';
@@ -167,16 +166,18 @@ class MyInfoSection extends StatelessWidget {
         ),
 
         Row(
+          spacing: 10.w,
           children: [
             Expanded(
-              child: MyInfoButton(
-                item: ("보관함", SvgImage.homeStore, ColorStyles.white, () {}),
+              child: GestureDetector(
+                onTap: () => context.pushRoute(BookmarkRoute()),
+                child: MPImage(WebpImage.btnMainHomeBookmark, fit: .fitWidth),
               ),
             ),
-            SizedBox(width: 10.w),
             Expanded(
-              child: MyInfoButton(
-                item: ("참여투표", SvgImage.homeVote, ColorStyles.white, () {}),
+              child: GestureDetector(
+                onTap: () => context.pushRoute(VoteRoute()),
+                child: MPImage(WebpImage.btnMainHomeVote, fit: .fitWidth),
               ),
             ),
           ],

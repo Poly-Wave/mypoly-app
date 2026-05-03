@@ -7,7 +7,7 @@ import 'package:mypoly/module/main/agenda/main_agenda_view.dart';
 import 'package:mypoly/module/main/home/main_home_view.dart';
 import 'package:mypoly/module/main/main_provider.dart';
 import 'package:mypoly/module/main/subsidy/main_subsidy_view.dart';
-import 'main_bottom_Bar.dart';
+import 'main_bottom_bar.dart';
 import 'main_app_bar.dart';
 
 @RoutePage()
@@ -41,9 +41,7 @@ class MainView extends HookConsumerWidget {
       ),
       bottomNavigationBar: MainBottomBar(
         currentIndex: mainPage,
-        onTap: (index) {
-          ref.read(mainPageProvider.notifier).update(index);
-        },
+        onTap: ref.read(mainPageProvider.notifier).update,
       ),
     );
   }
