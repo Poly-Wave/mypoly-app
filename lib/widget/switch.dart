@@ -1,15 +1,41 @@
 part of 'index.dart';
 
-enum MPSort { popular, latest }
+abstract interface class MPSortOption {
+  String get text;
+  List<MPSortOption> get options;
+}
 
-class MPSortSwitch extends StatelessWidget {
-  final MPSort value;
-  final ValueChanged<MPSort> onChanged;
+enum MPSort implements MPSortOption {
+  popular(text: "인기순"),
+  latest(text: "최신순");
+
+  @override
+  final String text;
+
+  @override
+  List<MPSort> get options => values;
+
+  const MPSort({required this.text});
+}
+
+class MPSortSwitch<T extends MPSortOption> extends StatelessWidget {
+  final T value;
+  final ValueChanged<T> onChanged;
 
   const MPSortSwitch({super.key, required this.value, required this.onChanged});
 
+  List<T> get _values {
+    final values = value.options.cast<T>();
+    assert(values.length == 2, "MPSortSwitch only supports two values.");
+    return values;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final switchValues = _values;
+    final first = switchValues.first;
+    final second = switchValues.last;
+
     return Container(
       width: 100.w,
       height: 26.h,
@@ -23,7 +49,7 @@ class MPSortSwitch extends StatelessWidget {
           AnimatedAlign(
             duration: const Duration(milliseconds: 180),
             curve: Curves.easeOutCubic,
-            alignment: value == MPSort.popular ? .centerLeft : .centerRight,
+            alignment: value == first ? .centerLeft : .centerRight,
             child: Container(
               width: 44.w,
               height: 20.h,
@@ -36,15 +62,15 @@ class MPSortSwitch extends StatelessWidget {
           Row(
             children: [
               MPSortItem(
-                text: "인기순",
-                isActive: value == .popular,
-                onTap: () => onChanged(.popular),
+                text: first.text,
+                isActive: value == first,
+                onTap: () => onChanged(first),
               ),
               SizedBox(width: 4.w),
               MPSortItem(
-                text: "최신순",
-                isActive: value == .latest,
-                onTap: () => onChanged(.latest),
+                text: second.text,
+                isActive: value == second,
+                onTap: () => onChanged(second),
               ),
             ],
           ),

@@ -2,6 +2,9 @@ part of 'index.dart';
 
 class MPChip extends StatelessWidget {
   final String text;
+  final double height;
+  final EdgeInsetsGeometry? padding;
+  final double textSize;
   final bool isActive;
   final List<Widget>? activeRights;
   final List<Widget>? inactiveRights;
@@ -10,6 +13,9 @@ class MPChip extends StatelessWidget {
   const MPChip({
     super.key,
     required this.text,
+    this.height = 32,
+    this.padding,
+    this.textSize = 14,
     required this.isActive,
     this.activeRights,
     this.inactiveRights,
@@ -23,8 +29,8 @@ class MPChip extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         curve: Curves.fastOutSlowIn,
-        height: 32.h,
-        padding: .symmetric(horizontal: 12.w),
+        height: height.h,
+        padding: padding ?? .symmetric(horizontal: 12.w),
         decoration: BoxDecoration(
           borderRadius: .circular(999.r),
           border: .all(
@@ -32,42 +38,36 @@ class MPChip extends StatelessWidget {
             color: isActive ? ColorStyles.primary60 : ColorStyles.gray60,
           ),
         ),
-        child: Stack(
-          alignment: .center,
+        child: Row(
+          mainAxisAlignment: .center,
           children: [
-            AnimatedOpacity(
-              opacity: isActive ? 0.0 : 1.0,
+            AnimatedDefaultTextStyle(
               duration: const Duration(milliseconds: 200),
-              curve: Curves.easeInOut,
-              child: Row(
-                children: [
-                  Text(
-                    text,
-                    style: Pretendard.semiBold.set(
-                      size: 14,
-                      color: ColorStyles.gray20,
-                    ),
-                  ),
-                  ...(inactiveRights ?? []),
-                ],
+              curve: Curves.fastOutSlowIn,
+              style: Pretendard.semiBold.set(
+                size: textSize,
+                color: isActive ? ColorStyles.primary60 : ColorStyles.gray20,
               ),
+              child: Text(text),
             ),
-            AnimatedOpacity(
-              opacity: isActive ? 1.0 : 0.0,
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.easeInOut,
-              child: Row(
-                children: [
-                  Text(
-                    text,
-                    style: Pretendard.semiBold.set(
-                      size: 14,
-                      color: ColorStyles.primary60,
-                    ),
+            Stack(
+              children: [
+                AnimatedOpacity(
+                  opacity: isActive ? 0.0 : 1.0,
+                  duration: const Duration(milliseconds: 200),
+                  curve: Curves.easeInOut,
+                  child: Row(
+                    mainAxisSize: .min,
+                    children: inactiveRights ?? [],
                   ),
-                  ...(activeRights ?? []),
-                ],
-              ),
+                ),
+                AnimatedOpacity(
+                  opacity: isActive ? 1.0 : 0.0,
+                  duration: const Duration(milliseconds: 200),
+                  curve: Curves.easeInOut,
+                  child: Row(mainAxisSize: .min, children: activeRights ?? []),
+                ),
+              ],
             ),
           ],
         ),

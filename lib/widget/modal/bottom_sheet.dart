@@ -64,3 +64,92 @@ class MPBottomSheetCloseHeader extends StatelessWidget {
     );
   }
 }
+
+Future<void> showBoolBottomSheetModal(
+  BuildContext context, {
+  bool? value,
+  String title = "투표 결과",
+  String trueText = "찬성",
+  String falseText = "반대",
+  required void Function(bool?) onChanged,
+}) async {
+  showMPBottomSheetModal(
+    context,
+    children: [
+      MPBottomSheetCloseHeader(),
+      HookBuilder(
+        builder: (context) {
+          final newValue = useState(value);
+
+          return Padding(
+            padding: .symmetric(horizontal: 20.w),
+            child: Column(
+              crossAxisAlignment: .stretch,
+              children: [
+                Text(
+                  title,
+                  style: Pretendard.semiBold.set(
+                    size: 16,
+                    height: 1.45,
+                    color: ColorStyles.white,
+                  ),
+                ),
+                MPHeight(12),
+                Row(
+                  spacing: 10.w,
+                  children: [
+                    Expanded(
+                      child: MPChip(
+                        height: 39,
+                        textSize: 16,
+                        text: trueText,
+                        isActive: newValue.value == true,
+                        onTap: () => newValue.value = true,
+                      ),
+                    ),
+                    Expanded(
+                      child: MPChip(
+                        height: 39,
+                        textSize: 16,
+                        text: falseText,
+                        isActive: newValue.value == false,
+                        onTap: () => newValue.value = false,
+                      ),
+                    ),
+                  ],
+                ),
+                MPHeight(50),
+                Row(
+                  spacing: 20.w,
+                  children: [
+                    Expanded(
+                      child: MPButton(
+                        "초기화",
+                        style: .gray,
+                        onTap: () {
+                          onChanged(null);
+                          context.pop();
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: MPButton(
+                        "적용",
+                        enabled: newValue.value != null,
+                        onTap: () {
+                          onChanged(newValue.value);
+                          context.pop();
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                MPHeight(20),
+              ],
+            ),
+          );
+        },
+      ),
+    ],
+  );
+}
