@@ -8,6 +8,7 @@ void main() {
     expect(File(WebpImage.btnMainHomeBookmark).existsSync(), isTrue);
     expect(File(WebpImage.btnMainHomeVote).existsSync(), isTrue);
     expect(File(WebpImage.emptyProfile).existsSync(), isTrue);
+    expect(File(WebpImage.imgSearch).existsSync(), isTrue);
     expect(File(WebpImage.loading).existsSync(), isTrue);
     expect(File(WebpImage.popular1).existsSync(), isTrue);
     expect(File(WebpImage.popular2).existsSync(), isTrue);

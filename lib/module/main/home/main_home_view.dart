@@ -119,25 +119,22 @@ class MyInfoSection extends StatelessWidget {
                       color: ColorStyles.white,
                     ),
                     children: [
-                      const TextSpan(text: "안녕하세요\n"),
+                      TextSpan(text: "안녕하세요\n"),
                       TextSpan(
                         text: "동글동글한너구리",
                         style: Pretendard.semiBold
                             .set(size: 25, height: 1.3)
                             .copyWith(
                               foreground: Paint()
-                                ..shader =
-                                    const LinearGradient(
-                                      colors: [
-                                        ColorStyles.primary40,
-                                        ColorStyles.primary10,
-                                      ],
-                                    ).createShader(
-                                      const Rect.fromLTWH(0, 0, 200, 70),
-                                    ),
+                                ..shader = LinearGradient(
+                                  colors: [
+                                    ColorStyles.primary40,
+                                    ColorStyles.primary10,
+                                  ],
+                                ).createShader(Rect.fromLTWH(0, 0, 200, 70)),
                             ),
                       ),
-                      const TextSpan(text: "님"),
+                      TextSpan(text: "님"),
                     ],
                   ),
                 ),
@@ -334,31 +331,33 @@ class AgendaIntroSection extends HookConsumerWidget {
 
         Padding(
           padding: EdgeInsets.only(top: 12.h),
-          child: Column(
-            children: List.generate(agendaItems.value.length, (index) {
-              final item = agendaItems.value[index];
+          child: agendaItems.value.isEmpty
+              ? ListEmptyView()
+              : Column(
+                  children: List.generate(agendaItems.value.length, (index) {
+                    final item = agendaItems.value[index];
 
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (index != 0) SizedBox(height: 24.h),
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (index != 0) SizedBox(height: 24.h),
 
-                  if (index != 0)
-                    Center(
-                      child: Container(
-                        width: 320.w,
-                        height: 1,
-                        color: ColorStyles.divider,
-                      ),
-                    ),
+                        if (index != 0)
+                          Center(
+                            child: Container(
+                              width: 320.w,
+                              height: 1,
+                              color: ColorStyles.divider,
+                            ),
+                          ),
 
-                  if (index != 0) SizedBox(height: 24.h),
+                        if (index != 0) SizedBox(height: 24.h),
 
-                  AgendaIntroItem(item: item),
-                ],
-              );
-            }),
-          ),
+                        AgendaIntroItem(item: item),
+                      ],
+                    );
+                  }),
+                ),
         ),
       ],
     );
@@ -390,7 +389,7 @@ class FavoriteTopicSection extends HookConsumerWidget {
                   color: ColorStyles.white,
                 ),
               ),
-              const Spacer(),
+              Spacer(),
               Row(
                 children: [
                   SortButton(
@@ -410,15 +409,15 @@ class FavoriteTopicSection extends HookConsumerWidget {
           ),
         ),
 
-        ListView.separated(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: favoriteAgendas.length,
-          separatorBuilder: (context, index) => SizedBox(height: 12.h),
-          itemBuilder: (context, index) {
-            return const FavoriteAgendaItem();
-          },
-        ),
+        favoriteAgendas.isEmpty
+            ? ListEmptyView()
+            : ListView.separated(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: favoriteAgendas.length,
+                separatorBuilder: (context, index) => SizedBox(height: 12.h),
+                itemBuilder: (context, index) => FavoriteAgendaItem(),
+              ),
       ],
     );
   }
@@ -511,6 +510,79 @@ class PopularSubsidySection extends StatelessWidget {
           }),
         ),
       ],
+    );
+  }
+}
+
+// 리스트가 비었을 때 보여주는 뷰
+class ListEmptyView extends StatelessWidget {
+  const ListEmptyView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 300.h,
+      decoration: BoxDecoration(
+        color: ColorStyles.divider,
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          MPImage(WebpImage.imgSearch, size: 64),
+
+          SizedBox(height: 10.h),
+          Column(
+            children: [
+              Text(
+                "관심 있는 주제를 선택해주세요",
+                style: Pretendard.medium.set(
+                  size: 16,
+                  color: ColorStyles.white,
+                ),
+              ),
+              SizedBox(height: 6.h),
+              Text(
+                "동글동글한너구리님이\n관심 갖고 있는 주제 위주로 볼 수 있어요.",
+                textAlign: TextAlign.center,
+                style: Pretendard.medium
+                    .set(size: 14, color: ColorStyles.gray30)
+                    .copyWith(height: 1.45),
+              ),
+            ],
+          ),
+
+          SizedBox(height: 20.h),
+          GestureDetector(
+            onTap: () {},
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  height: 32.h,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 10.w,
+                    vertical: 6.h,
+                  ),
+                  decoration: BoxDecoration(
+                    color: ColorStyles.gray70,
+                    borderRadius: BorderRadius.circular(8.r),
+                    border: Border.all(color: ColorStyles.gray50, width: 1),
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(
+                    "관심 주제 선택",
+                    style: Pretendard.semiBold.set(
+                      size: 14,
+                      color: ColorStyles.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
