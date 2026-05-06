@@ -1,4 +1,5 @@
 import 'package:mypoly/data/provider/dio_provider.dart';
+import 'package:mypoly/generate/bills/api/bill_bookmark_api.dart';
 import 'package:mypoly/generate/bills/api/category_api.dart';
 import 'package:mypoly/generate/users/api/auth_api.dart';
 import 'package:mypoly/generate/users/api/terms_api.dart';
@@ -11,9 +12,17 @@ part 'api_provider.g.dart';
 @Riverpod(keepAlive: true)
 CategoryApi categoryApi(Ref ref) {
   final dio = ref.watch(dioProvider);
-  final apiUrl = ref.watch(envProvider).buillsApiUrl;
+  final apiUrl = ref.watch(envProvider).billsApiUrl;
 
   return CategoryApi(dio, baseUrl: apiUrl);
+}
+
+@Riverpod(keepAlive: true)
+BillBookmarkApi billBookmarkApi(Ref ref) {
+  final dio = ref.watch(dioProvider);
+  final apiUrl = ref.watch(envProvider).billsApiUrl;
+
+  return BillBookmarkApi(dio, baseUrl: apiUrl);
 }
 
 @Riverpod(keepAlive: true)

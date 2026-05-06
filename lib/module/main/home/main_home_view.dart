@@ -203,7 +203,7 @@ class AgendaIntroSection extends HookConsumerWidget {
           final dio = ref.read(dioProvider);
           final api = AgendaApi(
             dio,
-            baseUrl: ref.read(envProvider).buillsApiUrl,
+            baseUrl: ref.read(envProvider).billsApiUrl,
           );
 
           final result = await api.getTabs();
@@ -236,7 +236,7 @@ class AgendaIntroSection extends HookConsumerWidget {
           final dio = ref.read(dioProvider);
           final api = AgendaApi(
             dio,
-            baseUrl: ref.read(envProvider).buillsApiUrl,
+            baseUrl: ref.read(envProvider).billsApiUrl,
           );
           final result = await api.getAgendasByTab(
             tabCode: selectedTab.value!,

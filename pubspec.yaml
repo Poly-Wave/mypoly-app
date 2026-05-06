@@ -21,7 +21,7 @@ dependencies:
 
   # Model
   freezed_annotation: ^3.1.0
-  json_annotation: ^4.9.0
+  json_annotation: ^4.11.0
 
   # Route
   auto_route: ^11.1.0
@@ -68,20 +68,20 @@ dev_dependencies:
     sdk: flutter
 
   # Runner
-  build_runner: ^2.10.5
+  build_runner: ^2.15.0
 
   # Route
-  auto_route_generator: ^10.4.0
+  auto_route_generator: 10.4.0
 
   # State
-  riverpod_generator: ^4.0.0+1
+  riverpod_generator: ^4.0.3
 
   # API
   retrofit_generator: ^10.0.0
 
   # Model
-  freezed: ^3.2.3
-  json_serializable: ^6.11.1
+  freezed: ^3.2.5
+  json_serializable: ^6.13.0
 
   # Lint
   flutter_lints: ^6.0.0

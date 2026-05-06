@@ -81,7 +81,7 @@ class _AgendaListSection extends HookConsumerWidget {
           final dio = ref.read(dioProvider);
           final api = AgendaApi(
             dio,
-            baseUrl: ref.read(envProvider).buillsApiUrl,
+            baseUrl: ref.read(envProvider).billsApiUrl,
           );
 
           final result = await api.getMainAgendas(
