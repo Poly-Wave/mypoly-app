@@ -2,6 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:mypoly/model/bill.dart';
 import 'package:mypoly/module/main/home/bookmark/bookmark_provider.dart';
 import 'package:mypoly/style/index.dart';
 import 'package:mypoly/widget/index.dart';
@@ -68,8 +70,46 @@ class BookmarkView extends HookConsumerWidget {
             ),
           ),
           Container(height: 1.h, color: ColorStyles.gray80),
+          Expanded(
+            child: PagedListView(
+              padding: .only(top: 10.h),
+              state: bookmarksPaging,
+              fetchNextPage: ref
+                  .read(bookmarksPagingProvider.notifier)
+                  .fetchNextPage,
+              builderDelegate: PagedChildBuilderDelegate<BillListData>(
+                itemBuilder: (context, item, index) =>
+                    BillCompactColumnItem(item: item),
+                firstPageProgressIndicatorBuilder: (_) =>
+                    Column(children: [MPHeight(180), MPLoading()]),
+                firstPageErrorIndicatorBuilder: (_) =>
+                    Column(children: [MPHeight(180), MPLoading()]),
+                newPageProgressIndicatorBuilder: (_) => MPSafeBox(
+                  bottom: true,
+                  child: Center(child: MPLoading(size: 18)),
+                ),
+                newPageErrorIndicatorBuilder: (_) => const SizedBox.shrink(),
+                noItemsFoundIndicatorBuilder: (_) =>
+                    Column(mainAxisSize: MainAxisSize.min, children: [
+                  ],
+                ),
+                noMoreItemsIndicatorBuilder: (_) => MPSafeBox(bottom: true),
+              ),
+            ),
+          ),
         ],
       ),
     );
+  }
+}
+
+class BillCompactColumnItem extends StatelessWidget {
+  final BillListData item;
+
+  const BillCompactColumnItem({super.key, required this.item});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }

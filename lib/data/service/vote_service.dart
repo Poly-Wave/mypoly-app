@@ -1,35 +1,35 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:mypoly/enum/sort.dart';
-import 'package:mypoly/generate/bills/api/bill_bookmark_api.dart';
-import 'package:mypoly/generate/bills/model/slice_response_bookmarked_bill_response.dart';
+import 'package:mypoly/generate/bills/api/vote_api.dart';
+import 'package:mypoly/generate/bills/model/slice_response_my_voted_bill_response.dart';
 import 'package:mypoly/util/error.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-class BillBookmarkService {
+class VoteService {
   // ignore: unused_field
   final Ref _ref;
-  final BillBookmarkApi _billBookmarkApi;
+  final VoteApi _voteApi;
 
-  BillBookmarkService(this._ref, this._billBookmarkApi);
+  VoteService(this._ref, this._voteApi);
 
-  Future<SliceResponseBookmarkedBillResponse> getBookmarkedBills({
+  Future<SliceResponseMyVotedBillResponse> getMyVotedBills({
     DateTime? fromDate,
     DateTime? toDate,
-    required List<String> categoryCodes,
-    required List<String> stageCodes,
     required MPSort sort,
+    bool? voteResult,
     int page = 0,
     int size = 20,
     CancelToken? cancelToken,
   }) async {
     try {
-      return await _billBookmarkApi.getBookmarkedBills(
+      return await _voteApi.getMyVotedBills(
         fromDate: fromDate,
         toDate: toDate,
-        categoryCodes: categoryCodes,
-        stageCodes: stageCodes,
         sortType: sort.value,
+        voteResults: voteResult != null
+            ? [voteResult ? "AGREE" : "DISAGREE"]
+            : null,
         page: page,
         size: size,
         cancelToken: cancelToken,

@@ -1,10 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mypoly/data/provider/service_provider.dart';
 import 'package:mypoly/enum/sort.dart';
 import 'package:mypoly/enum/stage.dart';
-import 'package:mypoly/generate/bills/model/bookmarked_bill_response.dart';
 import 'package:mypoly/generate/bills/model/category_response.dart';
+import 'package:mypoly/model/bill.dart';
 import 'package:mypoly/provider/app_provider.dart';
 import 'package:mypoly/widget/modal/index.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -13,23 +14,19 @@ part 'bookmark_provider.g.dart';
 
 @riverpod
 class BookmarksPaging extends _$BookmarksPaging {
+  CancelToken? _currentCancelToken;
+
   @override
-  PagingState<int?, BookmarkedBillResponse>? build() => null;
+  PagingState<int?, BillListData> build() => PagingState();
 
   Future<void> onRefresh() async {
+    _currentCancelToken?.cancel();
+    _currentCancelToken = null;
     state = PagingState();
-  }
-
-  void onReset() {
-    state = null;
   }
 
   Future<void> fetchNextPage() async {
     final prevState = state;
-
-    if (prevState == null) {
-      return;
-    }
 
     if (prevState.isLoading) {
       return;
@@ -52,6 +49,9 @@ class BookmarksPaging extends _$BookmarksPaging {
           .map((stage) => stage.value)
           .toList();
 
+      _currentCancelToken?.cancel();
+      _currentCancelToken = CancelToken();
+
       final response = await ref
           .read(billBookmarkServiceProvider)
           .getBookmarkedBills(
@@ -59,9 +59,12 @@ class BookmarksPaging extends _$BookmarksPaging {
             categoryCodes: categoryCodes,
             stageCodes: stageCodes,
             page: newKey,
+            cancelToken: _currentCancelToken,
           );
 
-      final newItems = response.content ?? <BookmarkedBillResponse>[];
+      final newItems =
+          response.content?.map((item) => item.toBillListData(ref)).toList() ??
+          [];
 
       state = prevState.copyWith(
         isLoading: false,
@@ -80,7 +83,12 @@ class Sort extends _$Sort {
   @override
   MPSort build() => .popular;
 
-  void onChanged(MPSort value) => state = value;
+  void onChanged(MPSort value) {
+    if (state == value) return;
+    state = value;
+
+    ref.read(bookmarksPagingProvider.notifier).onRefresh();
+  }
 }
 
 @riverpod
@@ -94,7 +102,12 @@ class Stages extends _$Stages {
     title: "진행단계",
     values: Stage.values.map((stage) => (stage, stage.text)).toList(),
     value: state,
-    onChanged: (value) => state = value,
+    onChanged: (value) {
+      if (state == value) return;
+      state = value;
+
+      ref.read(bookmarksPagingProvider.notifier).onRefresh();
+    },
   );
 }
 
@@ -111,6 +124,11 @@ class Categories extends _$Categories {
         .map((item) => (item, item.name ?? ""))
         .toList(),
     value: state,
-    onChanged: (value) => state = value,
+    onChanged: (value) {
+      if (state == value) return;
+      state = value;
+
+      ref.read(bookmarksPagingProvider.notifier).onRefresh();
+    },
   );
 }

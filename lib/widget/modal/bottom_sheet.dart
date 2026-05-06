@@ -79,6 +79,7 @@ Future<void> showBoolBottomSheetModal(
       MPBottomSheetCloseHeader(),
       HookBuilder(
         builder: (context) {
+          final enabled = useState(false);
           final newValue = useState(value);
 
           return Padding(
@@ -104,7 +105,12 @@ Future<void> showBoolBottomSheetModal(
                         textSize: 16,
                         text: trueText,
                         isActive: newValue.value == true,
-                        onTap: () => newValue.value = true,
+                        onTap: () {
+                          if (newValue.value == true) return;
+
+                          enabled.value = true;
+                          newValue.value = true;
+                        },
                       ),
                     ),
                     Expanded(
@@ -113,7 +119,12 @@ Future<void> showBoolBottomSheetModal(
                         textSize: 16,
                         text: falseText,
                         isActive: newValue.value == false,
-                        onTap: () => newValue.value = false,
+                        onTap: () {
+                          if (newValue.value == false) return;
+
+                          enabled.value = true;
+                          newValue.value = false;
+                        },
                       ),
                     ),
                   ],
@@ -126,10 +137,7 @@ Future<void> showBoolBottomSheetModal(
                       child: MPButton(
                         "초기화",
                         style: .gray,
-                        onTap: () {
-                          onChanged(null);
-                          context.pop();
-                        },
+                        onTap: () => newValue.value = value,
                       ),
                     ),
                     Expanded(
@@ -205,7 +213,12 @@ Future<void> showWrapBottomSheetModal<T>(
                     MPChip(
                       text: "전체",
                       isActive: newValue.value.isEmpty,
-                      onTap: () => newValue.value = [],
+                      onTap: () {
+                        if (newValue.value.isEmpty) return;
+
+                        enabled.value = true;
+                        newValue.value = [];
+                      },
                     ),
                     ...values.map(
                       (item) => MPChip(
