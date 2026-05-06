@@ -514,7 +514,6 @@ class PopularSubsidySection extends StatelessWidget {
   }
 }
 
-// 리스트가 비었을 때 보여주는 뷰
 class ListEmptyView extends StatelessWidget {
   const ListEmptyView({super.key});
 
