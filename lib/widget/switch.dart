@@ -1,23 +1,5 @@
 part of 'index.dart';
 
-abstract interface class MPSortOption {
-  String get text;
-  List<MPSortOption> get options;
-}
-
-enum MPSort implements MPSortOption {
-  popular(text: "인기순"),
-  latest(text: "최신순");
-
-  @override
-  final String text;
-
-  @override
-  List<MPSort> get options => values;
-
-  const MPSort({required this.text});
-}
-
 class MPSortSwitch<T extends MPSortOption> extends StatelessWidget {
   final T value;
   final ValueChanged<T> onChanged;

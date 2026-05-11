@@ -30,8 +30,8 @@ abstract class BillBookmarkApi {
   Future<SliceResponseBookmarkedBillResponse> getBookmarkedBills({
     @Query('fromDate') DateTime? fromDate,
     @Query('toDate') DateTime? toDate,
-    @Query('categoryCodes') Set<String>? categoryCodes,
-    @Query('stageCodes') Set<String>? stageCodes,
+    @Query('categoryCodes') List<String>? categoryCodes,
+    @Query('stageCodes') List<String>? stageCodes,
     @Query('sortType') String? sortType = 'LATEST',
     @Query('page') int? page = 0,
     @Query('size') int? size = 20,

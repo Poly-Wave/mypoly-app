@@ -1,0 +1,58 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mypoly/generate/bills/model/bookmarked_bill_response.dart';
+import 'package:mypoly/generate/bills/model/category_response.dart';
+import 'package:mypoly/generate/bills/model/my_voted_bill_response.dart';
+import 'package:mypoly/module/main/home/bookmark/bookmark_provider.dart';
+
+part 'bill.freezed.dart';
+part 'bill.g.dart';
+
+@freezed
+abstract class BillListData with _$BillListData {
+  const factory BillListData({
+    required int id,
+    required String title,
+    required CategoryResponse category,
+    required int viewCount,
+    required int voteCount,
+    required DateTime registeredDate,
+  }) = _BillListData;
+
+  factory BillListData.fromJson(Map<String, dynamic> json) =>
+      _$BillListDataFromJson(json);
+}
+
+extension BookmarkedBillResponseExtension on BookmarkedBillResponse {
+  BillListData toBillListData(Ref ref) {
+    final category = ref
+        .read(categoriesProvider)
+        .firstWhere((category) => category.code == categoryCode);
+
+    return BillListData(
+      id: billId ?? 0,
+      title: title ?? "",
+      category: category,
+      viewCount: viewCount ?? 0,
+      voteCount: voteCount ?? 0,
+      registeredDate: registeredDate ?? DateTime.now(),
+    );
+  }
+}
+
+extension MyVotedBillResponseExtension on MyVotedBillResponse {
+  BillListData toBillListData(Ref ref) {
+    final category = ref
+        .read(categoriesProvider)
+        .firstWhere((category) => category.code == categoryCode);
+
+    return BillListData(
+      id: billId ?? 0,
+      title: title ?? "",
+      category: category,
+      viewCount: viewCount ?? 0,
+      voteCount: voteCount ?? 0,
+      registeredDate: registeredDate ?? DateTime.now(),
+    );
+  }
+}
