@@ -1,10 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mypoly/asset/index.dart';
 import 'package:mypoly/style/index.dart';
 import 'package:mypoly/widget/index.dart';
+import 'package:mypoly/widget/modal/index.dart';
+import 'package:collection/collection.dart';
 import 'package:mypoly/module/widget/common/horizontal_padding.dart';
 import '../agenda/widget/agenda_topic_card.dart';
 import 'package:mypoly/generate/bills/api/agenda_api.dart';
@@ -75,7 +78,13 @@ class _AgendaListSection extends HookConsumerWidget {
     final category = useState('지역');
     final field = useState('주제');
 
+    final appCategories = ref.watch(appCategoriesProvider);
+    final categoryCodes = useState<List<String>>([]);
+
     useEffect(() {
+      if (appCategories.isEmpty) {
+        return null;
+      }
       Future(() async {
         try {
           final dio = ref.read(dioProvider);
@@ -84,12 +93,14 @@ class _AgendaListSection extends HookConsumerWidget {
             baseUrl: ref.read(envProvider).buillsApiUrl,
           );
 
-          final result = await api.getMainAgendas(
-            // aiRecommended: true,
-            pageable: Pageable(page: 0, size: 10, sort: _mapSort(sort.value)),
-          );
+          final List<String> targetCodes = categoryCodes.value.isNotEmpty
+              ? categoryCodes.value
+              : appCategories.map((e) => e.code.toString()).toList();
 
-          debugPrint('result: $result');
+          final result = await api.getMainAgendas(
+            pageable: Pageable(page: 0, size: 10, sort: _mapSort(sort.value)),
+            categoryCodes: targetCodes,
+          );
 
           agendas.value = result;
         } catch (e) {
@@ -98,7 +109,7 @@ class _AgendaListSection extends HookConsumerWidget {
       });
 
       return null;
-    }, [sort.value]);
+    }, [sort.value, categoryCodes.value]);
 
     return Padding(
       padding: EdgeInsets.only(top: 24),
@@ -107,7 +118,13 @@ class _AgendaListSection extends HookConsumerWidget {
         children: [
           _buildHeader(context, sort),
           SizedBox(height: 12),
-          _buildFilterRow(context, category, field),
+          _buildFilterRow(
+            context,
+            category,
+            field,
+            appCategories,
+            categoryCodes,
+          ),
 
           SizedBox(height: 16),
 
@@ -179,6 +196,186 @@ class _AgendaListSection extends HookConsumerWidget {
     }
   }
 
+  void _openTopicBottomSheet(
+    BuildContext context,
+    List<dynamic> appCategories,
+    ValueNotifier<List<String>> confirmedCodes,
+  ) {
+    showMPBottomSheetModal(
+      context,
+      children: [
+        const MPBottomSheetCloseHeader(),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: HookBuilder(
+            builder: (context) {
+              final bool isAllSelectedBefore =
+                  confirmedCodes.value.length == appCategories.length;
+              final categoryStates = useState(
+                appCategories.map((cat) {
+                  final bool isSelected = isAllSelectedBefore
+                      ? false
+                      : confirmedCodes.value.contains(cat.code);
+                  return (isSelected, cat);
+                }).toList(),
+              );
+
+              final bool isAnyChecked = categoryStates.value.any(
+                (item) => item.$1,
+              );
+              final bool isApplyActive = isAnyChecked;
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    "주제별",
+                    style: Pretendard.semiBold.set(
+                      size: 16,
+                      color: ColorStyles.white,
+                    ),
+                  ),
+                  MPHeight(16),
+
+                  Wrap(
+                    spacing: 10.w,
+                    runSpacing: 10.h,
+                    children: [
+                      _buildChip(
+                        label: "전체",
+                        isSelected: !isAnyChecked,
+                        onTap: () {
+                          categoryStates.value = categoryStates.value
+                              .map((item) => (false, item.$2))
+                              .toList();
+                        },
+                      ),
+                      ...categoryStates.value.mapIndexed((index, item) {
+                        return _buildChip(
+                          label: item.$2.name ?? '',
+                          isSelected: item.$1,
+                          onTap: () {
+                            final tmp = [...categoryStates.value];
+                            tmp[index] = (!item.$1, item.$2);
+                            categoryStates.value = tmp;
+                          },
+                        );
+                      }),
+                    ],
+                  ),
+                  MPHeight(40),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          categoryStates.value = categoryStates.value
+                              .map((item) => (false, item.$2))
+                              .toList();
+                        },
+                        child: Container(
+                          width: 150.w,
+                          height: 57.h,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 24.w,
+                            vertical: 16.h,
+                          ),
+                          decoration: BoxDecoration(
+                            color: ColorStyles.gray60,
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            "초기화",
+                            style: Pretendard.semiBold.set(
+                              size: 18,
+                              color: ColorStyles.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 20.w),
+                      GestureDetector(
+                        onTap: () {
+                          if (!isApplyActive) return;
+                          final selectedItems = categoryStates.value.where(
+                            (item) => item.$1,
+                          );
+                          confirmedCodes.value = selectedItems
+                              .map((item) => item.$2.code as String)
+                              .toList();
+                          context.pop();
+                        },
+                        child: Container(
+                          width: 150.w,
+                          height: 57.h,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 24.w,
+                            vertical: 16.h,
+                          ),
+                          decoration: BoxDecoration(
+                            color: isApplyActive
+                                ? ColorStyles.primary50
+                                : ColorStyles.gray70,
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            "적용",
+                            style: Pretendard.semiBold.set(
+                              size: 18,
+                              color: isApplyActive
+                                  ? ColorStyles.black
+                                  : ColorStyles.gray60,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+        MPHeight(20),
+      ],
+    );
+  }
+
+  Widget _buildChip({
+    required String label,
+    required bool isSelected,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.only(
+          top: 6.h,
+          bottom: 6.h,
+          left: 12.w,
+          right: 12.w,
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(999.r),
+          border: Border.all(
+            color: isSelected ? ColorStyles.primary50 : ColorStyles.gray60,
+            width: 1.r,
+          ),
+        ),
+        child: Text(
+          label,
+          style: Pretendard.semiBold.set(
+            size: 14,
+            color: isSelected ? ColorStyles.primary60 : ColorStyles.gray20,
+          ),
+        ),
+      ),
+    );
+  }
+
   String _formatDate(DateTime? date) {
     if (date == null) return '';
     return '${date.year}.${date.month.toString().padLeft(2, '0')}.${date.day.toString().padLeft(2, '0')}';
@@ -222,6 +419,8 @@ class _AgendaListSection extends HookConsumerWidget {
     BuildContext context,
     ValueNotifier<String> category,
     ValueNotifier<String> field,
+    List<dynamic> appCategories,
+    ValueNotifier<List<String>> categoryCodes,
   ) {
     return Row(
       children: [
@@ -247,22 +446,11 @@ class _AgendaListSection extends HookConsumerWidget {
 
         SizedBox(width: 8),
 
-        /// 필터 버튼 - 지역/주제
+        /// 필터 버튼 - 주제
         GestureDetector(
-          onTap: () => _showSheet(context, categoryOptions, (v) {
-            category.value = v;
-          }),
-          child: _outlineButton(category.value),
-        ),
-
-        SizedBox(width: 8),
-
-        /// 필터 버튼 - 주제/제목/내용/썸네일/등록일자/조회수/투표수
-        GestureDetector(
-          onTap: () => _showSheet(context, fieldOptions, (v) {
-            field.value = v;
-          }),
-          child: _outlineButton(field.value),
+          onTap: () =>
+              _openTopicBottomSheet(context, appCategories, categoryCodes),
+          child: _outlineButton('주제'),
         ),
       ],
     );
@@ -292,30 +480,6 @@ class _AgendaListSection extends HookConsumerWidget {
       ),
     );
   }
-
-  void _showSheet(
-    BuildContext context,
-    List<String> options,
-    Function(String) onSelected,
-  ) {
-    showModalBottomSheet(
-      context: context,
-      builder: (_) {
-        return ListView(
-          shrinkWrap: true,
-          children: options.map((e) {
-            return ListTile(
-              title: Text(e),
-              onTap: () {
-                onSelected(e);
-                Navigator.pop(context);
-              },
-            );
-          }).toList(),
-        );
-      },
-    );
-  }
 }
 
 Widget _buildSortButtons(ValueNotifier<String> sort) {
@@ -326,7 +490,7 @@ Widget _buildSortButtons(ValueNotifier<String> sort) {
         isSelected: sort.value == '인기순',
         onTap: () => sort.value = '인기순',
       ),
-      const SizedBox(width: 4),
+      SizedBox(width: 4),
       _sortButton(
         label: '최신순',
         isSelected: sort.value == '최신순',
@@ -347,7 +511,7 @@ Widget _sortButton({
       width: 44,
       height: 20,
       alignment: Alignment.center,
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
         color: isSelected ? ColorStyles.primary20 : ColorStyles.divider,
         borderRadius: BorderRadius.circular(4),
