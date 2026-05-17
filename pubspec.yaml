@@ -143,11 +143,11 @@ melos:
         - melos gen:oss
         - test "$(uname)" = "Darwin" && fvm flutter precache --ios && cd ios && pod install && cd .. || true
         - fvm dart run spider build
-        - fvm dart run build_runner build --delete-conflicting-outputs
+        - fvm dart run build_runner build
 
     watch:
       steps:
-        - fvm dart run build_runner watch --delete-conflicting-outputs
+        - fvm dart run build_runner watch
 
     spider:
       steps:
