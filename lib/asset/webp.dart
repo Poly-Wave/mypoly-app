@@ -7,7 +7,7 @@ class WebpImage {
       'assets/webp/btn_main_home_bookmark.webp';
   static const String btnMainHomeVote = 'assets/webp/btn_main_home_vote.webp';
   static const String emptyProfile = 'assets/webp/empty_profile.webp';
-  static const String imgSearch = 'assets/webp/img_search.webp';
+  static const String emptySearch = 'assets/webp/empty_search.webp';
   static const String loading = 'assets/webp/loading.webp';
   static const String popular1 = 'assets/webp/popular1.webp';
   static const String popular2 = 'assets/webp/popular2.webp';

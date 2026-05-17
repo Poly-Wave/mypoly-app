@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:mypoly/generate/bills/model/my_voted_bill_response.dart';
 import 'package:mypoly/model/bill.dart';
 import 'package:mypoly/module/main/home/bookmark/bookmark_view.dart';
 import 'package:mypoly/module/main/home/vote/vote_provider.dart';
