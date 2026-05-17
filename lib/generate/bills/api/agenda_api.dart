@@ -10,6 +10,7 @@ import 'package:mypoly/generate/bills/model/error_response.dart';
 import 'package:mypoly/generate/bills/model/interest_agenda_response.dart';
 import 'package:mypoly/generate/bills/model/main_agenda_response.dart';
 import 'package:mypoly/generate/bills/model/pageable.dart';
+import 'package:mypoly/generate/bills/model/search_agenda_response.dart';
 
 part 'agenda_api.g.dart';
 
@@ -68,4 +69,19 @@ abstract class AgendaApi {
   ///
   @GET('/agendas/tabs')
   Future<List<AgendaTabResponse>> getTabs({CancelToken? cancelToken});
+
+  /// 의안 제목 검색
+  /// 입력한 키워드가 의안 제목에 포함된 안건 목록을 반환합니다. 최신 등록일(proposalDate) 기준 내림차순으로 정렬됩니다.
+  ///
+  /// Parameters:
+  /// * [keyword] - 검색 키워드
+  /// * [pageable]
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  ///
+  @GET('/agendas/search')
+  Future<List<SearchAgendaResponse>> searchAgendas({
+    @Query('keyword') required String keyword,
+    @Query('pageable') required Pageable pageable,
+    CancelToken? cancelToken,
+  });
 }

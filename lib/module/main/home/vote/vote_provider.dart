@@ -51,15 +51,15 @@ class VotesPaging extends _$VotesPaging {
             cancelToken: _currentCancelToken,
           );
 
-      final newItems =
-          response.content?.map((item) => item.toBillListData(ref)).toList() ??
-          [];
+      final newItems = response.content
+          .map((item) => item.toBillListData(ref))
+          .toList();
 
       state = prevState.copyWith(
         isLoading: false,
         pages: [...?prevState.pages, newItems],
         keys: [...?prevState.keys, newKey],
-        hasNextPage: response.hasNext ?? false,
+        hasNextPage: response.hasNext,
       );
     } catch (e) {
       state = prevState.copyWith(isLoading: false, error: e);

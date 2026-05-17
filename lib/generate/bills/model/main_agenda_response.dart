@@ -11,6 +11,9 @@ part 'main_agenda_response.g.dart';
 @freezed
 abstract class MainAgendaResponse with _$MainAgendaResponse {
   const factory MainAgendaResponse({
+    /// 의안 ID
+    @JsonKey(name: r'billId') required int billId,
+
     /// 주제 코드
     @JsonKey(name: r'categoryCode') String? categoryCode,
 

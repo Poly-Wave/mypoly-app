@@ -31,7 +31,13 @@ class VoteView extends HookConsumerWidget {
             child: Row(
               spacing: 8.w,
               children: [
-                MPFilterChip(text: "생성일", isActive: true, onTap: () {}),
+                MPFilterChip(
+                  text: "생성일",
+                  isActive: true,
+                  onTap: () => ref
+                      .read(voteResultProvider.notifier)
+                      .showBottomSheet(context),
+                ),
                 MPFilterChip(
                   text: "투표결과",
                   isActive: voteResult != null,

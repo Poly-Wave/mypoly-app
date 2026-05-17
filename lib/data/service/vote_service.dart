@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:mypoly/enum/sort.dart';
 import 'package:mypoly/generate/bills/api/vote_api.dart';
-import 'package:mypoly/generate/bills/model/slice_response_my_voted_bill_response.dart';
+import 'package:mypoly/generate/bills/model/my_voted_bill_slice_response.dart';
 import 'package:mypoly/util/error.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -13,7 +13,7 @@ class VoteService {
 
   VoteService(this._ref, this._voteApi);
 
-  Future<SliceResponseMyVotedBillResponse> getMyVotedBills({
+  Future<MyVotedBillSliceResponse> getMyVotedBills({
     DateTime? fromDate,
     DateTime? toDate,
     required MPSort sort,

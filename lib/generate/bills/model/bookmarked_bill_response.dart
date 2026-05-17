@@ -12,43 +12,44 @@ part 'bookmarked_bill_response.g.dart';
 abstract class BookmarkedBillResponse with _$BookmarkedBillResponse {
   const factory BookmarkedBillResponse({
     /// 의안 ID
-    @JsonKey(name: r'billId') int? billId,
+    @JsonKey(name: r'billId') required int billId,
 
     /// 의안 제목
-    @JsonKey(name: r'title') String? title,
+    @JsonKey(name: r'title') required String title,
 
     /// 의안 접수일
-    @JsonKey(name: r'registeredDate') DateTime? registeredDate,
+    @JsonKey(name: r'registeredDate') required DateTime registeredDate,
 
     /// 보관한 시각(KST, +09:00 오프셋 포함)
-    @JsonKey(name: r'bookmarkedAt') DateTime? bookmarkedAt,
+    @JsonKey(name: r'bookmarkedAt') required DateTime bookmarkedAt,
 
     /// 앱용 진행 단계 코드
-    @JsonKey(name: r'stageCode') String? stageCode,
+    @JsonKey(name: r'stageCode') required String stageCode,
 
     /// 앱용 진행 단계명
-    @JsonKey(name: r'stageName') String? stageName,
+    @JsonKey(name: r'stageName') required String stageName,
 
     /// 앱용 진행 단계 순서
-    @JsonKey(name: r'stageOrder') int? stageOrder,
+    @JsonKey(name: r'stageOrder') required int stageOrder,
 
     /// 대표 카테고리 코드
-    @JsonKey(name: r'categoryCode') String? categoryCode,
+    @JsonKey(name: r'categoryCode') required String categoryCode,
 
     /// 대표 카테고리명
-    @JsonKey(name: r'categoryName') String? categoryName,
+    @JsonKey(name: r'categoryName') required String categoryName,
 
     /// 대표 카테고리 배경색 HEX, # 제외
-    @JsonKey(name: r'categoryBackgroundColor') String? categoryBackgroundColor,
+    @JsonKey(name: r'categoryBackgroundColor')
+    required String categoryBackgroundColor,
 
     /// 조회수
-    @JsonKey(name: r'viewCount') int? viewCount,
+    @JsonKey(name: r'viewCount') required int viewCount,
 
     /// 투표수
-    @JsonKey(name: r'voteCount') int? voteCount,
+    @JsonKey(name: r'voteCount') required int voteCount,
 
     /// 현재 사용자의 보관 여부
-    @JsonKey(name: r'bookmarked') bool? bookmarked,
+    @JsonKey(name: r'bookmarked') required bool bookmarked,
   }) = _BookmarkedBillResponse;
 
   factory BookmarkedBillResponse.fromJson(Map<String, dynamic> json) =>

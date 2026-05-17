@@ -41,7 +41,7 @@ class BookmarksPaging extends _$BookmarksPaging {
       final sort = ref.read(sortProvider);
       final categoryCodes = ref
           .read(categoriesProvider)
-          .map((category) => category.code ?? "")
+          .map((category) => category.code)
           .toList();
 
       final stageCodes = ref
@@ -62,15 +62,15 @@ class BookmarksPaging extends _$BookmarksPaging {
             cancelToken: _currentCancelToken,
           );
 
-      final newItems =
-          response.content?.map((item) => item.toBillListData(ref)).toList() ??
-          [];
+      final newItems = response.content
+          .map((item) => item.toBillListData(ref))
+          .toList();
 
       state = prevState.copyWith(
         isLoading: false,
         pages: [...?prevState.pages, newItems],
         keys: [...?prevState.keys, newKey],
-        hasNextPage: response.hasNext ?? false,
+        hasNextPage: response.hasNext,
       );
     } catch (e) {
       state = prevState.copyWith(isLoading: false, error: e);
@@ -121,7 +121,7 @@ class Categories extends _$Categories {
     multiple: true,
     values: ref
         .read(appCategoriesProvider)
-        .map((item) => (item, item.name ?? ""))
+        .map((item) => (item, item.name))
         .toList(),
     value: state,
     onChanged: (value) {

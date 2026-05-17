@@ -261,3 +261,102 @@ Future<void> showWrapBottomSheetModal<T>(
     ],
   );
 }
+
+Future<void> showDateTimeBottomSheetModal<T extends MPDateRangeOption>(
+  BuildContext context, {
+  required List<T> values,
+  required (T, DateTime?, DateTime?) value,
+  String title = "안건 생성일",
+  required void Function(T, DateTime?, DateTime?) onChanged,
+}) async {
+  showMPBottomSheetModal(
+    context,
+    children: [
+      MPBottomSheetCloseHeader(),
+      HookBuilder(
+        builder: (context) {
+          final enabled = useState(false);
+          final newValue = useState(value);
+
+          void selectValue(T value) {
+            if (newValue.value.$1 == value) return;
+
+            enabled.value = true;
+            newValue.value = (value, null, null);
+          }
+
+          return Padding(
+            padding: .symmetric(horizontal: 20.w),
+            child: Column(
+              crossAxisAlignment: .stretch,
+              children: [
+                Text(
+                  title,
+                  style: Pretendard.semiBold.set(
+                    size: 16,
+                    height: 1.45,
+                    color: ColorStyles.white,
+                  ),
+                ),
+                MPHeight(12),
+                GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                    crossAxisSpacing: 8.w,
+                    mainAxisSpacing: 8.h,
+                    childAspectRatio: 74.w / 32.h,
+                  ),
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: values.length,
+                  itemBuilder: (_, index) {
+                    final item = values[index];
+
+                    return MPChip(
+                      height: 32,
+                      padding: EdgeInsets.zero,
+                      text: item.text,
+                      isActive: newValue.value.$1 == item,
+                      onTap: () => selectValue(item),
+                    );
+                  },
+                ),
+                MPHeight(50),
+                Row(
+                  spacing: 20.w,
+                  children: [
+                    Expanded(
+                      child: MPButton(
+                        "초기화",
+                        style: .gray,
+                        onTap: () {
+                          enabled.value = false;
+                          newValue.value = value;
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: MPButton(
+                        "적용",
+                        enabled: enabled.value,
+                        onTap: () {
+                          onChanged(
+                            newValue.value.$1,
+                            newValue.value.$2,
+                            newValue.value.$3,
+                          );
+                          context.pop();
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                MPHeight(20),
+              ],
+            ),
+          );
+        },
+      ),
+    ],
+  );
+}
