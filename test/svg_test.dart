@@ -8,7 +8,9 @@ void main() {
     expect(File(SvgImage.arrowDown).existsSync(), isTrue);
     expect(File(SvgImage.arrowDownFilter).existsSync(), isTrue);
     expect(File(SvgImage.arrowLeft).existsSync(), isTrue);
+    expect(File(SvgImage.arrowLeftCalender).existsSync(), isTrue);
     expect(File(SvgImage.arrowRight).existsSync(), isTrue);
+    expect(File(SvgImage.arrowRightCalender).existsSync(), isTrue);
     expect(File(SvgImage.arrowUp).existsSync(), isTrue);
     expect(File(SvgImage.icBack).existsSync(), isTrue);
     expect(File(SvgImage.icCalender).existsSync(), isTrue);

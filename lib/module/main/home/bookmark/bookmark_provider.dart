@@ -49,6 +49,7 @@ class BookmarksPaging extends _$BookmarksPaging {
           .read(stagesProvider)
           .map((stage) => stage.value)
           .toList();
+      final createdAtRange = ref.read(createdAtRangeProvider);
 
       _currentCancelToken?.cancel();
       _currentCancelToken = CancelToken();
@@ -57,6 +58,8 @@ class BookmarksPaging extends _$BookmarksPaging {
           .read(billBookmarkServiceProvider)
           .getBookmarkedBills(
             sort: sort,
+            fromDate: createdAtRange.$2,
+            toDate: createdAtRange.$3,
             categoryCodes: categoryCodes,
             stageCodes: stageCodes,
             page: newKey,
@@ -88,7 +91,7 @@ class CreatedAtRange extends _$CreatedAtRange {
     context,
     values: MPDateRange.values,
     value: state,
-    title: "진행단계",
+    title: "날짜",
     onChanged: (value) {
       if (state == value) return;
       state = value;

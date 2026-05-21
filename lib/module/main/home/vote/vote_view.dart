@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:mypoly/enum/date_range.dart';
 import 'package:mypoly/model/bill.dart';
 import 'package:mypoly/module/main/home/bookmark/bookmark_view.dart';
 import 'package:mypoly/module/main/home/vote/vote_provider.dart';
@@ -17,6 +18,7 @@ class VoteView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final sort = ref.watch(sortProvider);
     final createdAtRange = ref.watch(createdAtRangeProvider);
+    final votedAtRange = ref.watch(votedAtRangeProvider);
     final voteResult = ref.watch(voteResultProvider);
 
     final votesPaging = ref.watch(votesPagingProvider);
@@ -34,7 +36,7 @@ class VoteView extends HookConsumerWidget {
               children: [
                 MPFilterChip(
                   text: "생성일",
-                  isActive: true,
+                  isActive: createdAtRange != (MPDateRange.all, null, null),
                   onTap: () => ref
                       .read(createdAtRangeProvider.notifier)
                       .showBottomSheet(context),
@@ -48,9 +50,9 @@ class VoteView extends HookConsumerWidget {
                 ),
                 MPFilterChip(
                   text: "투표날짜",
-                  isActive: false,
+                  isActive: votedAtRange != (MPDateRange.all, null, null),
                   onTap: () => ref
-                      .read(createdAtRangeProvider.notifier)
+                      .read(votedAtRangeProvider.notifier)
                       .showBottomSheet(context),
                 ),
               ],

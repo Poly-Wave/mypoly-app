@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:mypoly/enum/date_range.dart';
 import 'package:mypoly/model/bill.dart';
 import 'package:mypoly/module/main/home/bookmark/bookmark_provider.dart';
 import 'package:mypoly/style/index.dart';
@@ -17,6 +18,7 @@ class BookmarkView extends HookConsumerWidget {
     final sort = ref.watch(sortProvider);
     final categories = ref.watch(categoriesProvider);
     final stages = ref.watch(stagesProvider);
+    final createdAtRange = ref.watch(createdAtRangeProvider);
 
     final bookmarksPaging = ref.watch(bookmarksPagingProvider);
 
@@ -31,7 +33,13 @@ class BookmarkView extends HookConsumerWidget {
             child: Row(
               spacing: 8.w,
               children: [
-                MPFilterChip(text: "날짜", isActive: false, onTap: () {}),
+                MPFilterChip(
+                  text: "날짜",
+                  isActive: createdAtRange != (MPDateRange.all, null, null),
+                  onTap: () => ref
+                      .read(createdAtRangeProvider.notifier)
+                      .showBottomSheet(context),
+                ),
                 MPFilterChip(
                   text: "주제",
                   isActive: categories.isNotEmpty,

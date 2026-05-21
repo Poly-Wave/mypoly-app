@@ -39,6 +39,8 @@ class VotesPaging extends _$VotesPaging {
 
       final sort = ref.read(sortProvider);
       final voteResult = ref.read(voteResultProvider);
+      final createdAtRange = ref.read(createdAtRangeProvider);
+      final votedAtRange = ref.read(votedAtRangeProvider);
 
       _currentCancelToken?.cancel();
       _currentCancelToken = CancelToken();
@@ -49,6 +51,10 @@ class VotesPaging extends _$VotesPaging {
             sort: sort,
             page: newKey,
             voteResult: voteResult,
+            proposalFromDate: createdAtRange.$2,
+            proposalToDate: createdAtRange.$3,
+            votedFromDate: votedAtRange.$2,
+            votedToDate: votedAtRange.$3,
             cancelToken: _currentCancelToken,
           );
 
@@ -78,6 +84,25 @@ class CreatedAtRange extends _$CreatedAtRange {
     values: MPDateRange.values,
     value: state,
     title: "안건 생성일",
+    onChanged: (value) {
+      if (state == value) return;
+      state = value;
+
+      ref.read(votesPagingProvider.notifier).onRefresh();
+    },
+  );
+}
+
+@riverpod
+class VotedAtRange extends _$VotedAtRange {
+  @override
+  (MPDateRange, DateTime?, DateTime?) build() => (.all, null, null);
+
+  void showBottomSheet(BuildContext context) => showDateRangeBottomSheetModal(
+    context,
+    values: MPDateRange.values,
+    value: state,
+    title: "투표 날짜",
     onChanged: (value) {
       if (state == value) return;
       state = value;

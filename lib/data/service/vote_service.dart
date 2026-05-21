@@ -14,8 +14,10 @@ class VoteService {
   VoteService(this._ref, this._voteApi);
 
   Future<MyVotedBillSliceResponse> getMyVotedBills({
-    DateTime? fromDate,
-    DateTime? toDate,
+    DateTime? proposalFromDate,
+    DateTime? proposalToDate,
+    DateTime? votedFromDate,
+    DateTime? votedToDate,
     required MPSort sort,
     bool? voteResult,
     int page = 0,
@@ -24,8 +26,10 @@ class VoteService {
   }) async {
     try {
       return await _voteApi.getMyVotedBills(
-        fromDate: fromDate,
-        toDate: toDate,
+        proposalFromDate: proposalFromDate,
+        proposalToDate: proposalToDate,
+        votedFromDate: votedFromDate,
+        votedToDate: votedToDate,
         sortType: sort.value,
         voteResults: voteResult != null
             ? [voteResult ? "AGREE" : "DISAGREE"]
