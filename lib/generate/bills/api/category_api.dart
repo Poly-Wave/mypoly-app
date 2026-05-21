@@ -14,6 +14,17 @@ part 'category_api.g.dart';
 abstract class CategoryApi {
   factory CategoryApi(Dio dio, {String? baseUrl}) = _CategoryApi;
 
+  /// 내 관심 카테고리 목록 조회
+  /// 로그인 사용자가 관심으로 설정한 활성 카테고리 목록을 반환합니다. (JWT 인증 필요)
+  ///
+  /// Parameters:
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  ///
+  @GET('/categories/interests')
+  Future<List<CategoryResponse>> getCategoriesInterests({
+    CancelToken? cancelToken,
+  });
+
   /// 카테고리 목록 조회
   /// 현재 **활성화(is_active&#x3D;true)** 된 카테고리 목록을 반환합니다.  - 반환 순서: &#x60;displayOrder&#x60; 오름차순 - 인증: 불필요(공개 API)
   ///

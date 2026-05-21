@@ -120,6 +120,7 @@ class _AgendaListSection extends HookConsumerWidget {
           SizedBox(height: 12),
           _buildFilterRow(
             context,
+            ref,
             category,
             field,
             appCategories,
@@ -198,6 +199,7 @@ class _AgendaListSection extends HookConsumerWidget {
 
   void _openTopicBottomSheet(
     BuildContext context,
+    WidgetRef ref,
     List<dynamic> appCategories,
     ValueNotifier<List<String>> confirmedCodes,
   ) {
@@ -209,21 +211,25 @@ class _AgendaListSection extends HookConsumerWidget {
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: HookBuilder(
             builder: (context) {
-              final bool isAllSelectedBefore =
-                  confirmedCodes.value.length == appCategories.length;
+              final List<String> initialConfirmedCodes = confirmedCodes.value;
               final categoryStates = useState(
                 appCategories.map((cat) {
-                  final bool isSelected = isAllSelectedBefore
-                      ? false
-                      : confirmedCodes.value.contains(cat.code);
+                  final bool isSelected = initialConfirmedCodes.contains(
+                    cat.code,
+                  );
                   return (isSelected, cat);
                 }).toList(),
               );
 
-              final bool isAnyChecked = categoryStates.value.any(
-                (item) => item.$1,
-              );
-              final bool isApplyActive = isAnyChecked;
+              final currentSelectedCodes = categoryStates.value
+                  .where((item) => item.$1)
+                  .map((item) => item.$2.code as String)
+                  .toList();
+
+              final bool isChanged = !const DeepCollectionEquality.unordered()
+                  .equals(initialConfirmedCodes, currentSelectedCodes);
+
+              final bool isApplyActive = isChanged;
 
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -243,7 +249,7 @@ class _AgendaListSection extends HookConsumerWidget {
                     children: [
                       _buildChip(
                         label: "전체",
-                        isSelected: !isAnyChecked,
+                        isSelected: currentSelectedCodes.isEmpty,
                         onTap: () {
                           categoryStates.value = categoryStates.value
                               .map((item) => (false, item.$2))
@@ -270,9 +276,11 @@ class _AgendaListSection extends HookConsumerWidget {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          categoryStates.value = categoryStates.value
-                              .map((item) => (false, item.$2))
-                              .toList();
+                          categoryStates.value = appCategories.map((cat) {
+                            final bool isSelected = initialConfirmedCodes
+                                .contains(cat.code);
+                            return (isSelected, cat);
+                          }).toList();
                         },
                         child: Container(
                           width: 150.w,
@@ -417,6 +425,7 @@ class _AgendaListSection extends HookConsumerWidget {
 
   Widget _buildFilterRow(
     BuildContext context,
+    WidgetRef ref,
     ValueNotifier<String> category,
     ValueNotifier<String> field,
     List<dynamic> appCategories,
@@ -449,7 +458,7 @@ class _AgendaListSection extends HookConsumerWidget {
         /// 필터 버튼 - 주제
         GestureDetector(
           onTap: () =>
-              _openTopicBottomSheet(context, appCategories, categoryCodes),
+              _openTopicBottomSheet(context, ref, appCategories, categoryCodes),
           child: _outlineButton('주제'),
         ),
       ],
