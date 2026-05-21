@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:mypoly/enum/sort.dart';
 import 'package:mypoly/generate/bills/api/bill_bookmark_api.dart';
-import 'package:mypoly/generate/bills/model/slice_response_bookmarked_bill_response.dart';
+import 'package:mypoly/generate/bills/model/bookmarked_bill_slice_response.dart';
 import 'package:mypoly/util/error.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -13,7 +13,7 @@ class BillBookmarkService {
 
   BillBookmarkService(this._ref, this._billBookmarkApi);
 
-  Future<SliceResponseBookmarkedBillResponse> getBookmarkedBills({
+  Future<BookmarkedBillSliceResponse> getBookmarkedBills({
     DateTime? fromDate,
     DateTime? toDate,
     required List<String> categoryCodes,

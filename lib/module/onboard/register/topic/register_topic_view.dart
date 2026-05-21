@@ -226,7 +226,7 @@ class TopicItem extends StatelessWidget {
                         : null,
                   ),
                   alignment: .center,
-                  child: MPNetworkImage(item.$2.iconUrl ?? "", size: 40),
+                  child: MPNetworkImage(item.$2.iconUrl, size: 40),
                 ),
                 Positioned(
                   left: 4.r,
@@ -243,7 +243,7 @@ class TopicItem extends StatelessWidget {
           ),
           MPHeight(8),
           Text(
-            item.$2.name ?? "",
+            item.$2.name,
             textAlign: .center,
             style: Pretendard.medium.set(
               size: 15,

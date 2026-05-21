@@ -30,12 +30,12 @@ extension BookmarkedBillResponseExtension on BookmarkedBillResponse {
         .firstWhere((category) => category.code == categoryCode);
 
     return BillListData(
-      id: billId ?? 0,
-      title: title ?? "",
+      id: billId,
+      title: title,
       category: category,
-      viewCount: viewCount ?? 0,
-      voteCount: voteCount ?? 0,
-      registeredDate: registeredDate ?? DateTime.now(),
+      viewCount: viewCount,
+      voteCount: voteCount,
+      registeredDate: registeredDate,
     );
   }
 }
@@ -47,12 +47,12 @@ extension MyVotedBillResponseExtension on MyVotedBillResponse {
         .firstWhere((category) => category.code == categoryCode);
 
     return BillListData(
-      id: billId ?? 0,
-      title: title ?? "",
+      id: billId,
+      title: title,
       category: category,
-      viewCount: viewCount ?? 0,
-      voteCount: voteCount ?? 0,
-      registeredDate: registeredDate ?? DateTime.now(),
+      viewCount: viewCount,
+      voteCount: voteCount,
+      registeredDate: registeredDate,
     );
   }
 }

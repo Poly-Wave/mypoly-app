@@ -1,7 +1,8 @@
 part of 'index.dart';
 
 class MPChip extends StatelessWidget {
-  final String text;
+  final String? text;
+  final Widget? widget;
   final double height;
   final EdgeInsetsGeometry? padding;
   final double textSize;
@@ -12,7 +13,8 @@ class MPChip extends StatelessWidget {
 
   const MPChip({
     super.key,
-    required this.text,
+    this.text,
+    this.widget,
     this.height = 32,
     this.padding,
     this.textSize = 14,
@@ -42,14 +44,21 @@ class MPChip extends StatelessWidget {
           mainAxisSize: .min,
           mainAxisAlignment: .center,
           children: [
-            AnimatedDefaultTextStyle(
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.fastOutSlowIn,
-              style: Pretendard.semiBold.set(
-                size: textSize,
-                color: isActive ? ColorStyles.primary60 : ColorStyles.gray20,
-              ),
-              child: Text(text),
+            Flexible(
+              fit: .loose,
+              child:
+                  widget ??
+                  AnimatedDefaultTextStyle(
+                    duration: const Duration(milliseconds: 200),
+                    curve: Curves.fastOutSlowIn,
+                    style: Pretendard.semiBold.set(
+                      size: textSize,
+                      color: isActive
+                          ? ColorStyles.primary60
+                          : ColorStyles.gray20,
+                    ),
+                    child: Text(text ?? ""),
+                  ),
             ),
             Stack(
               children: [

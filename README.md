@@ -12,6 +12,7 @@ fvm use
 
 ```bash
 dart pub global activate melos
+dart pub global activate flutterfire_cli
 ```
 
 ### 3. 비공개 파일 추가

@@ -6,11 +6,16 @@ class SvgImage {
   static const String arrowDown = 'assets/svg/arrow_down.svg';
   static const String arrowDownFilter = 'assets/svg/arrow_down_filter.svg';
   static const String arrowLeft = 'assets/svg/arrow_left.svg';
+  static const String arrowLeftCalender = 'assets/svg/arrow_left_calender.svg';
   static const String arrowRight = 'assets/svg/arrow_right.svg';
+  static const String arrowRightCalender =
+      'assets/svg/arrow_right_calender.svg';
   static const String arrowUp = 'assets/svg/arrow_up.svg';
   static const String icBack = 'assets/svg/ic_back.svg';
+  static const String icCalender = 'assets/svg/ic_calender.svg';
   static const String icChange = 'assets/svg/ic_change.svg';
   static const String icClose = 'assets/svg/ic_close.svg';
+  static const String icDateRange = 'assets/svg/ic_date_range.svg';
   static const String icInfo = 'assets/svg/ic_info.svg';
   static const String icNotice = 'assets/svg/ic_notice.svg';
   static const String icReset = 'assets/svg/ic_reset.svg';

@@ -12,16 +12,19 @@ part 'category_response.g.dart';
 abstract class CategoryResponse with _$CategoryResponse {
   const factory CategoryResponse({
     /// 카테고리 코드(고유)
-    @JsonKey(name: r'code') String? code,
+    @JsonKey(name: r'code') required String code,
 
     /// 카테고리 표시명
-    @JsonKey(name: r'name') String? name,
+    @JsonKey(name: r'name') required String name,
 
     /// 표시 순서
-    @JsonKey(name: r'displayOrder') int? displayOrder,
+    @JsonKey(name: r'displayOrder') required int displayOrder,
 
     /// 아이콘 URL
-    @JsonKey(name: r'iconUrl') String? iconUrl,
+    @JsonKey(name: r'iconUrl') required String iconUrl,
+
+    /// 카테고리 배경색 HEX, # 제외
+    @JsonKey(name: r'backgroundColor') required String backgroundColor,
   }) = _CategoryResponse;
 
   factory CategoryResponse.fromJson(Map<String, dynamic> json) =>

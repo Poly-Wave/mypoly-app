@@ -528,7 +528,7 @@ class ListEmptyView extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          MPImage(WebpImage.imgSearch, size: 64),
+          MPImage(WebpImage.emptySearch, size: 64),
 
           SizedBox(height: 10.h),
           Column(
