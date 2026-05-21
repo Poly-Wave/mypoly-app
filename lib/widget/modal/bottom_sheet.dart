@@ -262,12 +262,12 @@ Future<void> showWrapBottomSheetModal<T>(
   );
 }
 
-Future<void> showDateTimeBottomSheetModal<T extends MPDateRangeOption>(
+Future<void> showDateRangeBottomSheetModal<T extends MPDateRangeOption>(
   BuildContext context, {
   required List<T> values,
   required (T, DateTime?, DateTime?) value,
   String title = "안건 생성일",
-  required void Function(T, DateTime?, DateTime?) onChanged,
+  required void Function((T, DateTime?, DateTime?)) onChanged,
 }) async {
   showMPBottomSheetModal(
     context,
@@ -277,13 +277,62 @@ Future<void> showDateTimeBottomSheetModal<T extends MPDateRangeOption>(
         builder: (context) {
           final enabled = useState(false);
           final newValue = useState(value);
+          final focusedDay = useState(value.$2 ?? DateTime.now());
 
-          void selectValue(T value) {
-            if (newValue.value.$1 == value) return;
+          final void Function(T) selectValue = useCallback((T item) {
+            if (newValue.value.$1 == item && !item.isCustom) return;
 
             enabled.value = true;
-            newValue.value = (value, null, null);
-          }
+
+            if (item.isAll || item.isCustom) {
+              newValue.value = (item, null, null);
+              return;
+            }
+
+            final now = DateTime.now();
+            final months = item.months ?? 0;
+
+            newValue.value = (item, now.subtractMonths(months), now);
+          }, [enabled, newValue]);
+
+          final VoidCallback selectCustomValue = useCallback(() {
+            for (final item in values) {
+              if (!item.isCustom) continue;
+
+              selectValue(item);
+              return;
+            }
+          }, [values, selectValue]);
+
+          final T? customValue = useMemoized(() {
+            for (final item in values) {
+              if (item.isCustom) return item;
+            }
+
+            return null;
+          }, [values]);
+
+          final void Function(DateTime?, DateTime?, DateTime) selectDateRange =
+              useCallback((start, end, focused) {
+                final item = customValue;
+                if (item == null) return;
+
+                enabled.value = true;
+                focusedDay.value = focused;
+                newValue.value = (item, start, end);
+              }, [customValue, enabled, focusedDay, newValue]);
+
+          final Widget Function(DateTime?) dateRangeText = useCallback((date) {
+            final hasDate = date != null;
+
+            return Text(
+              hasDate ? date.formatDotDate() : "날짜선택",
+              style: Pretendard.medium.set(
+                size: 14,
+                color: hasDate ? ColorStyles.white : ColorStyles.gray60,
+              ),
+            );
+          }, []);
 
           return Padding(
             padding: .symmetric(horizontal: 20.w),
@@ -306,6 +355,7 @@ Future<void> showDateTimeBottomSheetModal<T extends MPDateRangeOption>(
                     mainAxisSpacing: 8.h,
                     childAspectRatio: 74.w / 32.h,
                   ),
+                  padding: .zero,
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemCount: values.length,
@@ -320,6 +370,137 @@ Future<void> showDateTimeBottomSheetModal<T extends MPDateRangeOption>(
                       onTap: () => selectValue(item),
                     );
                   },
+                ),
+                MPHeight(10),
+                MPChip(
+                  height: 40,
+                  widget: Row(
+                    children: [
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: .center,
+                          spacing: 8.w,
+                          children: [
+                            dateRangeText(newValue.value.$2),
+                            MPSvgImage(SvgImage.icCalender, size: 16),
+                          ],
+                        ),
+                      ),
+                      MPSvgImage(SvgImage.icDateRange, size: 16),
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: .center,
+                          spacing: 8.w,
+                          children: [
+                            dateRangeText(newValue.value.$3),
+                            MPSvgImage(SvgImage.icCalender, size: 16),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  isActive: newValue.value.$1.isCustom,
+                  onTap: selectCustomValue,
+                ),
+                AnimatedCrossFade(
+                  firstChild: Container(),
+                  secondChild: Column(
+                    crossAxisAlignment: .stretch,
+                    children: [
+                      MPHeight(12),
+                      TableCalendar(
+                        firstDay: DateTime(2000),
+                        lastDay: DateTime(2100),
+                        focusedDay: focusedDay.value,
+                        calendarFormat: CalendarFormat.month,
+                        rangeSelectionMode: RangeSelectionMode.toggledOn,
+                        rangeStartDay: newValue.value.$2,
+                        rangeEndDay: newValue.value.$3,
+                        onRangeSelected: selectDateRange,
+                        onDaySelected: (selectedDay, focused) {
+                          selectDateRange(selectedDay, selectedDay, focused);
+                        },
+                        headerStyle: HeaderStyle(
+                          titleCentered: true,
+                          formatButtonVisible: false,
+                          leftChevronIcon: Icon(
+                            Icons.chevron_left,
+                            color: ColorStyles.gray20,
+                            size: 24.r,
+                          ),
+                          rightChevronIcon: Icon(
+                            Icons.chevron_right,
+                            color: ColorStyles.gray20,
+                            size: 24.r,
+                          ),
+                          titleTextStyle: Pretendard.semiBold.set(
+                            size: 16,
+                            color: ColorStyles.white,
+                          ),
+                        ),
+                        daysOfWeekHeight: 32.h,
+                        rowHeight: 42.h,
+                        daysOfWeekStyle: DaysOfWeekStyle(
+                          weekdayStyle: Pretendard.medium.set(
+                            size: 13,
+                            color: ColorStyles.gray40,
+                          ),
+                          weekendStyle: Pretendard.medium.set(
+                            size: 13,
+                            color: ColorStyles.gray40,
+                          ),
+                        ),
+                        calendarStyle: CalendarStyle(
+                          rangeHighlightColor: ColorStyles.primary80,
+                          rangeStartDecoration: BoxDecoration(
+                            color: ColorStyles.primary60,
+                            shape: BoxShape.circle,
+                          ),
+                          rangeEndDecoration: BoxDecoration(
+                            color: ColorStyles.primary60,
+                            shape: BoxShape.circle,
+                          ),
+                          todayDecoration: BoxDecoration(
+                            border: Border.all(color: ColorStyles.primary60),
+                            shape: BoxShape.circle,
+                          ),
+                          selectedDecoration: BoxDecoration(
+                            color: ColorStyles.primary60,
+                            shape: BoxShape.circle,
+                          ),
+                          defaultTextStyle: Pretendard.medium.set(
+                            size: 14,
+                            color: ColorStyles.white,
+                          ),
+                          weekendTextStyle: Pretendard.medium.set(
+                            size: 14,
+                            color: ColorStyles.white,
+                          ),
+                          outsideTextStyle: Pretendard.medium.set(
+                            size: 14,
+                            color: ColorStyles.gray60,
+                          ),
+                          todayTextStyle: Pretendard.medium.set(
+                            size: 14,
+                            color: ColorStyles.primary60,
+                          ),
+                          rangeStartTextStyle: Pretendard.medium.set(
+                            size: 14,
+                            color: ColorStyles.black,
+                          ),
+                          rangeEndTextStyle: Pretendard.medium.set(
+                            size: 14,
+                            color: ColorStyles.black,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  sizeCurve: Curves.fastOutSlowIn,
+                  crossFadeState: newValue.value.$1.isCustom
+                      ? CrossFadeState.showSecond
+                      : CrossFadeState.showFirst,
+                  duration: const Duration(milliseconds: 300),
                 ),
                 MPHeight(50),
                 Row(
@@ -340,11 +521,11 @@ Future<void> showDateTimeBottomSheetModal<T extends MPDateRangeOption>(
                         "적용",
                         enabled: enabled.value,
                         onTap: () {
-                          onChanged(
+                          onChanged((
                             newValue.value.$1,
                             newValue.value.$2,
                             newValue.value.$3,
-                          );
+                          ));
                           context.pop();
                         },
                       ),

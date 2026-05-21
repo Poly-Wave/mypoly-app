@@ -10,6 +10,7 @@ import 'package:mypoly/generate/bills/model/error_response.dart';
 import 'package:mypoly/generate/bills/model/interest_agenda_response.dart';
 import 'package:mypoly/generate/bills/model/main_agenda_response.dart';
 import 'package:mypoly/generate/bills/model/pageable.dart';
+import 'package:mypoly/generate/bills/model/popular_agenda_response.dart';
 import 'package:mypoly/generate/bills/model/search_agenda_response.dart';
 
 part 'agenda_api.g.dart';
@@ -58,6 +59,17 @@ abstract class AgendaApi {
   Future<List<MainAgendaResponse>> getMainAgendas({
     @Query('pageable') required Pageable pageable,
     @Query('categoryCodes') List<String>? categoryCodes,
+    CancelToken? cancelToken,
+  });
+
+  /// 인기 안건 조회
+  /// KST 월요일 00:00 기준 이번 주 조회 증가분 Top 5를 반환합니다. 로그인한 사용자만 호출 가능합니다. - TRENDING 탭(7일 투표 수)과 달리 **조회수** 기준이며, **주간(월~일)** 구간입니다. - 약 10분 주기 배치로 선계산된 &#x60;bill_popular_view_ranking&#x60; 스냅샷을 조회합니다. - 카테고리 필터 없이 전체 의안 대상입니다.
+  ///
+  /// Parameters:
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  ///
+  @GET('/agendas/popular')
+  Future<List<PopularAgendaResponse>> getPopularAgendas({
     CancelToken? cancelToken,
   });
 

@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mypoly/data/provider/service_provider.dart';
+import 'package:mypoly/enum/date_range.dart';
 import 'package:mypoly/enum/sort.dart';
 import 'package:mypoly/enum/stage.dart';
 import 'package:mypoly/generate/bills/model/category_response.dart';
@@ -76,6 +77,25 @@ class BookmarksPaging extends _$BookmarksPaging {
       state = prevState.copyWith(isLoading: false, error: e);
     }
   }
+}
+
+@riverpod
+class CreatedAtRange extends _$CreatedAtRange {
+  @override
+  (MPDateRange, DateTime?, DateTime?) build() => (.all, null, null);
+
+  void showBottomSheet(BuildContext context) => showDateRangeBottomSheetModal(
+    context,
+    values: MPDateRange.values,
+    value: state,
+    title: "진행단계",
+    onChanged: (value) {
+      if (state == value) return;
+      state = value;
+
+      ref.read(bookmarksPagingProvider.notifier).onRefresh();
+    },
+  );
 }
 
 @riverpod

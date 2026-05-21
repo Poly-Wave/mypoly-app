@@ -16,6 +16,7 @@ class VoteView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final sort = ref.watch(sortProvider);
+    final createdAtRange = ref.watch(createdAtRangeProvider);
     final voteResult = ref.watch(voteResultProvider);
 
     final votesPaging = ref.watch(votesPagingProvider);
@@ -35,7 +36,7 @@ class VoteView extends HookConsumerWidget {
                   text: "생성일",
                   isActive: true,
                   onTap: () => ref
-                      .read(voteResultProvider.notifier)
+                      .read(createdAtRangeProvider.notifier)
                       .showBottomSheet(context),
                 ),
                 MPFilterChip(
@@ -45,7 +46,13 @@ class VoteView extends HookConsumerWidget {
                       .read(voteResultProvider.notifier)
                       .showBottomSheet(context),
                 ),
-                MPFilterChip(text: "투표날짜", isActive: false, onTap: () {}),
+                MPFilterChip(
+                  text: "투표날짜",
+                  isActive: false,
+                  onTap: () => ref
+                      .read(createdAtRangeProvider.notifier)
+                      .showBottomSheet(context),
+                ),
               ],
             ),
           ),
