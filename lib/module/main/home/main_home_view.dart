@@ -553,7 +553,9 @@ class ListEmptyView extends StatelessWidget {
 
           SizedBox(height: 20.h),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              context.router.push(RegisterTopicRoute());
+            },
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [

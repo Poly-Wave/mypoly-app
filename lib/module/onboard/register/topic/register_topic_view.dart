@@ -28,6 +28,9 @@ class RegisterTopicView extends HookConsumerWidget {
       return null;
     }, []);
 
+    final currentRouteName = ModalRoute.of(context)?.settings.name;
+    final bool isOpenedFromHome = currentRouteName == 'RegisterTopicRoute';
+
     final appCategories = ref.read(appCategoriesProvider);
 
     final categories = useState(
@@ -40,7 +43,11 @@ class RegisterTopicView extends HookConsumerWidget {
     final allChecked = !categories.value.map((item) => item.$1).contains(false);
 
     return Scaffold(
-      appBar: MPAppbar(context, isBackEnabled: false, text: "관심주제 선택"),
+      appBar: MPAppbar(
+        context,
+        isBackEnabled: isOpenedFromHome,
+        text: "관심주제 선택",
+      ),
       body: Column(
         crossAxisAlignment: .stretch,
         children: [
@@ -171,23 +178,29 @@ class RegisterTopicView extends HookConsumerWidget {
 
                       if (!context.mounted) return;
                       context.loaderOverlay.hide();
-                      context.replaceRoute(RegisterMoreRoute());
+                      if (isOpenedFromHome) {
+                        context.pop();
+                      } else {
+                        context.replaceRoute(RegisterMoreRoute());
+                      }
                     } catch (e) {
                       context.loaderOverlay.hide();
                       context.replaceRoute(RegisterMoreRoute());
                     }
                   },
-                  child: Container(
-                    height: 51,
-                    alignment: .center,
-                    child: Text(
-                      "관심없어요",
-                      style: Pretendard.semiBold.set(
-                        size: 16,
-                        color: ColorStyles.white,
-                      ),
-                    ),
-                  ),
+                  child: isOpenedFromHome
+                      ? const SizedBox.shrink()
+                      : Container(
+                          height: 51,
+                          alignment: .center,
+                          child: Text(
+                            "관심없어요",
+                            style: Pretendard.semiBold.set(
+                              size: 16,
+                              color: ColorStyles.white,
+                            ),
+                          ),
+                        ),
                 ),
               ),
             ],
