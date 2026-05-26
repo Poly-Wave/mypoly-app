@@ -197,7 +197,6 @@ class AgendaIntroSection extends HookConsumerWidget {
     final categories = useState<List<(String code, String label)>>([]);
 
     useEffect(() {
-      // 카테고리 조회(서버)
       Future(() async {
         try {
           final dio = ref.read(dioProvider);
@@ -370,9 +369,34 @@ class FavoriteTopicSection extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedSortIndex = useState(0);
+    final selectedSortIndex = useState(1);
+    final interestAgendas = useState<List<dynamic>>([]);
 
-    final favoriteAgendas = List.generate(3, (index) => index);
+    useEffect(() {
+      Future(() async {
+        try {
+          final dio = ref.read(dioProvider);
+          final api = AgendaApi(
+            dio,
+            baseUrl: ref.read(envProvider).billsApiUrl,
+          );
+
+          final String sortParam = selectedSortIndex.value == 0
+              ? 'POPULAR'
+              : 'LATEST';
+
+          final result = await api.getInterestAgendas(
+            pageable: Pageable(page: 0, size: 10, sort: [sortParam]),
+          );
+
+          interestAgendas.value = result.content ?? [];
+        } catch (e) {
+          debugPrint('관심 주제 안건 조회 실패: $e');
+        }
+      });
+
+      return null;
+    }, [selectedSortIndex.value]);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -395,13 +419,21 @@ class FavoriteTopicSection extends HookConsumerWidget {
                   SortButton(
                     label: "인기순",
                     isSelected: selectedSortIndex.value == 0,
-                    onTap: () => selectedSortIndex.value = 0,
+                    onTap: () {
+                      if (selectedSortIndex.value != 0) {
+                        selectedSortIndex.value = 0;
+                      }
+                    },
                   ),
                   SizedBox(width: 4.w),
                   SortButton(
                     label: "최신순",
                     isSelected: selectedSortIndex.value == 1,
-                    onTap: () => selectedSortIndex.value = 1,
+                    onTap: () {
+                      if (selectedSortIndex.value != 1) {
+                        selectedSortIndex.value = 1;
+                      }
+                    },
                   ),
                 ],
               ),
@@ -409,15 +441,20 @@ class FavoriteTopicSection extends HookConsumerWidget {
           ),
         ),
 
-        favoriteAgendas.isEmpty
-            ? ListEmptyView()
-            : ListView.separated(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: favoriteAgendas.length,
-                separatorBuilder: (context, index) => SizedBox(height: 12.h),
-                itemBuilder: (context, index) => FavoriteAgendaItem(),
-              ),
+        if (interestAgendas.value.isEmpty)
+          ListEmptyView()
+        else
+          ListView.separated(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: interestAgendas.value.length,
+            separatorBuilder: (context, index) => SizedBox(height: 12.h),
+            itemBuilder: (context, index) {
+              final item = interestAgendas.value[index];
+
+              return FavoriteAgendaItem(item: item);
+            },
+          ),
       ],
     );
   }

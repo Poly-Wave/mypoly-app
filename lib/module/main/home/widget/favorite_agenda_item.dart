@@ -3,10 +3,26 @@ import 'package:mypoly/style/index.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FavoriteAgendaItem extends StatelessWidget {
-  const FavoriteAgendaItem({super.key});
+  final dynamic item;
+
+  const FavoriteAgendaItem({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {
+    final String title = item.title ?? '';
+    final String categoryName = item.categoryName ?? '';
+    final String categoryIconUrl = item.categoryIconUrl ?? '';
+    final String categoryBgColorStr = item.categoryBackgroundColor ?? '';
+
+    Color parsedCategoryBgColor = ColorStyles.primary20;
+    if (categoryBgColorStr.isNotEmpty) {
+      try {
+        parsedCategoryBgColor = Color(int.parse('0xFF$categoryBgColorStr'));
+      } catch (e) {
+        debugPrint('관심안건 카테고리 배경색 파싱 실패: $e');
+      }
+    }
+
     return SizedBox(
       height: 112.h,
       child: Row(
@@ -15,10 +31,19 @@ class FavoriteAgendaItem extends StatelessWidget {
             width: 80.w,
             height: 80.h,
             decoration: BoxDecoration(
-              color: ColorStyles.gray70,
+              color: parsedCategoryBgColor,
               borderRadius: BorderRadius.circular(8.r),
             ),
-            child: Center(child: Icon(Icons.image, color: Colors.white24)),
+            child: Center(
+              child: SizedBox(
+                width: 40.w,
+                height: 40.h,
+                child: Image(
+                  image: NetworkImage(categoryIconUrl),
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
           ),
 
           SizedBox(width: 12.w),
@@ -28,7 +53,7 @@ class FavoriteAgendaItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "소득세법 일부개정법률안(대안)(기획재정위원장)",
+                  title,
                   style: Pretendard.medium.set(
                     size: 16,
                     color: ColorStyles.white,
@@ -43,11 +68,11 @@ class FavoriteAgendaItem extends StatelessWidget {
                   height: 22.h,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: ColorStyles.primary20,
+                    color: parsedCategoryBgColor,
                     borderRadius: BorderRadius.circular(999),
                   ),
                   child: Text(
-                    "외교안보",
+                    categoryName,
                     style: Pretendard.semiBold.set(
                       size: 13,
                       color: Color(0xFF181B2A),
