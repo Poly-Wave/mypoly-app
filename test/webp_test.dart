@@ -13,6 +13,9 @@ void main() {
     expect(File(WebpImage.popular1).existsSync(), isTrue);
     expect(File(WebpImage.popular2).existsSync(), isTrue);
     expect(File(WebpImage.popular3).existsSync(), isTrue);
+    expect(File(WebpImage.rankDown).existsSync(), isTrue);
+    expect(File(WebpImage.rankStable).existsSync(), isTrue);
+    expect(File(WebpImage.rankUp).existsSync(), isTrue);
     expect(File(WebpImage.registerComplete).existsSync(), isTrue);
     expect(File(WebpImage.registerOnboard).existsSync(), isTrue);
     expect(File(WebpImage.viewCount).existsSync(), isTrue);

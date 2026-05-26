@@ -9,11 +9,16 @@ import 'package:mypoly/widget/index.dart';
 import 'package:mypoly/widget/modal/index.dart';
 import 'package:collection/collection.dart';
 import 'package:mypoly/module/widget/common/horizontal_padding.dart';
-import '../agenda/widget/agenda_topic_card.dart';
 import 'package:mypoly/generate/bills/api/agenda_api.dart';
 import 'package:mypoly/generate/bills/model/pageable.dart';
 import 'package:mypoly/data/provider/dio_provider.dart';
 import 'package:mypoly/provider/app_provider.dart';
+import 'package:mypoly/generate/bills/api/category_api.dart';
+import 'package:mypoly/generate/bills/model/category_response.dart';
+import 'package:mypoly/generate/bills/model/popular_agenda_response.dart';
+import '../agenda/widget/collapsed_row.dart';
+import '../agenda/widget/expanded_list.dart';
+import 'dart:async';
 
 @RoutePage()
 class MainAgendaView extends HookConsumerWidget {
@@ -21,14 +26,17 @@ class MainAgendaView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      backgroundColor: Color(0xFF0F1F24),
-
-      body: ListView(
+    return Container(
+      color: ColorStyles.black,
+      child: ListView(
         children: [
           HorizontalPadding(
             child: Column(
-              children: [_AgendaTopicSection(), _AgendaListSection()],
+              children: [
+                _RealtimePopularAgendaSection(),
+                SizedBox(height: 20.h),
+                _AgendaListSection(),
+              ],
             ),
           ),
         ],
@@ -37,30 +45,118 @@ class MainAgendaView extends HookConsumerWidget {
   }
 }
 
-class _AgendaTopicSection extends StatelessWidget {
-  const _AgendaTopicSection();
+class _RealtimePopularAgendaSection extends HookConsumerWidget {
+  const _RealtimePopularAgendaSection();
 
   @override
-  Widget build(BuildContext context) {
-    final items = <(String, MPImage)>[
-      ('20대\n제일 인기 안건', MPImage(WebpImage.popular1, width: 32)),
-      ('강남 2동\n제일 인기 안건', MPImage(WebpImage.popular2, width: 32)),
-      ('오늘 활발하게\n투표중인 안건', MPImage(WebpImage.popular3, width: 32)),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isExpanded = useState(false);
+    final currentRankIndex = useState(0);
+
+    // final popularAgendas = useState<List<PopularAgendaResponse>>([]);
+
+    // useEffect(() {
+    //   Future(() async {
+    //     try {
+    //       final dio = ref.read(dioProvider);
+    //       final api = AgendaApi(
+    //         dio,
+    //         baseUrl: ref.read(envProvider).billsApiUrl,
+    //       );
+
+    //       final List<PopularAgendaResponse> result = await api
+    //           .getPopularAgendas();
+
+    //       popularAgendas.value = result;
+    //     } catch (e) {
+    //       debugPrint('실시간 인기 안건 조회 실패: $e');
+    //     }
+    //   });
+    //   return null;
+    // }, []);
+
+    final popularAgendas = [
+      (rank: 1, status: 'up', title: 'A안건', categoryName: '법행정'),
+      (rank: 2, status: 'stable', title: 'B안건', categoryName: '법행정'),
+      (rank: 3, status: 'stable', title: 'C안건', categoryName: '법행정'),
+      (rank: 4, status: 'down', title: 'D안건', categoryName: '법행정'),
+      (rank: 5, status: 'up', title: 'E안건', categoryName: '법행정'),
     ];
 
-    return SizedBox(
-      height: 152,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.only(top: 16),
-        itemCount: items.length,
-        separatorBuilder: (_, _) => SizedBox(width: 12),
-        itemBuilder: (context, index) {
-          return AgendaTopicCard(item: items[index]);
-        },
+    final double targetHeight = isExpanded.value ? 198.h : 46.h;
+
+    // if (popularAgendas.value.isEmpty) {
+    //   return const SizedBox.shrink();
+    // }
+
+    final EdgeInsets dynamicPadding = isExpanded.value
+        ? EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w)
+        : EdgeInsets.symmetric(vertical: 12.h, horizontal: 10.w);
+
+    return Padding(
+      padding: EdgeInsets.only(top: 16.h),
+      child: AnimatedSize(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.fastOutSlowIn,
+        alignment: Alignment.topCenter,
+        child: Container(
+          width: 320.w,
+          child: CustomPaint(
+            painter: _GradientBorderPainter(
+              strokeWidth: 1.r,
+              gradient: const LinearGradient(
+                colors: [Color(0xFF49EFD9), Color(0xFF26CBC8)],
+              ),
+              radius: 8.r,
+            ),
+            child: Container(
+              decoration: BoxDecoration(
+                color: const Color(0xFF222324),
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              padding: dynamicPadding,
+              child: isExpanded.value
+                  ? ExpandedList(
+                      items: popularAgendas,
+                      onCollapsePressed: () => isExpanded.value = false,
+                    )
+                  : CollapsedRow(
+                      item: popularAgendas[currentRankIndex.value],
+                      onExpandPressed: () => isExpanded.value = true,
+                    ),
+            ),
+          ),
+        ),
       ),
     );
   }
+}
+
+class _GradientBorderPainter extends CustomPainter {
+  final double strokeWidth;
+  final Gradient gradient;
+  final double radius;
+
+  _GradientBorderPainter({
+    required this.strokeWidth,
+    required this.gradient,
+    required this.radius,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final rect = Offset.zero & size;
+    final paint = Paint()
+      ..strokeWidth = strokeWidth
+      ..style = PaintingStyle.stroke
+      ..shader = gradient.createShader(rect);
+
+    final rrect = RRect.fromRectAndRadius(rect, Radius.circular(radius));
+    canvas.drawRRect(rrect, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
 const sortOptions = ['최신순', '인기순'];
@@ -102,7 +198,7 @@ class _AgendaListSection extends HookConsumerWidget {
             categoryCodes: targetCodes,
           );
 
-          // agendas.value = result;
+          agendas.value = (result.content ?? []) as List<dynamic>;
         } catch (e) {
           debugPrint('메인 안건 조회 실패: $e');
         }
@@ -112,12 +208,12 @@ class _AgendaListSection extends HookConsumerWidget {
     }, [sort.value, categoryCodes.value]);
 
     return Padding(
-      padding: EdgeInsets.only(top: 24),
+      padding: EdgeInsets.only(top: 24.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildHeader(context, sort),
-          SizedBox(height: 12),
+          SizedBox(height: 12.h),
           _buildFilterRow(
             context,
             ref,
@@ -127,7 +223,7 @@ class _AgendaListSection extends HookConsumerWidget {
             categoryCodes,
           ),
 
-          SizedBox(height: 16),
+          SizedBox(height: 16.h),
 
           Column(
             children: List.generate(agendas.value.length, (i) {
@@ -138,8 +234,8 @@ class _AgendaListSection extends HookConsumerWidget {
                   if (i != 0)
                     Center(
                       child: Container(
-                        width: 320,
-                        height: 1,
+                        width: 320.w,
+                        height: 1.h,
                         color: ColorStyles.divider,
                       ),
                     ),
@@ -154,6 +250,7 @@ class _AgendaListSection extends HookConsumerWidget {
                       item.categoryIconUrl ?? '',
                       item.categoryBackgroundColor ?? 'FFFFFF',
                     ),
+                    categoryBackgroundColor: item.categoryBackgroundColor,
                   ),
                 ],
               );
@@ -211,15 +308,45 @@ class _AgendaListSection extends HookConsumerWidget {
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: HookBuilder(
             builder: (context) {
-              final List<String> initialConfirmedCodes = confirmedCodes.value;
-              final categoryStates = useState(
-                appCategories.map((cat) {
-                  final bool isSelected = initialConfirmedCodes.contains(
-                    cat.code,
-                  );
-                  return (isSelected, cat);
-                }).toList(),
-              );
+              final initialConfirmedCodes = useState<List<String>>([]);
+              final categoryStates = useState<List<(bool, dynamic)>>([]);
+
+              useEffect(() {
+                Future(() async {
+                  try {
+                    final dio = ref.read(dioProvider);
+                    final api = CategoryApi(
+                      dio,
+                      baseUrl: ref.read(envProvider).billsApiUrl,
+                    );
+
+                    final List<CategoryResponse> serverInterests = await api
+                        .getMyInterests();
+
+                    final List<String> interestCodes = serverInterests
+                        .map((e) => e.code.toString())
+                        .toList();
+
+                    initialConfirmedCodes.value = interestCodes;
+                    confirmedCodes.value = interestCodes;
+
+                    categoryStates.value = appCategories.map((cat) {
+                      final bool isSelected = interestCodes.contains(cat.code);
+                      return (isSelected, cat);
+                    }).toList();
+                  } catch (e) {
+                    debugPrint('관심 카테고리 서버 조회 실패: $e');
+                    initialConfirmedCodes.value = confirmedCodes.value;
+                    categoryStates.value = appCategories.map((cat) {
+                      final bool isSelected = confirmedCodes.value.contains(
+                        cat.code,
+                      );
+                      return (isSelected, cat);
+                    }).toList();
+                  }
+                });
+                return null;
+              }, []);
 
               final currentSelectedCodes = categoryStates.value
                   .where((item) => item.$1)
@@ -277,7 +404,7 @@ class _AgendaListSection extends HookConsumerWidget {
                       GestureDetector(
                         onTap: () {
                           categoryStates.value = appCategories.map((cat) {
-                            final bool isSelected = initialConfirmedCodes
+                            final bool isSelected = initialConfirmedCodes.value
                                 .contains(cat.code);
                             return (isSelected, cat);
                           }).toList();
@@ -400,7 +527,7 @@ class _AgendaListSection extends HookConsumerWidget {
           width: 32,
           height: 32,
           fit: BoxFit.contain,
-          errorBuilder: (_, _, _) => Icon(Icons.image, size: 32),
+          errorBuilder: (_, __, ___) => Icon(Icons.image, size: 32),
         ),
       ),
     );
@@ -412,11 +539,7 @@ class _AgendaListSection extends HookConsumerWidget {
       children: [
         Text(
           '의안리스트',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-            color: ColorStyles.gray10,
-          ),
+          style: Pretendard.semiBold.set(size: 20, color: ColorStyles.gray10),
         ),
         _buildSortButtons(sort),
       ],
@@ -446,8 +569,8 @@ class _AgendaListSection extends HookConsumerWidget {
           ),
           child: Text(
             'AI추천',
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
+            style: Pretendard.semiBold.set(
+              size: 14,
               color: ColorStyles.primary100,
             ),
           ),
@@ -477,11 +600,7 @@ class _AgendaListSection extends HookConsumerWidget {
         children: [
           Text(
             label,
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: ColorStyles.gray20,
-            ),
+            style: Pretendard.semiBold.set(size: 14, color: ColorStyles.gray20),
           ),
           SizedBox(width: 4),
           MPSvgImage(SvgImage.arrowDown, width: 18),
@@ -547,6 +666,7 @@ class AgendaListItem extends StatelessWidget {
   final int viewCount;
   final int voteCount;
   final Widget thumbnail;
+  final String categoryBackgroundColor;
 
   const AgendaListItem({
     super.key,
@@ -556,6 +676,7 @@ class AgendaListItem extends StatelessWidget {
     required this.viewCount,
     required this.voteCount,
     required this.thumbnail,
+    required this.categoryBackgroundColor,
   });
 
   @override
@@ -565,27 +686,33 @@ class AgendaListItem extends StatelessWidget {
       child: Column(
         children: [
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    /// 카테고리 - '정책'
+                    /// 카테고리
                     Container(
-                      height: 22,
+                      height: 22.h,
                       padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                       decoration: BoxDecoration(
-                        color: Color(0xFFF8FFD2),
-                        borderRadius: BorderRadius.circular(999),
+                        color: Color(int.parse('0xFF$categoryBackgroundColor')),
+                        borderRadius: BorderRadius.circular(999.r),
                       ),
-                      child: Text(
-                        category,
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFF373303),
-                        ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment:
+                            CrossAxisAlignment.center, // 👈 내부 자식들을 세로 정중앙 정렬
+                        children: [
+                          Text(
+                            category,
+                            style: Pretendard.semiBold.set(
+                              size: 12,
+                              color: Color(0xFF373303),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
 
@@ -593,12 +720,16 @@ class AgendaListItem extends StatelessWidget {
 
                     /// 타이틀
                     SizedBox(
-                      width: 244,
+                      width: 244.w,
                       child: Text(
                         title,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(fontSize: 16, color: Colors.white),
+                        style: Pretendard.medium.set(
+                          size: 16,
+                          color: ColorStyles.white,
+                          height: 1.45,
+                        ),
                       ),
                     ),
                   ],
@@ -623,9 +754,8 @@ class AgendaListItem extends StatelessWidget {
               /// 날짜
               Text(
                 date,
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500,
+                style: Pretendard.medium.set(
+                  size: 13,
                   color: ColorStyles.gray30,
                 ),
               ),
@@ -637,7 +767,10 @@ class AgendaListItem extends StatelessWidget {
                   SizedBox(width: 4),
                   Text(
                     viewCount.toString(),
-                    style: TextStyle(fontSize: 13, color: ColorStyles.gray30),
+                    style: Pretendard.medium.set(
+                      size: 13,
+                      color: ColorStyles.gray30,
+                    ),
                   ),
 
                   SizedBox(width: 8),
@@ -647,7 +780,10 @@ class AgendaListItem extends StatelessWidget {
                   SizedBox(width: 4),
                   Text(
                     voteCount.toString(),
-                    style: TextStyle(fontSize: 13, color: ColorStyles.gray30),
+                    style: Pretendard.medium.set(
+                      size: 13,
+                      color: ColorStyles.gray30,
+                    ),
                   ),
                 ],
               ),
