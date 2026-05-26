@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mypoly/style/index.dart';
 import 'package:mypoly/asset/index.dart';
 import 'package:mypoly/widget/index.dart';
 
-class CollapsedRow extends StatelessWidget {
+class CollapsedRow extends HookWidget {
   final dynamic item;
   final VoidCallback onExpandPressed;
 
@@ -16,6 +17,13 @@ class CollapsedRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final animationTrigger = useState(0);
+
+    useEffect(() {
+      animationTrigger.value = item.rank;
+      return null;
+    }, [item.rank]);
+
     return Row(
       children: [
         _buildStatusIcon('stable'),
@@ -26,23 +34,19 @@ class CollapsedRow extends StatelessWidget {
         ),
         SizedBox(width: 6.w),
         Expanded(
-          child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 600),
-            transitionBuilder: (Widget child, Animation<double> animation) {
-              return FadeTransition(opacity: animation, child: child);
-            },
-            child: SizedBox(
-              key: ValueKey<int>(item.rank),
-              width: 189.w,
-              child: Text(
-                item.title,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: Pretendard.medium.set(
-                  size: 15,
-                  color: ColorStyles.white,
-                ),
-              ),
+          child: SizedBox(
+            width: 189.w,
+            child: Wrap(
+              clipBehavior: Clip.hardEdge,
+              children: List.generate(item.title.length, (index) {
+                final char = item.title[index];
+
+                return _FadeInChar(
+                  key: ValueKey('${animationTrigger.value}_${index}_$char'),
+                  char: char,
+                  delay: Duration(milliseconds: index * 50),
+                );
+              }),
             ),
           ),
         ),
@@ -60,6 +64,35 @@ class CollapsedRow extends StatelessWidget {
           child: MPSvgImage(SvgImage.arrowDown, width: 16.0, height: 16.0),
         ),
       ],
+    );
+  }
+}
+
+class _FadeInChar extends HookWidget {
+  final String char;
+  final Duration delay;
+
+  const _FadeInChar({super.key, required this.char, required this.delay});
+
+  @override
+  Widget build(BuildContext context) {
+    final opacity = useState(0.0);
+
+    useEffect(() {
+      final timer = Future.delayed(delay, () {
+        opacity.value = 1.0;
+      });
+      return null;
+    }, []);
+
+    return AnimatedOpacity(
+      duration: const Duration(milliseconds: 800),
+      curve: Curves.linear,
+      opacity: opacity.value,
+      child: Text(
+        char,
+        style: Pretendard.medium.set(size: 15, color: Colors.white),
+      ),
     );
   }
 }

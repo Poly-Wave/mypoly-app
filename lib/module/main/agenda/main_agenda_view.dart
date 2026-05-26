@@ -50,44 +50,52 @@ class _RealtimePopularAgendaSection extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // final popularAgendas = [
+    //   (rank: 1, status: 'up', title: 'A안건', categoryName: '법행정'),
+    //   (rank: 2, status: 'stable', title: 'B안건', categoryName: '법행정'),
+    //   (rank: 3, status: 'stable', title: 'C안건', categoryName: '법행정'),
+    //   (rank: 4, status: 'down', title: 'D안건', categoryName: '법행정'),
+    //   (rank: 5, status: 'up', title: 'E안건', categoryName: '법행정'),
+    // ];
+
     final isExpanded = useState(false);
     final currentRankIndex = useState(0);
 
-    // final popularAgendas = useState<List<PopularAgendaResponse>>([]);
+    final popularAgendas = useState<List<PopularAgendaResponse>>([]);
 
-    // useEffect(() {
-    //   Future(() async {
-    //     try {
-    //       final dio = ref.read(dioProvider);
-    //       final api = AgendaApi(
-    //         dio,
-    //         baseUrl: ref.read(envProvider).billsApiUrl,
-    //       );
+    useEffect(() {
+      Future(() async {
+        try {
+          final dio = ref.read(dioProvider);
+          final api = AgendaApi(
+            dio,
+            baseUrl: ref.read(envProvider).billsApiUrl,
+          );
 
-    //       final List<PopularAgendaResponse> result = await api
-    //           .getPopularAgendas();
+          final List<PopularAgendaResponse> result = await api
+              .getPopularAgendas();
 
-    //       popularAgendas.value = result;
-    //     } catch (e) {
-    //       debugPrint('실시간 인기 안건 조회 실패: $e');
-    //     }
-    //   });
-    //   return null;
-    // }, []);
+          popularAgendas.value = result;
+        } catch (e) {
+          debugPrint('실시간 인기 안건 조회 실패: $e');
+        }
+      });
+      return null;
+    }, []);
 
-    final popularAgendas = [
-      (rank: 1, status: 'up', title: 'A안건', categoryName: '법행정'),
-      (rank: 2, status: 'stable', title: 'B안건', categoryName: '법행정'),
-      (rank: 3, status: 'stable', title: 'C안건', categoryName: '법행정'),
-      (rank: 4, status: 'down', title: 'D안건', categoryName: '법행정'),
-      (rank: 5, status: 'up', title: 'E안건', categoryName: '법행정'),
-    ];
+    useEffect(() {
+      if (isExpanded.value || popularAgendas.value.isEmpty) return null;
 
-    final double targetHeight = isExpanded.value ? 198.h : 46.h;
+      final timer = Timer.periodic(const Duration(seconds: 4), (t) {
+        currentRankIndex.value =
+            (currentRankIndex.value + 1) % popularAgendas.value.length;
+      });
+      return timer.cancel;
+    }, [isExpanded.value]);
 
-    // if (popularAgendas.value.isEmpty) {
-    //   return const SizedBox.shrink();
-    // }
+    if (popularAgendas.value.isEmpty) {
+      return const SizedBox.shrink();
+    }
 
     final EdgeInsets dynamicPadding = isExpanded.value
         ? EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w)
@@ -117,11 +125,11 @@ class _RealtimePopularAgendaSection extends HookConsumerWidget {
               padding: dynamicPadding,
               child: isExpanded.value
                   ? ExpandedList(
-                      items: popularAgendas,
+                      items: popularAgendas.value,
                       onCollapsePressed: () => isExpanded.value = false,
                     )
                   : CollapsedRow(
-                      item: popularAgendas[currentRankIndex.value],
+                      item: popularAgendas.value[currentRankIndex.value],
                       onExpandPressed: () => isExpanded.value = true,
                     ),
             ),
