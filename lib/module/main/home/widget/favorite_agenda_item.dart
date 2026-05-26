@@ -57,6 +57,7 @@ class FavoriteAgendaItem extends StatelessWidget {
                   style: Pretendard.medium.set(
                     size: 16,
                     color: ColorStyles.white,
+                    height: 1.45,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
