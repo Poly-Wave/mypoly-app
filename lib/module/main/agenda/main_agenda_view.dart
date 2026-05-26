@@ -702,8 +702,7 @@ class AgendaListItem extends StatelessWidget {
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment:
-                            CrossAxisAlignment.center, // 👈 내부 자식들을 세로 정중앙 정렬
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
                             category,
