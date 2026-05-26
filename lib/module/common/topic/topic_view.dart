@@ -8,6 +8,7 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'package:mypoly/data/provider/service_provider.dart';
 import 'package:mypoly/generate/bills/model/category_response.dart';
 import 'package:mypoly/provider/app_provider.dart';
+import 'package:mypoly/provider/app_user_provider.dart';
 import 'package:mypoly/provider/router_provider.dart';
 import 'package:mypoly/style/index.dart';
 import 'package:mypoly/widget/index.dart';
@@ -147,8 +148,8 @@ class TopicView extends HookConsumerWidget {
                       );
                 } else {
                   await ref
-                      .read(appUserCategoriesProvider.notifier)
-                      .update(selectedCategories);
+                      .read(appUserProvider.notifier)
+                      .updateCategories(selectedCategories);
                 }
 
                 if (!context.mounted) return;

@@ -36,7 +36,17 @@ extension DateTimeExtension on DateTime {
   }
 }
 
-extension BirthDateStringExtension on String {
+extension StringExtension on String {
+  String get toDotBirthDate {
+    final digits = replaceAll(RegExp(r'\D'), '');
+    if (digits.isEmpty) return '';
+    if (digits.length <= 4) return digits;
+    if (digits.length <= 6) {
+      return '${digits.substring(0, 4)}.${digits.substring(4)}';
+    }
+    return '${digits.substring(0, 4)}.${digits.substring(4, 6)}.${digits.substring(6)}';
+  }
+
   int get age {
     final normalizedBirthDate = replaceAll(RegExp(r'[^0-9]'), '');
     if (normalizedBirthDate.length != 8) return 0;

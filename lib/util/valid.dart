@@ -1,7 +1,7 @@
 class Valid {
   Valid._();
 
-  static final nickname = RegExp(r'^[가-힣ㄱ-ㅎㅏ-ㅣ0-9\s·]{4,12}$');
+  static final nickname = RegExp(r'^[가-힣0-9\s]{4,12}$');
 
   static bool isBirthDate(String birth) {
     if (birth.isEmpty || birth.length != 10) return false;

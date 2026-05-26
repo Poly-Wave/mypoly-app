@@ -68,6 +68,43 @@ class AppUser extends _$AppUser {
     return response;
   }
 
+  Future<void> updateProfile({
+    required String nickname,
+    required Gender gender,
+    required String birthDate,
+    required String sido,
+    required String sigungu,
+    required String emdName,
+  }) async {
+    await ref
+        .read(userServiceProvider)
+        .updateProfile(
+          nickname: nickname,
+          gender: gender,
+          birthDate: birthDate,
+          sido: sido,
+          sigungu: sigungu,
+          emdName: emdName,
+        );
+
+    state = state?.copyWith(
+      nickname: nickname,
+      gender: gender.me,
+      birthDate: birthDate,
+      sido: sido,
+      sigungu: sigungu,
+      emdName: emdName,
+    );
+  }
+
+  Future<void> updateCategories(List<CategoryResponse> value) async {
+    await ref
+        .read(categoryServiceProvider)
+        .updateCategories(categories: value, isOnboard: false);
+
+    ref.read(appUserCategoriesProvider.notifier).update(value);
+  }
+
   Future<void> logout() async {
     await Future.wait([
       ref.read(appAccessTokenProvider.notifier).reset(),

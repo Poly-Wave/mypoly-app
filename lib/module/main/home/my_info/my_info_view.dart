@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mypoly/asset/index.dart';
+import 'package:mypoly/provider/app_provider.dart';
 import 'package:mypoly/provider/app_user_provider.dart';
 import 'package:mypoly/provider/router_provider.dart';
 import 'package:mypoly/style/index.dart';
@@ -15,7 +16,7 @@ class MyInfoView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(appUserProvider);
+    final userSocialProvider = ref.watch(appUserSocialProviderProvider);
 
     return Scaffold(
       appBar: MPAppBar(context, text: "내정보"),
@@ -40,18 +41,39 @@ class MyInfoView extends HookConsumerWidget {
                     children: [
                       MyInfoGroupItem(
                         "로그인 방식",
-                        subText: "카카오",
+                        subWidget: MPSvgImage(
+                          userSocialProvider.imageCircle,
+                          size: 16,
+                        ),
+                        subText: userSocialProvider.text,
                         useArrow: false,
                       ),
                       MyInfoGroupItem(
                         "별명",
-                        subText: user?.nickname ?? "",
-                        useArrow: false,
+                        subText: ref.watch(appUserNicknameProvider),
+                        onTap: () => context.pushRoute(MyInfoEditRoute()),
                       ),
-                      MyInfoGroupItem("성별", subText: "", useArrow: false),
-                      MyInfoGroupItem("연령", subText: "", useArrow: false),
-                      MyInfoGroupItem("거주지역", subText: "", useArrow: false),
-                      MyInfoGroupItem("관심 주제", subText: "5개"),
+                      MyInfoGroupItem(
+                        "성별",
+                        subText: ref.watch(appUserGenderProvider).text,
+                        onTap: () => context.pushRoute(MyInfoEditRoute()),
+                      ),
+                      MyInfoGroupItem(
+                        "연령",
+                        subText: "${ref.watch(appUserAgeProvider)}세",
+                        onTap: () => context.pushRoute(MyInfoEditRoute()),
+                      ),
+                      MyInfoGroupItem(
+                        "거주지역",
+                        subText: ref.watch(appUserAddressProvider),
+                        onTap: () => context.pushRoute(MyInfoEditRoute()),
+                      ),
+                      MyInfoGroupItem(
+                        "관심 주제",
+                        subText:
+                            "${ref.watch(appUserCategoriesProvider).length}개",
+                        onTap: () => context.pushRoute(TopicRoute()),
+                      ),
                     ],
                   ),
                   MPHeight(40),
@@ -165,6 +187,7 @@ class MyInfoGroupItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
+      behavior: .translucent,
       child: SizedBox(
         height: 46.h,
         child: Row(

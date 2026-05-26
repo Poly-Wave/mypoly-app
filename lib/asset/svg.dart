@@ -38,6 +38,10 @@ class SvgImage {
   static const String selectorRadioOff = 'assets/svg/selector_radio_off.svg';
   static const String selectorRadioOn = 'assets/svg/selector_radio_on.svg';
   static const String socialApple = 'assets/svg/social_apple.svg';
+  static const String socialAppleCircle = 'assets/svg/social_apple_circle.svg';
   static const String socialGoogle = 'assets/svg/social_google.svg';
+  static const String socialGoogleCircle =
+      'assets/svg/social_google_circle.svg';
   static const String socialKakao = 'assets/svg/social_kakao.svg';
+  static const String socialKakaoCircle = 'assets/svg/social_kakao_circle.svg';
 }

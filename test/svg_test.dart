@@ -35,7 +35,10 @@ void main() {
     expect(File(SvgImage.selectorRadioOff).existsSync(), isTrue);
     expect(File(SvgImage.selectorRadioOn).existsSync(), isTrue);
     expect(File(SvgImage.socialApple).existsSync(), isTrue);
+    expect(File(SvgImage.socialAppleCircle).existsSync(), isTrue);
     expect(File(SvgImage.socialGoogle).existsSync(), isTrue);
+    expect(File(SvgImage.socialGoogleCircle).existsSync(), isTrue);
     expect(File(SvgImage.socialKakao).existsSync(), isTrue);
+    expect(File(SvgImage.socialKakaoCircle).existsSync(), isTrue);
   });
 }

@@ -6,6 +6,7 @@ import 'package:mypoly/generate/users/model/address_search_response.dart';
 import 'package:mypoly/generate/users/model/nickname_availability_response.dart';
 import 'package:mypoly/generate/users/model/update_onboarding_status_request.dart';
 import 'package:mypoly/generate/users/model/user_me_response.dart';
+import 'package:mypoly/generate/users/model/user_update_basic_profile_request.dart';
 import 'package:mypoly/generate/users/model/user_update_profile_request.dart';
 import 'package:mypoly/provider/app_user_provider.dart';
 import 'package:mypoly/util/error.dart';
@@ -50,6 +51,33 @@ class UserService {
   Future<UserMeResponse> getMe() async {
     try {
       return await _userApi.getMe();
+    } on DioException catch (e) {
+      return Future.error(getErrorMessage(e));
+    } catch (e) {
+      debugPrint(e.toString());
+      return Future.error("error");
+    }
+  }
+
+  Future<void> updateProfile({
+    required String nickname,
+    required Gender gender,
+    required String birthDate,
+    required String sido,
+    required String sigungu,
+    required String emdName,
+  }) async {
+    try {
+      return await _userApi.updateBasicProfile(
+        userUpdateBasicProfileRequest: UserUpdateBasicProfileRequest(
+          nickname: nickname,
+          gender: gender.updateBasicProfile,
+          birthDate: birthDate,
+          sido: sido,
+          sigungu: sigungu,
+          emdName: emdName,
+        ),
+      );
     } on DioException catch (e) {
       return Future.error(getErrorMessage(e));
     } catch (e) {

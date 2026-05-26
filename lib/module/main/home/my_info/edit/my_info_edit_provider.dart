@@ -1,31 +1,62 @@
 import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:mypoly/asset/index.dart';
 import 'package:mypoly/data/provider/service_provider.dart';
 import 'package:mypoly/enum/gender.dart';
 import 'package:mypoly/generate/users/model/address_info_response.dart';
-import 'package:mypoly/provider/router_provider.dart';
+import 'package:mypoly/module/onboard/register/more/register_more_provider.dart';
+import 'package:mypoly/provider/app_user_provider.dart';
 import 'package:mypoly/style/index.dart';
 import 'package:mypoly/util/extension.dart';
 import 'package:mypoly/util/valid.dart';
 import 'package:mypoly/widget/index.dart';
 import 'package:mypoly/widget/modal/index.dart';
+import 'package:mypoly/widget/overlay/index.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-part 'register_more_provider.g.dart';
+part 'my_info_edit_provider.g.dart';
 
 @riverpod
-class OnboardGender extends _$OnboardGender {
+class InfoEditGender extends _$InfoEditGender {
   @override
-  Gender build() => .man;
+  Gender build() => ref.read(appUserGenderProvider);
 
   void update(Gender value) => state = value;
+}
+
+@riverpod
+class Nickname extends _$Nickname {
+  final controller = TextEditingController();
+  final focusNode = FocusNode();
+
+  @override
+  String build() {
+    ref.onDispose(() {
+      controller.dispose();
+      focusNode.dispose();
+    });
+
+    final nickname = ref.read(appUserNicknameProvider);
+
+    controller.text = nickname;
+    return nickname;
+  }
+
+  void onChanged(String value) {
+    state = value;
+  }
+
+  void onReset() {
+    controller.text = "";
+    state = "";
+  }
 }
 
 @riverpod
@@ -39,6 +70,13 @@ class Birth extends _$Birth {
       controller.dispose();
       focusNode.dispose();
     });
+
+    final birthDate = ref.read(appUserProvider)?.birthDate;
+
+    if (birthDate != null) {
+      controller.text = birthDate.toDotBirthDate;
+      return birthDate.toDotBirthDate;
+    }
 
     return "";
   }
@@ -184,7 +222,23 @@ class AddressesPaging extends _$AddressesPaging {
 @riverpod
 class Residence extends _$Residence {
   @override
-  AddressInfoResponse? build() => null;
+  AddressInfoResponse? build() {
+    final user = ref.read(appUserProvider);
+
+    final sido = user?.sido;
+    final sigungu = user?.sigungu;
+    final emdName = user?.emdName;
+
+    if (sido != null && sigungu != null && emdName != null) {
+      return AddressInfoResponse(
+        sido: sido,
+        sigungu: sigungu,
+        emdName: emdName,
+      );
+    }
+
+    return null;
+  }
 
   void onShowBottomSheet(BuildContext context) {
     showMPBottomSheetModal(
@@ -358,125 +412,25 @@ class Residence extends _$Residence {
   }
 }
 
-class RegisterMoreAddressNoItemsFoundIndicator extends StatelessWidget {
-  final String lastKeyword;
-  final void Function() onRefreshTap;
-
-  const RegisterMoreAddressNoItemsFoundIndicator({
-    super.key,
-    required this.lastKeyword,
-    required this.onRefreshTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: .min,
-      crossAxisAlignment: .stretch,
-      children: [
-        MPHeight(10),
-        Text(
-          "‘$lastKeyword' 검색 결과",
-          style: Pretendard.medium.set(
-            size: 14,
-            height: 1.45,
-            color: ColorStyles.gray30,
-          ),
-        ),
-        MPHeight(75),
-        Text(
-          "검색 결과가 없어요\n동네 이름을 다시 확인해 주세요",
-          textAlign: .center,
-          style: Pretendard.semiBold.set(
-            size: 18,
-            height: 1.4,
-            color: ColorStyles.white,
-          ),
-        ),
-        MPHeight(8),
-        Text(
-          "예: 시/도를 제외한 강동구, 암사동 등",
-          textAlign: .center,
-          style: Pretendard.medium.set(
-            size: 15,
-            height: 1.45,
-            color: ColorStyles.gray30,
-          ),
-        ),
-        MPHeight(20),
-        Center(
-          child: GestureDetector(
-            onTap: onRefreshTap,
-            child: Container(
-              height: 38.h,
-              padding: .symmetric(horizontal: 14.w),
-              decoration: BoxDecoration(
-                borderRadius: .circular(8.r),
-                border: .all(width: 1.r, color: ColorStyles.gray60),
-                color: ColorStyles.gray70,
-              ),
-              child: Row(
-                mainAxisSize: .min,
-                children: [
-                  Text(
-                    "다시 검색하기",
-                    style: Pretendard.semiBold.set(
-                      size: 14,
-                      color: ColorStyles.white,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class RegisterMoreAddressItem extends StatelessWidget {
-  final AddressInfoResponse item;
-  final void Function() onTap;
-
-  const RegisterMoreAddressItem({
-    super.key,
-    required this.item,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 47.h,
-        alignment: .centerLeft,
-        child: Text(
-          "${item.sido} ${item.sigungu} ${item.emdName}",
-          style: Pretendard.medium.set(size: 16, color: ColorStyles.white),
-        ),
-      ),
-    );
-  }
-}
-
 @riverpod
-bool onMoreEnabled(Ref ref) {
+bool onSaveEnabled(Ref ref) {
+  final nickname = ref.watch(nicknameProvider);
   final birth = ref.watch(birthProvider);
   final residence = ref.watch(residenceProvider);
 
   if (residence == null) return false;
+  if (!Valid.nickname.hasMatch(nickname)) return false;
   if (!Valid.isBirthDate(birth)) return false;
 
   return true;
 }
 
-Future<void> onMore(WidgetRef ref) async {
+Future<void> onSave(WidgetRef ref) async {
   final context = ref.context;
 
   context.unFocus();
 
+  final nickname = ref.read(nicknameProvider);
   final gender = ref.read(onboardGenderProvider);
   final birthDate = ref.read(birthProvider).replaceAll(".", "");
   final residence = ref.read(residenceProvider);
@@ -489,8 +443,9 @@ Future<void> onMore(WidgetRef ref) async {
 
   try {
     await ref
-        .read(userServiceProvider)
-        .updateOnboardProfile(
+        .read(appUserProvider.notifier)
+        .updateProfile(
+          nickname: nickname,
           gender: gender,
           birthDate: birthDate,
           sido: residence.sido,
@@ -500,9 +455,10 @@ Future<void> onMore(WidgetRef ref) async {
 
     if (!context.mounted) return;
     context.loaderOverlay.hide();
-    context.replaceRoute(RegisterCompleteRoute());
+    showMPSnackBar(context, message: "내 정보가 저장되었습니다.");
+    context.pop();
   } catch (e) {
     context.loaderOverlay.hide();
-    showMPAlertModal(context, title: "추가 정보 입력에 실패하였습니다.\n잠시 후 다시 시도해 주세요.");
+    showMPAlertModal(context, title: "내정보 수정에 실패하였습니다.\n잠시 후 다시 시도해 주세요.");
   }
 }
