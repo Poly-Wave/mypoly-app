@@ -1,4 +1,5 @@
 import 'package:mypoly/data/provider/api_provider.dart';
+import 'package:mypoly/data/service/agenda_service.dart';
 import 'package:mypoly/data/service/auth_service.dart';
 import 'package:mypoly/data/service/bill_bookmark_service.dart';
 import 'package:mypoly/data/service/category_service.dart';
@@ -8,6 +9,13 @@ import 'package:mypoly/data/service/vote_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'service_provider.g.dart';
+
+@Riverpod(keepAlive: true)
+AgendaService agendaService(Ref ref) {
+  final api = ref.watch(agendaApiProvider);
+
+  return AgendaService(ref, api);
+}
 
 @Riverpod(keepAlive: true)
 CategoryService categoryService(Ref ref) {

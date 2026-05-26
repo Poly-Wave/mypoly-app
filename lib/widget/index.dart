@@ -17,7 +17,7 @@ part 'size.dart';
 part 'image.dart';
 part 'selector.dart';
 part 'button.dart';
-part 'appbar.dart';
+part 'app_bar.dart';
 part 'input.dart';
 part 'loading.dart';
 part 'chip.dart';

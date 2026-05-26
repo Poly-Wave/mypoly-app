@@ -1,4 +1,5 @@
 import 'package:mypoly/data/provider/dio_provider.dart';
+import 'package:mypoly/generate/bills/api/agenda_api.dart';
 import 'package:mypoly/generate/bills/api/bill_bookmark_api.dart';
 import 'package:mypoly/generate/bills/api/category_api.dart';
 import 'package:mypoly/generate/bills/api/vote_api.dart';
@@ -9,6 +10,14 @@ import 'package:mypoly/provider/app_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'api_provider.g.dart';
+
+@Riverpod(keepAlive: true)
+AgendaApi agendaApi(Ref ref) {
+  final dio = ref.watch(dioProvider);
+  final apiUrl = ref.watch(envProvider).billsApiUrl;
+
+  return AgendaApi(dio, baseUrl: apiUrl);
+}
 
 @Riverpod(keepAlive: true)
 CategoryApi categoryApi(Ref ref) {

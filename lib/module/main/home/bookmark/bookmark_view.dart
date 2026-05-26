@@ -23,7 +23,7 @@ class BookmarkView extends HookConsumerWidget {
     final bookmarksPaging = ref.watch(bookmarksPagingProvider);
 
     return Scaffold(
-      appBar: MPAppbar(context, text: "보관함"),
+      appBar: MPAppBar(context, text: "보관함"),
       body: Column(
         crossAxisAlignment: .stretch,
         children: [

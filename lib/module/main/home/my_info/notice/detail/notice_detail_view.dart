@@ -12,7 +12,7 @@ class NoticeDetailView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: MPAppbar(context, text: "공지사항"),
+      appBar: MPAppBar(context, text: "공지사항"),
       body: Column(
         crossAxisAlignment: .stretch,
         children: [

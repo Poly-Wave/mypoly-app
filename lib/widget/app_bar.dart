@@ -1,6 +1,6 @@
 part of 'index.dart';
 
-class MPAppbar extends StatelessWidget implements PreferredSizeWidget {
+class MPAppBar extends StatelessWidget implements PreferredSizeWidget {
   final BuildContext context;
   final Color color;
   final bool isBackEnabled;
@@ -9,7 +9,7 @@ class MPAppbar extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget>? left;
   final List<Widget>? right;
 
-  const MPAppbar(
+  const MPAppBar(
     this.context, {
     super.key,
     this.color = ColorStyles.black,
@@ -19,6 +19,10 @@ class MPAppbar extends StatelessWidget implements PreferredSizeWidget {
     this.left,
     this.right,
   });
+
+  @override
+  Size get preferredSize =>
+      Size(double.infinity, MediaQuery.of(context).padding.top + 59.h);
 
   @override
   Widget build(BuildContext context) {
@@ -55,8 +59,4 @@ class MPAppbar extends StatelessWidget implements PreferredSizeWidget {
       ),
     );
   }
-
-  @override
-  Size get preferredSize =>
-      Size(double.infinity, MediaQuery.of(context).padding.top + 59.h);
 }

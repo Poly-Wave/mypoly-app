@@ -14,7 +14,7 @@ class OSSView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: MPAppbar(context, text: "오픈소스 라이선스"),
+      appBar: MPAppBar(context, text: "오픈소스 라이선스"),
       body: ListView.separated(
         itemCount: dependencies.length,
         padding: .zero,

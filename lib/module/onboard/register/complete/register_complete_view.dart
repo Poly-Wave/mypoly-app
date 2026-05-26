@@ -17,7 +17,7 @@ class RegisterCompleteView extends HookConsumerWidget {
     return GestureDetector(
       onTap: context.unFocus,
       child: Scaffold(
-        appBar: MPAppbar(context, isBackEnabled: false),
+        appBar: MPAppBar(context, isBackEnabled: false),
         body: MPSafeColumn(
           bottom: true,
           crossAxisAlignment: .stretch,

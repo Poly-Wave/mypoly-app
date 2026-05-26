@@ -27,7 +27,7 @@ class MainView extends HookConsumerWidget {
     final mainPage = ref.watch(mainPageProvider);
 
     return Scaffold(
-      appBar: MainAppBar(currentIndex: mainPage),
+      appBar: MainAppBar(context, currentIndex: mainPage),
       body: Column(
         crossAxisAlignment: .stretch,
         children: [

@@ -4,6 +4,7 @@ import 'package:mypoly/enum/sort.dart';
 import 'package:mypoly/generate/bills/api/bill_bookmark_api.dart';
 import 'package:mypoly/generate/bills/model/bookmarked_bill_slice_response.dart';
 import 'package:mypoly/util/error.dart';
+import 'package:mypoly/util/extension.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 class BillBookmarkService {
@@ -25,8 +26,8 @@ class BillBookmarkService {
   }) async {
     try {
       return await _billBookmarkApi.getBookmarkedBills(
-        fromDate: fromDate,
-        toDate: toDate,
+        fromDate: fromDate?.toDashYMD,
+        toDate: toDate?.toDashYMD,
         categoryCodes: categoryCodes,
         stageCodes: stageCodes,
         sortType: sort.value,

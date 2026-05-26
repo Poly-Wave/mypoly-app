@@ -8,6 +8,7 @@ class SortButton extends StatelessWidget {
   final VoidCallback onTap;
 
   const SortButton({
+    super.key,
     required this.label,
     required this.isSelected,
     required this.onTap,

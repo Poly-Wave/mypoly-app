@@ -1,0 +1,106 @@
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:mypoly/data/provider/service_provider.dart';
+import 'package:mypoly/model/bill.dart';
+import 'package:mypoly/provider/app_provider.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'search_provider.g.dart';
+
+@riverpod
+class SearchPaging extends _$SearchPaging {
+  CancelToken? _currentCancelToken;
+
+  @override
+  PagingState<int?, BillListData>? build() => null;
+
+  Future<void> onRefresh() async {
+    _currentCancelToken?.cancel();
+    _currentCancelToken = null;
+    state = PagingState();
+  }
+
+  Future<void> onReset() async {
+    _currentCancelToken?.cancel();
+    _currentCancelToken = null;
+    state = null;
+  }
+
+  Future<void> fetchNextPage() async {
+    final prevState = state;
+
+    if (prevState == null || prevState.isLoading) {
+      return;
+    }
+
+    state = prevState.copyWith(isLoading: true, error: null);
+
+    try {
+      final lastKey = prevState.keys?.last;
+      final newKey = lastKey != null ? lastKey + 1 : 0;
+
+      final keyword = ref.read(keywordProvider);
+
+      _currentCancelToken?.cancel();
+      _currentCancelToken = CancelToken();
+
+      final response = await ref
+          .read(agendaServiceProvider)
+          .searchAgendas(
+            keyword: keyword,
+            page: newKey,
+            cancelToken: _currentCancelToken,
+          );
+
+      final newItems = response.content
+          .map((item) => item.toBillListData(ref))
+          .toList();
+
+      state = prevState.copyWith(
+        isLoading: false,
+        pages: [...?prevState.pages, newItems],
+        keys: [...?prevState.keys, newKey],
+        hasNextPage: response.hasNext,
+      );
+    } catch (e) {
+      state = prevState.copyWith(isLoading: false, error: e);
+    }
+  }
+}
+
+@riverpod
+class Keyword extends _$Keyword {
+  final controller = TextEditingController();
+  final focusNode = FocusNode();
+
+  @override
+  String build() {
+    ref.onDispose(() {
+      controller.dispose();
+      focusNode.dispose();
+    });
+
+    return "";
+  }
+
+  Future<void> onSubmitted(String value) async {
+    if (value.isEmpty) {
+      state = "";
+      ref.read(searchPagingProvider.notifier).onReset();
+      return;
+    }
+
+    await ref.read(appKeywordsProvider.notifier).add(value);
+
+    state = value;
+
+    ref.read(searchPagingProvider.notifier).onRefresh();
+  }
+
+  void onReset() {
+    controller.text = "";
+    state = "";
+    ref.read(searchPagingProvider.notifier).onReset();
+  }
+}

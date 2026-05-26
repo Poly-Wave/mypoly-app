@@ -48,7 +48,7 @@ class RegisterOnboardView extends HookConsumerWidget {
     );
 
     return Scaffold(
-      appBar: MPAppbar(context, isBackEnabled: false),
+      appBar: MPAppBar(context, isBackEnabled: false),
       body: MPSafeColumn(
         bottom: true,
         crossAxisAlignment: .stretch,

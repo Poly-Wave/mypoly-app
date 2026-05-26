@@ -24,7 +24,7 @@ class VoteView extends HookConsumerWidget {
     final votesPaging = ref.watch(votesPagingProvider);
 
     return Scaffold(
-      appBar: MPAppbar(context, text: "참여 투표"),
+      appBar: MPAppBar(context, text: "참여 투표"),
       body: Column(
         crossAxisAlignment: .stretch,
         children: [

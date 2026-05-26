@@ -3,4 +3,6 @@ class StorageKey {
 
   static const accessToken = "ACCESS_TOKEN";
   static const refreshToken = "REFRESH_TOKEN";
+
+  static const keywords = "KEYWORDS";
 }

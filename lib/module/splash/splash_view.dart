@@ -9,6 +9,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mypoly/generate/users/model/user_me_response.dart';
 import 'package:mypoly/provider/app_provider.dart';
+import 'package:mypoly/provider/app_user_provider.dart';
 import 'package:mypoly/provider/router_provider.dart';
 import 'package:mypoly/widget/modal/index.dart';
 

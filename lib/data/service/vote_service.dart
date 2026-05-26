@@ -4,6 +4,7 @@ import 'package:mypoly/enum/sort.dart';
 import 'package:mypoly/generate/bills/api/vote_api.dart';
 import 'package:mypoly/generate/bills/model/my_voted_bill_slice_response.dart';
 import 'package:mypoly/util/error.dart';
+import 'package:mypoly/util/extension.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 class VoteService {
@@ -26,10 +27,10 @@ class VoteService {
   }) async {
     try {
       return await _voteApi.getMyVotedBills(
-        proposalFromDate: proposalFromDate,
-        proposalToDate: proposalToDate,
-        votedFromDate: votedFromDate,
-        votedToDate: votedToDate,
+        proposalFromDate: proposalFromDate?.toDashYMD,
+        proposalToDate: proposalToDate?.toDashYMD,
+        votedFromDate: votedFromDate?.toDashYMD,
+        votedToDate: votedToDate?.toDashYMD,
         sortType: sort.value,
         voteResults: voteResult != null
             ? [voteResult ? "AGREE" : "DISAGREE"]

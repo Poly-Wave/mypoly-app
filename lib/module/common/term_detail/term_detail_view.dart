@@ -44,13 +44,13 @@ class TermDetailView extends HookConsumerWidget {
 
     if (termHtml == null) {
       return Scaffold(
-        appBar: MPAppbar(context, text: term.title),
+        appBar: MPAppBar(context, text: term.title),
         body: MPSafeBox(bottom: true, child: Center(child: MPLoading())),
       );
     }
 
     return Scaffold(
-      appBar: MPAppbar(context, text: term.title),
+      appBar: MPAppBar(context, text: term.title),
       body: Column(
         crossAxisAlignment: .stretch,
         children: [

@@ -12,7 +12,7 @@ class NotificationView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: MPAppbar(context, text: "알림"),
+      appBar: MPAppBar(context, text: "알림"),
       body: ListView.builder(
         itemCount: 3,
         padding: .zero,

@@ -54,7 +54,7 @@ class _AgendaTopicSection extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         padding: EdgeInsets.only(top: 16),
         itemCount: items.length,
-        separatorBuilder: (_, __) => SizedBox(width: 12),
+        separatorBuilder: (_, _) => SizedBox(width: 12),
         itemBuilder: (context, index) {
           return AgendaTopicCard(item: items[index]);
         },
@@ -102,7 +102,7 @@ class _AgendaListSection extends HookConsumerWidget {
             categoryCodes: targetCodes,
           );
 
-          agendas.value = result;
+          // agendas.value = result;
         } catch (e) {
           debugPrint('메인 안건 조회 실패: $e');
         }
@@ -400,7 +400,7 @@ class _AgendaListSection extends HookConsumerWidget {
           width: 32,
           height: 32,
           fit: BoxFit.contain,
-          errorBuilder: (_, __, ___) => Icon(Icons.image, size: 32),
+          errorBuilder: (_, _, _) => Icon(Icons.image, size: 32),
         ),
       ),
     );

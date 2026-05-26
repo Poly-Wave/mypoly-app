@@ -17,8 +17,8 @@ abstract class BillBookmarkApi {
   /// 로그인 사용자가 보관한 의안 목록을 조회합니다.  - 날짜 필터는 &#39;보관한 날짜&#39; 기준입니다. - categoryCodes는 의안의 AI 카테고리 중 하나라도 매칭되면 포함됩니다. - stageCodes는 앱용 진행 단계 코드 기준입니다. 사용 가능 값: RECEIVED, REVIEW, DECISION, COMPLETED - sortType 기본값은 LATEST입니다. - 정렬은 pageable.sort가 아닌 sortType으로 제어합니다. - 사용 가능 값: LATEST, POPULAR
   ///
   /// Parameters:
-  /// * [fromDate] - 보관 시작일, KST 기준
-  /// * [toDate] - 보관 종료일, KST 기준
+  /// * [fromDate] - 보관 시작일, KST 기준. 2026-05-13 또는 2026-05-13T00:00:00.000Z 형식
+  /// * [toDate] - 보관 종료일, KST 기준. 2026-05-13 또는 2026-05-13T00:00:00.000Z 형식
   /// * [categoryCodes] - 카테고리 코드 목록
   /// * [stageCodes] - 앱용 진행 단계 코드 목록
   /// * [sortType] - 정렬 방식 (LATEST: 최근 보관순, POPULAR: 인기순)
@@ -28,8 +28,8 @@ abstract class BillBookmarkApi {
   ///
   @GET('/bookmarks')
   Future<BookmarkedBillSliceResponse> getBookmarkedBills({
-    @Query('fromDate') DateTime? fromDate,
-    @Query('toDate') DateTime? toDate,
+    @Query('fromDate') String? fromDate,
+    @Query('toDate') String? toDate,
     @Query('categoryCodes') List<String>? categoryCodes,
     @Query('stageCodes') List<String>? stageCodes,
     @Query('sortType') String? sortType = 'LATEST',

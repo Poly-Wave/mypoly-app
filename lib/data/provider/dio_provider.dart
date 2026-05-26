@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mypoly/generate/users/api/auth_api.dart';
 import 'package:mypoly/generate/users/model/token_refresh_request.dart';
 import 'package:mypoly/provider/app_provider.dart';
+import 'package:mypoly/provider/app_user_provider.dart';
 import 'package:mypoly/util/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

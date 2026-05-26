@@ -27,14 +27,14 @@ class VoteProgressBar extends StatelessWidget {
           mainAxisAlignment: .spaceBetween,
           children: [
             Text(
-              '응원해요 ${agree}%',
+              '응원해요 $agree%',
               style: Pretendard.medium.set(
                 size: 13,
                 color: ColorStyles.primary50,
               ),
             ),
             Text(
-              '아쉬워요${disagree}%',
+              '아쉬워요$disagree%',
               style: Pretendard.medium.set(size: 13, color: ColorStyles.gray10),
             ),
           ],

@@ -7,7 +7,7 @@ class FavoriteAgendaItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 112.h,
       child: Row(
         children: [

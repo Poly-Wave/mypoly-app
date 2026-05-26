@@ -16,7 +16,7 @@ class TermView extends HookConsumerWidget {
     final terms = ref.watch(appTermsProvider);
 
     return Scaffold(
-      appBar: MPAppbar(context, text: "약관"),
+      appBar: MPAppBar(context, text: "약관"),
       body: Column(
         crossAxisAlignment: .stretch,
         children: [

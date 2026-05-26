@@ -4,14 +4,14 @@
 
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart' hide Headers;
-import 'package:mypoly/generate/bills/model/agenda_response.dart';
+import 'package:mypoly/generate/bills/model/agenda_slice_response.dart';
 import 'package:mypoly/generate/bills/model/agenda_tab_response.dart';
 import 'package:mypoly/generate/bills/model/error_response.dart';
-import 'package:mypoly/generate/bills/model/interest_agenda_response.dart';
-import 'package:mypoly/generate/bills/model/main_agenda_response.dart';
+import 'package:mypoly/generate/bills/model/interest_agenda_slice_response.dart';
+import 'package:mypoly/generate/bills/model/main_agenda_slice_response.dart';
 import 'package:mypoly/generate/bills/model/pageable.dart';
 import 'package:mypoly/generate/bills/model/popular_agenda_response.dart';
-import 'package:mypoly/generate/bills/model/search_agenda_response.dart';
+import 'package:mypoly/generate/bills/model/search_agenda_slice_response.dart';
 
 part 'agenda_api.g.dart';
 
@@ -28,7 +28,7 @@ abstract class AgendaApi {
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   ///
   @GET('/agendas/tabs/{tabCode}')
-  Future<List<AgendaResponse>> getAgendasByTab({
+  Future<AgendaSliceResponse> getAgendasByTab({
     @Path('tabCode') required String tabCode,
     @Query('pageable') required Pageable pageable,
     CancelToken? cancelToken,
@@ -42,7 +42,7 @@ abstract class AgendaApi {
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   ///
   @GET('/agendas/interests')
-  Future<List<InterestAgendaResponse>> getInterestAgendas({
+  Future<InterestAgendaSliceResponse> getInterestAgendas({
     @Query('pageable') required Pageable pageable,
     CancelToken? cancelToken,
   });
@@ -56,7 +56,7 @@ abstract class AgendaApi {
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   ///
   @GET('/agendas/main')
-  Future<List<MainAgendaResponse>> getMainAgendas({
+  Future<MainAgendaSliceResponse> getMainAgendas({
     @Query('pageable') required Pageable pageable,
     @Query('categoryCodes') List<String>? categoryCodes,
     CancelToken? cancelToken,
@@ -91,7 +91,7 @@ abstract class AgendaApi {
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   ///
   @GET('/agendas/search')
-  Future<List<SearchAgendaResponse>> searchAgendas({
+  Future<SearchAgendaSliceResponse> searchAgendas({
     @Query('keyword') required String keyword,
     @Query('pageable') required Pageable pageable,
     CancelToken? cancelToken,

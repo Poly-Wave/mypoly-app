@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mypoly/generate/bills/model/bookmarked_bill_response.dart';
 import 'package:mypoly/generate/bills/model/category_response.dart';
 import 'package:mypoly/generate/bills/model/my_voted_bill_response.dart';
+import 'package:mypoly/generate/bills/model/search_agenda_response.dart';
 import 'package:mypoly/module/main/home/bookmark/bookmark_provider.dart';
 
 part 'bill.freezed.dart';
@@ -21,6 +22,23 @@ abstract class BillListData with _$BillListData {
 
   factory BillListData.fromJson(Map<String, dynamic> json) =>
       _$BillListDataFromJson(json);
+}
+
+extension SearchAgendaResponseExtension on SearchAgendaResponse {
+  BillListData toBillListData(Ref ref) {
+    final category = ref
+        .read(categoriesProvider)
+        .firstWhere((category) => category.code == categoryCode);
+
+    return BillListData(
+      id: billId,
+      title: title,
+      category: category,
+      viewCount: viewCount,
+      voteCount: voteCount,
+      registeredDate: registeredDate,
+    );
+  }
 }
 
 extension BookmarkedBillResponseExtension on BookmarkedBillResponse {

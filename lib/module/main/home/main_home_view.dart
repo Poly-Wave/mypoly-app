@@ -243,22 +243,22 @@ class AgendaIntroSection extends HookConsumerWidget {
             pageable: Pageable(page: 0, size: 10),
           );
 
-          agendaItems.value = result.asMap().entries.map((entry) {
-            final index = entry.key;
-            final e = entry.value;
+          // agendaItems.value = result.asMap().entries.map((entry) {
+          //   final index = entry.key;
+          //   final e = entry.value;
 
-            final agree = ((e.agreeRatio ?? 0) * 100).toInt();
-            final disagree = ((e.disagreeRatio ?? 0) * 100).toInt();
+          //   final agree = ((e.agreeRatio ?? 0) * 100).toInt();
+          //   final disagree = ((e.disagreeRatio ?? 0) * 100).toInt();
 
-            return (
-              index + 1,
-              e.officialTitle ?? '',
-              agree,
-              disagree,
-              e.totalVoteCount ?? 0,
-              () {},
-            );
-          }).toList();
+          //   return (
+          //     index + 1,
+          //     e.officialTitle ?? '',
+          //     agree,
+          //     disagree,
+          //     e.totalVoteCount ?? 0,
+          //     () {},
+          //   );
+          // }).toList();
         } catch (e) {
           debugPrint('안건 조회 실패: $e');
         }
@@ -529,8 +529,7 @@ class ListEmptyView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           MPImage(WebpImage.emptySearch, size: 64),
-
-          SizedBox(height: 10.h),
+          MPHeight(10),
           Column(
             children: [
               Text(
@@ -550,12 +549,9 @@ class ListEmptyView extends StatelessWidget {
               ),
             ],
           ),
-
-          SizedBox(height: 20.h),
+          MPHeight(20),
           GestureDetector(
-            onTap: () {
-              context.router.push(RegisterTopicRoute());
-            },
+            onTap: () => context.pushRoute(TopicRoute()),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [

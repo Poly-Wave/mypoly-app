@@ -120,6 +120,7 @@ class MPInput extends StatelessWidget {
   final Widget? right;
   final EdgeInsets? scrollPadding;
   final TextInputAction? textInputAction;
+  final EdgeInsetsGeometry? contentPadding;
 
   const MPInput({
     super.key,
@@ -141,6 +142,7 @@ class MPInput extends StatelessWidget {
     this.right,
     this.scrollPadding,
     this.textInputAction,
+    this.contentPadding,
   });
 
   @override
@@ -181,7 +183,9 @@ class MPInput extends StatelessWidget {
                   enabledBorder: border,
                   disabledBorder: border,
                   focusedBorder: border,
-                  contentPadding: .symmetric(vertical: 18.h, horizontal: 12.w),
+                  contentPadding:
+                      contentPadding ??
+                      .symmetric(vertical: 18.h, horizontal: 12.w),
                   hintText: hintText,
                   counterText: "",
                   hintStyle: Pretendard.medium.set(

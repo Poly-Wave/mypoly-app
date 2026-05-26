@@ -69,7 +69,7 @@ class RegisterNicknameView extends HookConsumerWidget {
       child: GestureDetector(
         onTap: context.unFocus,
         child: Scaffold(
-          appBar: MPAppbar(context),
+          appBar: MPAppBar(context),
           body: Column(
             crossAxisAlignment: .stretch,
             children: [

@@ -17,9 +17,11 @@ class SvgImage {
   static const String icClose = 'assets/svg/ic_close.svg';
   static const String icDateRange = 'assets/svg/ic_date_range.svg';
   static const String icInfo = 'assets/svg/ic_info.svg';
-  static const String icNotice = 'assets/svg/ic_notice.svg';
+  static const String icNotification = 'assets/svg/ic_notification.svg';
   static const String icReset = 'assets/svg/ic_reset.svg';
   static const String icSearch = 'assets/svg/ic_search.svg';
+  static const String icSearchClock = 'assets/svg/ic_search_clock.svg';
+  static const String icSearchClose = 'assets/svg/ic_search_close.svg';
   static const String logo = 'assets/svg/logo.svg';
   static const String mainAgenda = 'assets/svg/main_agenda.svg';
   static const String mainHome = 'assets/svg/main_home.svg';

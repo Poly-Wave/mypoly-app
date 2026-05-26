@@ -399,7 +399,7 @@ Future<void> showDateRangeBottomSheetModal<T extends MPDateRangeOption>(
             final hasDate = date != null;
 
             return Text(
-              hasDate ? date.formatDotDate() : "날짜선택",
+              hasDate ? date.toDotYMD : "날짜선택",
               style: Pretendard.medium.set(
                 size: 14,
                 color: hasDate ? ColorStyles.white : ColorStyles.gray60,

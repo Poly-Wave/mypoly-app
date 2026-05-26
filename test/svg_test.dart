@@ -18,9 +18,11 @@ void main() {
     expect(File(SvgImage.icClose).existsSync(), isTrue);
     expect(File(SvgImage.icDateRange).existsSync(), isTrue);
     expect(File(SvgImage.icInfo).existsSync(), isTrue);
-    expect(File(SvgImage.icNotice).existsSync(), isTrue);
+    expect(File(SvgImage.icNotification).existsSync(), isTrue);
     expect(File(SvgImage.icReset).existsSync(), isTrue);
     expect(File(SvgImage.icSearch).existsSync(), isTrue);
+    expect(File(SvgImage.icSearchClock).existsSync(), isTrue);
+    expect(File(SvgImage.icSearchClose).existsSync(), isTrue);
     expect(File(SvgImage.logo).existsSync(), isTrue);
     expect(File(SvgImage.mainAgenda).existsSync(), isTrue);
     expect(File(SvgImage.mainHome).existsSync(), isTrue);

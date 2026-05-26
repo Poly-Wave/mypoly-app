@@ -14,7 +14,7 @@ class NoticeView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: MPAppbar(context, text: "공지사항"),
+      appBar: MPAppBar(context, text: "공지사항"),
       body: ListView.separated(
         itemCount: 3,
         padding: .zero,

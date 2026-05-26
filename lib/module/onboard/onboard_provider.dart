@@ -13,6 +13,7 @@ import 'package:mypoly/enum/social.dart';
 import 'package:mypoly/generate/users/model/terms_agreement_request.dart';
 import 'package:mypoly/generate/users/model/terms_response.dart';
 import 'package:mypoly/provider/app_provider.dart';
+import 'package:mypoly/provider/app_user_provider.dart';
 import 'package:mypoly/provider/router_provider.dart';
 import 'package:mypoly/style/index.dart';
 import 'package:mypoly/util/event.dart';

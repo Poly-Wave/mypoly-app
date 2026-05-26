@@ -9,6 +9,18 @@ enum SocialProvider {
   final String text;
 
   const SocialProvider({required this.text});
+
+  static SocialProvider fromString(String value) {
+    switch (value.toLowerCase()) {
+      case 'apple':
+        return .apple;
+      case 'google':
+        return .google;
+      case 'kakao':
+      default:
+        return .kakao;
+    }
+  }
 }
 
 enum SocialTokenType {

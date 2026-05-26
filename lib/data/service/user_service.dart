@@ -7,7 +7,7 @@ import 'package:mypoly/generate/users/model/nickname_availability_response.dart'
 import 'package:mypoly/generate/users/model/update_onboarding_status_request.dart';
 import 'package:mypoly/generate/users/model/user_me_response.dart';
 import 'package:mypoly/generate/users/model/user_update_profile_request.dart';
-import 'package:mypoly/provider/app_provider.dart';
+import 'package:mypoly/provider/app_user_provider.dart';
 import 'package:mypoly/util/error.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

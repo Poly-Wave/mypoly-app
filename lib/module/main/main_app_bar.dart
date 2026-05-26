@@ -1,16 +1,20 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mypoly/asset/index.dart';
-import 'package:mypoly/module/widget/common/horizontal_padding.dart';
+import 'package:mypoly/provider/router_provider.dart';
 import 'package:mypoly/style/index.dart';
 import 'package:mypoly/widget/index.dart';
 
 class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final BuildContext context;
   final int currentIndex;
 
-  const MainAppBar({super.key, required this.currentIndex});
+  const MainAppBar(this.context, {super.key, required this.currentIndex});
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize =>
+      Size(double.infinity, MediaQuery.of(context).padding.top + 59.h);
 
   String get title {
     switch (currentIndex) {
@@ -27,37 +31,46 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      backgroundColor: ColorStyles.black,
-      automaticallyImplyLeading: false,
-      titleSpacing: 0,
-      title: HorizontalPadding(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(title, style: Pretendard.semiBold.set(size: 24)),
-            Row(
-              children: [
-                SizedBox(
-                  width: 32,
-                  height: 32,
-                  child: GestureDetector(
-                    onTap: () {},
-                    child: MPSvgImage(SvgImage.icSearch, size: 32),
-                  ),
+    return Container(
+      color: ColorStyles.black,
+      child: MPSafeBox(
+        top: true,
+        child: Container(
+          height: 59.h,
+          padding: .symmetric(horizontal: 20.w),
+          child: Row(
+            mainAxisAlignment: .spaceBetween,
+            children: [
+              Text(
+                title,
+                style: Pretendard.semiBold.set(
+                  size: 24,
+                  color: ColorStyles.white,
                 ),
-                SizedBox(width: 8),
-                SizedBox(
-                  width: 32,
-                  height: 32,
-                  child: GestureDetector(
-                    onTap: () {},
-                    child: MPSvgImage(SvgImage.icNotice, size: 32),
+              ),
+              Row(
+                spacing: 8.w,
+                children: [
+                  GestureDetector(
+                    onTap: () => context.pushRoute(SearchRoute()),
+                    child: MPSvgImage(
+                      SvgImage.icSearch,
+                      size: 32,
+                      color: ColorStyles.gray20,
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                  GestureDetector(
+                    onTap: () => context.pushRoute(NotificationRoute()),
+                    child: MPSvgImage(
+                      SvgImage.icNotification,
+                      size: 32,
+                      color: ColorStyles.gray20,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
