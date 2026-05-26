@@ -1,6 +1,7 @@
 import 'package:mypoly/data/provider/service_provider.dart';
 import 'package:mypoly/enum/gender.dart';
 import 'package:mypoly/enum/social.dart';
+import 'package:mypoly/generate/bills/model/category_response.dart';
 import 'package:mypoly/generate/users/model/terms_agreement_request.dart';
 import 'package:mypoly/generate/users/model/user_me_response.dart';
 import 'package:mypoly/provider/app_provider.dart';
@@ -62,6 +63,8 @@ class AppUser extends _$AppUser {
 
     state = response;
 
+    await Future.wait([ref.read(appUserCategoriesProvider.notifier).fetch()]);
+
     return response;
   }
 
@@ -69,7 +72,10 @@ class AppUser extends _$AppUser {
     await Future.wait([
       ref.read(appAccessTokenProvider.notifier).reset(),
       ref.read(appRefreshTokenProvider.notifier).reset(),
+      ref.read(appKeywordsProvider.notifier).reset(),
     ]);
+
+    ref.read(appUserCategoriesProvider.notifier).reset();
 
     final router = ref.read(routerProvider);
 

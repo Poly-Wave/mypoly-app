@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:mypoly/constant/storage_key.dart';
 import 'package:mypoly/data/provider/service_provider.dart';
 import 'package:mypoly/enum/flavor.dart';
@@ -44,6 +46,25 @@ class AppCategories extends _$AppCategories {
 
   Future<void> fetch() async =>
       state = await ref.read(categoryServiceProvider).getCategories();
+}
+
+@Riverpod(keepAlive: true)
+class AppUserCategories extends _$AppUserCategories {
+  @override
+  List<CategoryResponse> build() => [];
+
+  Future<void> fetch() async =>
+      state = await ref.read(categoryServiceProvider).getMyCategories();
+
+  Future<void> update(List<CategoryResponse> categories) async {
+    await ref
+        .read(categoryServiceProvider)
+        .updateCategories(categories: categories, isOnboard: false);
+
+    state = categories;
+  }
+
+  void reset() => state = [];
 }
 
 @Riverpod(keepAlive: true)

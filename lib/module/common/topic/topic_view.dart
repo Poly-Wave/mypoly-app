@@ -22,9 +22,17 @@ class TopicView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final appCategories = ref.read(appCategoriesProvider);
+    final appUserCategories = ref.read(appUserCategoriesProvider);
 
     final categories = useState(
-      appCategories.map((category) => (false, category)).toList(),
+      isOnboard
+          ? appCategories.map((category) => (false, category)).toList()
+          : appCategories
+                .map(
+                  (category) =>
+                      (appUserCategories.contains(category), category),
+                )
+                .toList(),
     );
 
     final onNextEnabled =
@@ -124,19 +132,24 @@ class TopicView extends HookConsumerWidget {
             onTap: () async {
               context.loaderOverlay.show();
 
-              final categoryCodes = categories.value
+              final selectedCategories = categories.value
                   .where((data) => data.$1)
-                  .map((data) => data.$2.code)
-                  .nonNulls
+                  .map((data) => data.$2)
                   .toList();
 
               try {
-                await ref
-                    .read(categoryServiceProvider)
-                    .updateCategories(
-                      categoryCodes: categoryCodes,
-                      isOnboard: isOnboard,
-                    );
+                if (isOnboard) {
+                  await ref
+                      .read(categoryServiceProvider)
+                      .updateCategories(
+                        categories: selectedCategories,
+                        isOnboard: isOnboard,
+                      );
+                } else {
+                  await ref
+                      .read(appUserCategoriesProvider.notifier)
+                      .update(selectedCategories);
+                }
 
                 if (!context.mounted) return;
                 context.loaderOverlay.hide();

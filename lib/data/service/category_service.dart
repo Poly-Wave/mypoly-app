@@ -26,10 +26,25 @@ class CategoryService {
     }
   }
 
+  Future<List<CategoryResponse>> getMyCategories() async {
+    try {
+      final response = await _categoryApi.getMyInterests();
+
+      return response;
+    } on DioException catch (e) {
+      return Future.error(getErrorMessage(e));
+    } catch (e) {
+      debugPrint(e.toString());
+      return Future.error("error");
+    }
+  }
+
   Future<void> updateCategories({
-    required List<String> categoryCodes,
+    required List<CategoryResponse> categories,
     bool isOnboard = false,
   }) async {
+    final categoryCodes = categories.map((data) => data.code).toList();
+
     try {
       if (isOnboard) {
         await _categoryApi.updateOnboardingInterests(
