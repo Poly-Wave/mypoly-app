@@ -23,6 +23,9 @@ abstract class InterestAgendaResponse with _$InterestAgendaResponse {
     /// 주제 배경색(HEX, # 제외)
     @JsonKey(name: r'categoryBackgroundColor') String? categoryBackgroundColor,
 
+    /// 주제 텍스트 색상(HEX, # 제외)
+    @JsonKey(name: r'categoryTextColor') String? categoryTextColor,
+
     /// 제목
     @JsonKey(name: r'title') required String title,
 

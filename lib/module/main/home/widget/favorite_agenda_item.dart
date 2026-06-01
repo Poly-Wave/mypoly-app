@@ -13,15 +13,7 @@ class FavoriteAgendaItem extends StatelessWidget {
     final String categoryName = item.categoryName ?? '';
     final String categoryIconUrl = item.categoryIconUrl ?? '';
     final String categoryBgColorStr = item.categoryBackgroundColor ?? '';
-
-    Color parsedCategoryBgColor = ColorStyles.primary20;
-    if (categoryBgColorStr.isNotEmpty) {
-      try {
-        parsedCategoryBgColor = Color(int.parse('0xFF$categoryBgColorStr'));
-      } catch (e) {
-        debugPrint('관심안건 카테고리 배경색 파싱 실패: $e');
-      }
-    }
+    final String categoryTextColorStr = item.categoryTextColor ?? '';
 
     return SizedBox(
       height: 112.h,
@@ -31,7 +23,7 @@ class FavoriteAgendaItem extends StatelessWidget {
             width: 80.w,
             height: 80.h,
             decoration: BoxDecoration(
-              color: parsedCategoryBgColor,
+              color: Color(int.parse('0xFF$categoryBgColorStr')),
               borderRadius: BorderRadius.circular(8.r),
             ),
             child: Center(
@@ -69,14 +61,14 @@ class FavoriteAgendaItem extends StatelessWidget {
                   height: 22.h,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: parsedCategoryBgColor,
+                    color: Color(int.parse('0xFF$categoryBgColorStr')),
                     borderRadius: BorderRadius.circular(999),
                   ),
                   child: Text(
                     categoryName,
                     style: Pretendard.semiBold.set(
                       size: 13,
-                      color: Color(0xFF181B2A),
+                      color: Color(int.parse('0xFF$categoryTextColorStr')),
                     ),
                   ),
                 ),

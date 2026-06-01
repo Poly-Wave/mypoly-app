@@ -259,6 +259,7 @@ class _AgendaListSection extends HookConsumerWidget {
                       item.categoryBackgroundColor ?? 'FFFFFF',
                     ),
                     categoryBackgroundColor: item.categoryBackgroundColor,
+                    categoryTextColor: item.categoryTextColor,
                   ),
                 ],
               );
@@ -675,6 +676,7 @@ class AgendaListItem extends StatelessWidget {
   final int voteCount;
   final Widget thumbnail;
   final String categoryBackgroundColor;
+  final String categoryTextColor;
 
   const AgendaListItem({
     super.key,
@@ -685,6 +687,7 @@ class AgendaListItem extends StatelessWidget {
     required this.voteCount,
     required this.thumbnail,
     required this.categoryBackgroundColor,
+    required this.categoryTextColor,
   });
 
   @override
@@ -716,7 +719,7 @@ class AgendaListItem extends StatelessWidget {
                             category,
                             style: Pretendard.semiBold.set(
                               size: 12,
-                              color: Color(0xFF373303),
+                              color: Color(int.parse('0xFF$categoryTextColor')),
                             ),
                           ),
                         ],
