@@ -12,16 +12,16 @@ part 'agenda_tab_response.g.dart';
 abstract class AgendaTabResponse with _$AgendaTabResponse {
   const factory AgendaTabResponse({
     /// 탭 코드
-    @JsonKey(name: r'code') String? code,
+    @JsonKey(name: r'code') required String code,
 
     /// 탭 라벨
-    @JsonKey(name: r'label') String? label,
+    @JsonKey(name: r'label') required String label,
 
     /// 탭 설명
     @JsonKey(name: r'description') String? description,
 
     /// 표시 순서
-    @JsonKey(name: r'displayOrder') int? displayOrder,
+    @JsonKey(name: r'displayOrder') required int displayOrder,
   }) = _AgendaTabResponse;
 
   factory AgendaTabResponse.fromJson(Map<String, dynamic> json) =>

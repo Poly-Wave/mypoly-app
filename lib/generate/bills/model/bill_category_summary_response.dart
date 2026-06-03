@@ -20,6 +20,9 @@ abstract class BillCategorySummaryResponse with _$BillCategorySummaryResponse {
     /// 카테고리명
     @JsonKey(name: r'categoryName') required String categoryName,
 
+    /// 카테고리 텍스트색(HEX, # 제외)
+    @JsonKey(name: r'categoryTextColor') required String categoryTextColor,
+
     /// 카테고리 순위
     @JsonKey(name: r'rankOrder') required int rankOrder,
   }) = _BillCategorySummaryResponse;

@@ -26,7 +26,7 @@ abstract class MainAgendaResponse with _$MainAgendaResponse {
     /// 주제 배경색(HEX, # 제외)
     @JsonKey(name: r'categoryBackgroundColor') String? categoryBackgroundColor,
 
-    /// 주제 글자색(HEX, # 제외)
+    /// 주제 텍스트색(HEX, # 제외)
     @JsonKey(name: r'categoryTextColor') String? categoryTextColor,
 
     /// 제목

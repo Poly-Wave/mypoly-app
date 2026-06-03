@@ -10,7 +10,6 @@ import 'package:mypoly/widget/modal/index.dart';
 import 'package:collection/collection.dart';
 import 'package:mypoly/module/widget/common/horizontal_padding.dart';
 import 'package:mypoly/generate/bills/api/agenda_api.dart';
-import 'package:mypoly/generate/bills/model/pageable.dart';
 import 'package:mypoly/data/provider/dio_provider.dart';
 import 'package:mypoly/provider/app_provider.dart';
 import 'package:mypoly/generate/bills/api/category_api.dart';
@@ -201,12 +200,12 @@ class _AgendaListSection extends HookConsumerWidget {
               ? categoryCodes.value
               : appCategories.map((e) => e.code.toString()).toList();
 
-          final result = await api.getMainAgendas(
-            pageable: Pageable(page: 0, size: 10, sort: _mapSort(sort.value)),
-            categoryCodes: targetCodes,
-          );
+          // final result = await api.getMainAgendas(
+          //   pageable: Pageable(page: 0, size: 10, sort: _mapSort(sort.value)),
+          //   categoryCodes: targetCodes,
+          // );
 
-          agendas.value = (result.content ?? []) as List<dynamic>;
+          // agendas.value = (result.content ?? []) as List<dynamic>;
         } catch (e) {
           debugPrint('메인 안건 조회 실패: $e');
         }

@@ -8,6 +8,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mypoly/generate/users/model/user_me_response.dart';
+import 'package:mypoly/module/main/home/main_home_provider.dart';
 import 'package:mypoly/provider/app_provider.dart';
 import 'package:mypoly/provider/app_user_provider.dart';
 import 'package:mypoly/provider/router_provider.dart';
@@ -121,6 +122,7 @@ class SplashView extends HookConsumerWidget {
       await Future.wait([
         ref.read(appCategoriesProvider.notifier).fetch(),
         ref.read(appTermsProvider.notifier).fetch(),
+        ref.read(appAgendaTabsProvider.notifier).fetch(),
       ]);
 
       UserMeResponse? user;

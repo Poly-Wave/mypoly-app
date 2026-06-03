@@ -7,7 +7,6 @@ import 'package:mypoly/asset/index.dart';
 import 'package:mypoly/model/bill.dart';
 import 'package:mypoly/module/main/home/bookmark/bookmark_view.dart';
 import 'package:mypoly/module/main/home/search/search_provider.dart';
-import 'package:mypoly/provider/app_provider.dart';
 import 'package:mypoly/style/index.dart';
 import 'package:mypoly/util/extension.dart';
 import 'package:mypoly/widget/index.dart';

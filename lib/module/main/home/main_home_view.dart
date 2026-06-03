@@ -1,5 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:mypoly/enum/sort.dart';
+import 'package:mypoly/generate/bills/model/agenda_tab_response.dart';
+import 'package:mypoly/module/main/home/main_home_provider.dart';
+import 'package:mypoly/provider/app_user_provider.dart';
 import 'package:mypoly/widget/index.dart';
 import 'package:mypoly/asset/index.dart';
 import 'package:mypoly/style/index.dart';
@@ -7,17 +11,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mypoly/provider/router_provider.dart';
-import 'package:mypoly/module/widget/common/horizontal_padding.dart';
 import 'package:mypoly/module/main/home/model/popular_subsidy_item.dart';
 import 'package:mypoly/module/main/home/widget/popular_subsidy_card.dart';
 import 'package:mypoly/module/widget/carousel/horizontal_carousel.dart';
-import 'package:mypoly/generate/bills/api/agenda_api.dart';
-import 'package:mypoly/generate/bills/model/pageable.dart';
-import 'package:mypoly/data/provider/dio_provider.dart';
-import 'package:mypoly/provider/app_provider.dart';
 import 'package:mypoly/module/main/home/widget/agenda_intro_item.dart';
-import 'package:mypoly/module/main/home/widget/agenda_category_button.dart';
-import 'package:mypoly/module/main/home/widget/sort_button.dart';
 import 'package:mypoly/module/main/home/widget/favorite_agenda_item.dart';
 
 @RoutePage()
@@ -31,22 +28,12 @@ class MainHomeView extends HookConsumerWidget {
       child: ListView(
         children: [
           NoticeSection(), // 공지사항
-          HorizontalPadding(
-            child: Column(
-              children: [
-                MyInfoSection(), // 내 정보
 
-                MPHeight(50),
+          MyInfoSection(), // 내 정보
 
-                AgendaIntroSection(), // 안건 소개
+          AgendaIntroSection(), // 안건 소개
 
-                MPHeight(50),
-
-                FavoriteTopicSection(), // 관심 주제 안건
-                //PopularSubsidySection(), // 인기 보조금
-              ],
-            ),
-          ),
+          FavoriteTopicSection(),
         ],
       ),
     );
@@ -103,83 +90,86 @@ class MyInfoSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: .symmetric(vertical: 20.h),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: RichText(
-                  text: TextSpan(
-                    style: Pretendard.semiBold.set(
-                      size: 25,
-                      height: 1.3,
-                      color: ColorStyles.white,
-                    ),
-                    children: [
-                      TextSpan(text: "안녕하세요\n"),
-                      TextSpan(
-                        text: "동글동글한너구리",
-                        style: Pretendard.semiBold
-                            .set(size: 25, height: 1.3)
-                            .copyWith(
-                              foreground: Paint()
-                                ..shader = LinearGradient(
-                                  colors: [
-                                    ColorStyles.primary40,
-                                    ColorStyles.primary10,
-                                  ],
-                                ).createShader(Rect.fromLTWH(0, 0, 200, 70)),
-                            ),
+    return Padding(
+      padding: .symmetric(horizontal: 20.w),
+      child: Column(
+        children: [
+          Padding(
+            padding: .symmetric(vertical: 20.h),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: RichText(
+                    text: TextSpan(
+                      style: Pretendard.semiBold.set(
+                        size: 25,
+                        height: 1.3,
+                        color: ColorStyles.white,
                       ),
-                      TextSpan(text: "님"),
-                    ],
+                      children: [
+                        TextSpan(text: "안녕하세요\n"),
+                        TextSpan(
+                          text: "동글동글한너구리",
+                          style: Pretendard.semiBold
+                              .set(size: 25, height: 1.3)
+                              .copyWith(
+                                foreground: Paint()
+                                  ..shader = LinearGradient(
+                                    colors: [
+                                      ColorStyles.primary40,
+                                      ColorStyles.primary10,
+                                    ],
+                                  ).createShader(Rect.fromLTWH(0, 0, 200, 70)),
+                              ),
+                        ),
+                        TextSpan(text: "님"),
+                      ],
+                    ),
                   ),
                 ),
-              ),
 
-              GestureDetector(
-                onTap: () => context.pushRoute(MyInfoRoute()),
-                child: Container(
-                  padding: .symmetric(horizontal: 10.w, vertical: 6.h),
-                  decoration: BoxDecoration(
-                    color: ColorStyles.gray70,
-                    borderRadius: .circular(8.r),
-                    border: Border.all(color: ColorStyles.gray60),
-                  ),
-                  child: Text(
-                    "내정보 보기",
-                    style: Pretendard.medium.set(
-                      size: 13,
-                      color: ColorStyles.white,
+                GestureDetector(
+                  onTap: () => context.pushRoute(MyInfoRoute()),
+                  child: Container(
+                    padding: .symmetric(horizontal: 10.w, vertical: 6.h),
+                    decoration: BoxDecoration(
+                      color: ColorStyles.gray70,
+                      borderRadius: .circular(8.r),
+                      border: Border.all(color: ColorStyles.gray60),
+                    ),
+                    child: Text(
+                      "내정보 보기",
+                      style: Pretendard.medium.set(
+                        size: 13,
+                        color: ColorStyles.white,
+                      ),
                     ),
                   ),
+                ),
+              ],
+            ),
+          ),
+
+          Row(
+            spacing: 10.w,
+            children: [
+              Expanded(
+                child: GestureDetector(
+                  onTap: () => context.pushRoute(BookmarkRoute()),
+                  child: MPImage(WebpImage.btnMainHomeBookmark, fit: .fitWidth),
+                ),
+              ),
+              Expanded(
+                child: GestureDetector(
+                  onTap: () => context.pushRoute(VoteRoute()),
+                  child: MPImage(WebpImage.btnMainHomeVote, fit: .fitWidth),
                 ),
               ),
             ],
           ),
-        ),
-
-        Row(
-          spacing: 10.w,
-          children: [
-            Expanded(
-              child: GestureDetector(
-                onTap: () => context.pushRoute(BookmarkRoute()),
-                child: MPImage(WebpImage.btnMainHomeBookmark, fit: .fitWidth),
-              ),
-            ),
-            Expanded(
-              child: GestureDetector(
-                onTap: () => context.pushRoute(VoteRoute()),
-                child: MPImage(WebpImage.btnMainHomeVote, fit: .fitWidth),
-              ),
-            ),
-          ],
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -190,87 +180,26 @@ class AgendaIntroSection extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final agendaItems =
-        useState<List<(int, String, int, int, int, VoidCallback)>>([]);
+    final tabs = ref.watch(appAgendaTabsProvider);
 
-    final selectedTab = useState<String?>(null);
-    final categories = useState<List<(String code, String label)>>([]);
+    if (tabs.isEmpty) {
+      return SizedBox.shrink();
+    }
 
-    useEffect(() {
-      Future(() async {
-        try {
-          final dio = ref.read(dioProvider);
-          final api = AgendaApi(
-            dio,
-            baseUrl: ref.read(envProvider).billsApiUrl,
-          );
-
-          final result = await api.getTabs();
-
-          categories.value = result
-              .map<(String, String)>((e) => (e.code ?? '', e.label ?? ''))
-              .toList();
-          if (categories.value.isNotEmpty && selectedTab.value == null) {
-            selectedTab.value = categories.value.first.$1;
-          }
-        } catch (e) {
-          debugPrint('카테고리 조회 실패: $e');
-        }
-      });
-
-      return null;
-    }, []);
-
-    useEffect(() {
-      // 안건 리스트 요청(서버)
-
-      // agendaItems.value = [
-      //   (1, "소득세법 일부개정법률안(대안)(기획재정위원장)", 90, 10, 500, () {}),
-      //   (2, "소득세법 일부개정법률안(대안)(기획재정위원장)", 99, 1, 500, () {}),
-      // ];
-      if (selectedTab.value == null) return null;
-
-      Future(() async {
-        try {
-          final dio = ref.read(dioProvider);
-          final api = AgendaApi(
-            dio,
-            baseUrl: ref.read(envProvider).billsApiUrl,
-          );
-          final result = await api.getAgendasByTab(
-            tabCode: selectedTab.value!,
-            pageable: Pageable(page: 0, size: 10),
-          );
-
-          // agendaItems.value = result.asMap().entries.map((entry) {
-          //   final index = entry.key;
-          //   final e = entry.value;
-
-          //   final agree = ((e.agreeRatio ?? 0) * 100).toInt();
-          //   final disagree = ((e.disagreeRatio ?? 0) * 100).toInt();
-
-          //   return (
-          //     index + 1,
-          //     e.officialTitle ?? '',
-          //     agree,
-          //     disagree,
-          //     e.totalVoteCount ?? 0,
-          //     () {},
-          //   );
-          // }).toList();
-        } catch (e) {
-          debugPrint('안건 조회 실패: $e');
-        }
-      });
-
-      return null;
-    }, [selectedTab.value]);
+    final selectedTab = useState<AgendaTabResponse>(tabs.first);
+    final userCategories = ref.watch(appUserCategoriesProvider);
+    final appTabAgendas = ref.watch(appTabAgendasProvider);
+    final tabAgendas = appTabAgendas
+        .firstWhere((tabAgendas) => tabAgendas.$1 == selectedTab.value)
+        .$2;
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      crossAxisAlignment: .stretch,
       children: [
-        Padding(
-          padding: .symmetric(vertical: 10.h),
+        MPHeight(50),
+        Container(
+          height: 47.h,
+          padding: .symmetric(horizontal: 20.w),
           child: Row(
             children: [
               Expanded(
@@ -306,58 +235,89 @@ class AgendaIntroSection extends HookConsumerWidget {
           ),
         ),
 
-        if (categories.value.isNotEmpty)
-          Padding(
-            padding: .symmetric(vertical: 12.h),
-            child: Row(
-              children: categories.value.map((item) {
-                final code = item.$1;
-                final label = item.$2;
-                final isSelected = selectedTab.value == code;
+        SizedBox(
+          height: 56.h,
+          child: MPSingleScroll(
+            scrollDirection: .horizontal,
+            child: Padding(
+              padding: .symmetric(horizontal: 20.w),
+              child: Row(
+                spacing: 8.w,
+                children: tabs.map((item) {
+                  final isSelected = selectedTab.value == item;
 
-                return Padding(
-                  padding: EdgeInsets.only(right: 8.w),
-                  child: GestureDetector(
-                    onTap: () {
-                      selectedTab.value = code;
-                    },
-                    child: AgendaCategoryButton(item: (label, isSelected)),
-                  ),
-                );
-              }).toList(),
+                  return GestureDetector(
+                    onTap: () => selectedTab.value = item,
+                    child: MPChip(
+                      text: item.label,
+                      isActive: isSelected,
+                      onTap: () => selectedTab.value = item,
+                    ),
+                  );
+                }).toList(),
+              ),
             ),
           ),
+        ),
+
+        MPHeight(10),
 
         Padding(
-          padding: EdgeInsets.only(top: 12.h),
-          child: agendaItems.value.isEmpty
-              ? ListEmptyView()
-              : Column(
-                  children: List.generate(agendaItems.value.length, (index) {
-                    final item = agendaItems.value[index];
+          padding: .symmetric(horizontal: 20.w),
+          child: userCategories.isEmpty
+              ? CategoryEmptyView()
+              : ListView.separated(
+                  key: ValueKey(selectedTab.value),
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: tabAgendas.length,
+                  separatorBuilder: (context, index) => Container(
+                    height: 1.h,
+                    margin: .symmetric(vertical: 24.h),
+                    color: ColorStyles.gray80,
+                  ),
+                  itemBuilder: (context, index) {
+                    final item = tabAgendas.elementAt(index);
 
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (index != 0) SizedBox(height: 24.h),
-
-                        if (index != 0)
-                          Center(
-                            child: Container(
-                              width: 320.w,
-                              height: 1,
-                              color: ColorStyles.divider,
-                            ),
-                          ),
-
-                        if (index != 0) SizedBox(height: 24.h),
-
-                        AgendaIntroItem(item: item),
-                      ],
+                    return AgendaIntroItem(
+                      index: index,
+                      item: item,
+                      onTap: () {},
                     );
-                  }),
+                  },
                 ),
         ),
+
+        // Padding(
+        //   padding: EdgeInsets.only(top: 12.h),
+        //   child: agendaItems.value.isEmpty
+        //       ? ListEmptyView()
+        //       : Column(
+        //           children: List.generate(agendaItems.value.length, (index) {
+        //             final item = agendaItems.value[index];
+
+        //             return Column(
+        //               crossAxisAlignment: CrossAxisAlignment.start,
+        //               children: [
+        //                 if (index != 0) SizedBox(height: 24.h),
+
+        //                 if (index != 0)
+        //                   Center(
+        //                     child: Container(
+        //                       width: 320.w,
+        //                       height: 1,
+        //                       color: ColorStyles.divider,
+        //                     ),
+        //                   ),
+
+        //                 if (index != 0) SizedBox(height: 24.h),
+
+        //                 AgendaIntroItem(item: item),
+        //               ],
+        //             );
+        //           }),
+        //         ),
+        // ),
       ],
     );
   }
@@ -369,93 +329,56 @@ class FavoriteTopicSection extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedSortIndex = useState(1);
-    final interestAgendas = useState<List<dynamic>>([]);
+    final sort = useState<MPSort>(.popular);
+    final appInterestAgendas = ref.watch(appInterestAgendasProvider);
+    final interestAgendas = sort.value == .popular
+        ? appInterestAgendas.$1
+        : appInterestAgendas.$2;
+    final userCategories = ref.watch(appUserCategoriesProvider);
 
-    useEffect(() {
-      Future(() async {
-        try {
-          final dio = ref.read(dioProvider);
-          final api = AgendaApi(
-            dio,
-            baseUrl: ref.read(envProvider).billsApiUrl,
-          );
-
-          final String sortParam = selectedSortIndex.value == 0
-              ? 'POPULAR'
-              : 'LATEST';
-
-          final result = await api.getInterestAgendas(
-            pageable: Pageable(page: 0, size: 10, sort: [sortParam]),
-          );
-
-          interestAgendas.value = result.content ?? [];
-        } catch (e) {
-          debugPrint('관심 주제 안건 조회 실패: $e');
-        }
-      });
-
-      return null;
-    }, [selectedSortIndex.value]);
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Container(
-          height: 47.h,
-          padding: EdgeInsets.symmetric(vertical: 10.h),
-          child: Row(
-            children: [
-              Text(
-                "관심 주제 안건",
-                style: Pretendard.semiBold.set(
-                  size: 20,
-                  color: ColorStyles.white,
+    return Padding(
+      padding: .symmetric(horizontal: 20.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          MPHeight(50),
+          SizedBox(
+            height: 47.h,
+            child: Row(
+              children: [
+                Text(
+                  "관심 주제 안건",
+                  style: Pretendard.semiBold.set(
+                    size: 20,
+                    color: ColorStyles.white,
+                  ),
                 ),
-              ),
-              Spacer(),
-              Row(
-                children: [
-                  SortButton(
-                    label: "인기순",
-                    isSelected: selectedSortIndex.value == 0,
-                    onTap: () {
-                      if (selectedSortIndex.value != 0) {
-                        selectedSortIndex.value = 0;
-                      }
-                    },
-                  ),
-                  SizedBox(width: 4.w),
-                  SortButton(
-                    label: "최신순",
-                    isSelected: selectedSortIndex.value == 1,
-                    onTap: () {
-                      if (selectedSortIndex.value != 1) {
-                        selectedSortIndex.value = 1;
-                      }
-                    },
-                  ),
-                ],
-              ),
-            ],
+                Spacer(),
+                MPSortSwitch(
+                  value: sort.value,
+                  onChanged: (value) => sort.value = value,
+                ),
+              ],
+            ),
           ),
-        ),
 
-        if (interestAgendas.value.isEmpty)
-          ListEmptyView()
-        else
-          ListView.separated(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: interestAgendas.value.length,
-            separatorBuilder: (context, index) => SizedBox(height: 12.h),
-            itemBuilder: (context, index) {
-              final item = interestAgendas.value[index];
+          if (userCategories.isEmpty)
+            CategoryEmptyView()
+          else
+            ListView.separated(
+              key: ValueKey(sort.value),
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: interestAgendas.length,
+              separatorBuilder: (context, index) => SizedBox(height: 6.h),
+              itemBuilder: (context, index) {
+                final item = interestAgendas[index];
 
-              return FavoriteAgendaItem(item: item);
-            },
-          ),
-      ],
+                return FavoriteAgendaItem(item: item);
+              },
+            ),
+        ],
+      ),
     );
   }
 }
@@ -551,8 +474,8 @@ class PopularSubsidySection extends StatelessWidget {
   }
 }
 
-class ListEmptyView extends StatelessWidget {
-  const ListEmptyView({super.key});
+class CategoryEmptyView extends StatelessWidget {
+  const CategoryEmptyView({super.key});
 
   @override
   Widget build(BuildContext context) {

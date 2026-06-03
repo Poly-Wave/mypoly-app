@@ -23,6 +23,9 @@ abstract class PopularAgendaResponse with _$PopularAgendaResponse {
     /// 주제 이름
     @JsonKey(name: r'categoryName') required String categoryName,
 
+    /// 주제 텍스트색(HEX, # 제외)
+    @JsonKey(name: r'categoryTextColor') required String categoryTextColor,
+
     /// 제목
     @JsonKey(name: r'title') required String title,
 
@@ -35,6 +38,16 @@ abstract class PopularAgendaResponse with _$PopularAgendaResponse {
     /// 이번 주 조회 증가분 (KST 월요일 00:00 기준)
     @JsonKey(name: r'viewCountWeekly') required int viewCountWeekly,
 
+    /// 이전 배치 기준 순위. 이전 배치 데이터가 없으면 null
+    @JsonKey(name: r'previousRank') int? previousRank,
+
+    /// 이전 배치 대비 순위 변동 단계 수(상승: 양수, 하락: 음수, 유지/신규: 0)
+    @JsonKey(name: r'rankChangeSteps') required int rankChangeSteps,
+
+    /// 순위 변동 유형
+    @JsonKey(name: r'rankChangeType')
+    required PopularAgendaResponseRankChangeTypeEnum rankChangeType,
+
     /// 투표수
     @JsonKey(name: r'voteCount') required int voteCount,
 
@@ -44,4 +57,30 @@ abstract class PopularAgendaResponse with _$PopularAgendaResponse {
 
   factory PopularAgendaResponse.fromJson(Map<String, dynamic> json) =>
       _$PopularAgendaResponseFromJson(json);
+}
+
+/// 순위 변동 유형
+enum PopularAgendaResponseRankChangeTypeEnum {
+  /// 순위 변동 유형
+  @JsonValue(r'UP')
+  up(r'UP'),
+
+  /// 순위 변동 유형
+  @JsonValue(r'DOWN')
+  down(r'DOWN'),
+
+  /// 순위 변동 유형
+  @JsonValue(r'SAME')
+  same(r'SAME'),
+
+  /// 순위 변동 유형
+  @JsonValue(r'NEW')
+  new_(r'NEW');
+
+  const PopularAgendaResponseRankChangeTypeEnum(this.value);
+
+  final String value;
+
+  @override
+  String toString() => value;
 }

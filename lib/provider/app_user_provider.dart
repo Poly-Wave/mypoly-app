@@ -1,9 +1,12 @@
+import 'package:mypoly/constant/storage_key.dart';
 import 'package:mypoly/data/provider/service_provider.dart';
 import 'package:mypoly/enum/gender.dart';
 import 'package:mypoly/enum/social.dart';
 import 'package:mypoly/generate/bills/model/category_response.dart';
 import 'package:mypoly/generate/users/model/terms_agreement_request.dart';
 import 'package:mypoly/generate/users/model/user_me_response.dart';
+import 'package:mypoly/module/main/home/main_home_provider.dart';
+import 'package:mypoly/module/main/home/search/search_provider.dart';
 import 'package:mypoly/provider/app_provider.dart';
 import 'package:mypoly/provider/router_provider.dart';
 import 'package:mypoly/util/extension.dart';
@@ -63,7 +66,11 @@ class AppUser extends _$AppUser {
 
     state = response;
 
-    await Future.wait([ref.read(appUserCategoriesProvider.notifier).fetch()]);
+    await Future.wait([
+      ref.read(appUserCategoriesProvider.notifier).fetch(),
+      ref.read(appInterestAgendasProvider.notifier).fetch(),
+      ref.read(appTabAgendasProvider.notifier).fetch(),
+    ]);
 
     return response;
   }
@@ -102,6 +109,11 @@ class AppUser extends _$AppUser {
         .read(categoryServiceProvider)
         .updateCategories(categories: value, isOnboard: false);
 
+    await Future.wait([
+      ref.read(appInterestAgendasProvider.notifier).fetch(),
+      ref.read(appTabAgendasProvider.notifier).fetch(),
+    ]);
+
     ref.read(appUserCategoriesProvider.notifier).update(value);
   }
 
@@ -113,6 +125,8 @@ class AppUser extends _$AppUser {
     ]);
 
     ref.read(appUserCategoriesProvider.notifier).reset();
+    ref.read(appInterestAgendasProvider.notifier).reset();
+    ref.read(appTabAgendasProvider.notifier).reset();
 
     final router = ref.read(routerProvider);
 
@@ -141,3 +155,60 @@ int appUserAge(Ref ref) => ref.watch(appUserProvider)?.birthDate?.age ?? 0;
 
 @riverpod
 String appUserAddress(Ref ref) => ref.watch(appUserProvider)?.address ?? "";
+
+@Riverpod(keepAlive: true)
+class AppUserCategories extends _$AppUserCategories {
+  @override
+  List<CategoryResponse> build() => [];
+
+  Future<void> fetch() async =>
+      state = await ref.read(categoryServiceProvider).getMyCategories();
+
+  void update(List<CategoryResponse> value) => state = value;
+
+  void reset() => state = [];
+}
+
+@Riverpod(keepAlive: true)
+class AppAccessToken extends _$AppAccessToken {
+  @override
+  String? build() => null;
+
+  Future<void> init() async => state = await ref
+      .read(secureStorageProvider)
+      .read(key: StorageKey.accessToken);
+
+  Future<void> reset() async {
+    await ref.read(secureStorageProvider).delete(key: StorageKey.accessToken);
+    state = null;
+  }
+
+  Future<void> update(String value) async {
+    await ref
+        .read(secureStorageProvider)
+        .write(key: StorageKey.accessToken, value: value);
+    state = value;
+  }
+}
+
+@Riverpod(keepAlive: true)
+class AppRefreshToken extends _$AppRefreshToken {
+  @override
+  String? build() => null;
+
+  Future<void> init() async => state = await ref
+      .read(secureStorageProvider)
+      .read(key: StorageKey.refreshToken);
+
+  Future<void> reset() async {
+    await ref.read(secureStorageProvider).delete(key: StorageKey.refreshToken);
+    state = null;
+  }
+
+  Future<void> update(String value) async {
+    await ref
+        .read(secureStorageProvider)
+        .write(key: StorageKey.refreshToken, value: value);
+    state = value;
+  }
+}

@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:mypoly/constant/storage_key.dart';
 import 'package:mypoly/data/provider/service_provider.dart';
 import 'package:mypoly/model/bill.dart';
 import 'package:mypoly/provider/app_provider.dart';
@@ -102,5 +105,51 @@ class Keyword extends _$Keyword {
     controller.text = "";
     state = "";
     ref.read(searchPagingProvider.notifier).onReset();
+  }
+}
+
+@Riverpod(keepAlive: true)
+class AppKeywords extends _$AppKeywords {
+  @override
+  List<String> build() => [];
+
+  Future<void> init() async {
+    final value = await ref
+        .read(secureStorageProvider)
+        .read(key: StorageKey.keywords);
+
+    if (value == null) {
+      state = [];
+      return;
+    }
+
+    final decoded = jsonDecode(value);
+    state = decoded is List ? decoded.whereType<String>().toList() : [];
+  }
+
+  Future<void> reset() async {
+    await ref.read(secureStorageProvider).delete(key: StorageKey.keywords);
+    state = [];
+  }
+
+  Future<void> add(String value) async {
+    final keyword = value.trim();
+
+    if (keyword.isEmpty) return;
+
+    final next = [keyword, ...state.where((item) => item != keyword)];
+    await _save(next);
+  }
+
+  Future<void> delete(String value) async {
+    final next = state.where((item) => item != value).toList();
+    await _save(next);
+  }
+
+  Future<void> _save(List<String> value) async {
+    await ref
+        .read(secureStorageProvider)
+        .write(key: StorageKey.keywords, value: jsonEncode(value));
+    state = value;
   }
 }

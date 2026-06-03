@@ -25,6 +25,13 @@ abstract class CategoryResponse with _$CategoryResponse {
 
     /// 카테고리 배경색 HEX, # 제외
     @JsonKey(name: r'backgroundColor') required String backgroundColor,
+
+    /// 카테고리 텍스트색 HEX, # 제외
+    @JsonKey(name: r'textColor') required String textColor,
+
+    /// 카테고리 뱃지 배경색 HEX, # 제외
+    @JsonKey(name: r'badgeBackgroundColor')
+    required String badgeBackgroundColor,
   }) = _CategoryResponse;
 
   factory CategoryResponse.fromJson(Map<String, dynamic> json) =>

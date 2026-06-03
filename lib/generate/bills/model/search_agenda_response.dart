@@ -20,6 +20,9 @@ abstract class SearchAgendaResponse with _$SearchAgendaResponse {
     /// 주제 이름
     @JsonKey(name: r'categoryName') required String categoryName,
 
+    /// 주제 텍스트색(HEX, # 제외)
+    @JsonKey(name: r'categoryTextColor') required String categoryTextColor,
+
     /// 제목
     @JsonKey(name: r'title') required String title,
 

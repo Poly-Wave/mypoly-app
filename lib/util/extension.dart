@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mypoly/generate/bills/model/category_response.dart';
 
 extension FocusScopeNodeExtension on FocusScopeNode {
   void unFocus() {
@@ -36,7 +37,44 @@ extension DateTimeExtension on DateTime {
   }
 }
 
+extension CategoryResponseExtension on CategoryResponse {
+  Color get colorBackground => Color(int.parse("0xFF$backgroundColor"));
+}
+
 extension StringExtension on String {
+  String get wrapped {
+    if (!contains(RegExp('[ㄱ-ㅎㅏ-ㅣ가-힣]'))) {
+      return this;
+    }
+
+    final emoji = RegExp(
+      r'(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])',
+    );
+    final fullText = StringBuffer();
+
+    final lines = split('\n');
+    for (var lineIndex = 0; lineIndex < lines.length; lineIndex++) {
+      final words = lines[lineIndex].split(' ');
+      for (var i = 0; i < words.length; i++) {
+        fullText.write(
+          emoji.hasMatch(words[i])
+              ? words[i]
+              : words[i].replaceAllMapped(
+                  RegExp(r'(\S)(?=\S)'),
+                  (match) => '${match[1]}\u200D',
+                ),
+        );
+        if (i < words.length - 1) {
+          fullText.write(' ');
+        }
+      }
+      if (lineIndex < lines.length - 1) {
+        fullText.write('\n');
+      }
+    }
+    return fullText.toString();
+  }
+
   String get toDotBirthDate {
     final digits = replaceAll(RegExp(r'\D'), '');
     if (digits.isEmpty) return '';

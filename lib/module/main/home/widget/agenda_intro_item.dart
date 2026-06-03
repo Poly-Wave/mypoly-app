@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mypoly/asset/index.dart';
+import 'package:mypoly/generate/bills/model/agenda_response.dart';
 import 'package:mypoly/style/index.dart';
 import 'package:mypoly/widget/index.dart';
 import 'package:mypoly/module/main/home/widget/vote_progress_bar.dart';
@@ -12,9 +13,16 @@ import 'package:mypoly/module/main/home/widget/vote_progress_bar.dart';
 /// 5. 투표수
 
 class AgendaIntroItem extends StatelessWidget {
-  final (int, String, int, int, int, void Function()) item;
+  final int index;
+  final AgendaResponse item;
+  final void Function() onTap;
 
-  const AgendaIntroItem({super.key, required this.item});
+  const AgendaIntroItem({
+    super.key,
+    required this.index,
+    required this.item,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,46 +31,44 @@ class AgendaIntroItem extends StatelessWidget {
       children: [
         Row(
           crossAxisAlignment: .start,
+          spacing: 12.w,
           children: [
             Container(
-              width: 42.w,
-              height: 42.w,
-              alignment: .center,
+              width: 42.r,
+              height: 42.r,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.r),
+                borderRadius: .circular(8.r),
                 gradient: LinearGradient(
                   colors: [Color(0xFF2E5C66), Color(0xFF769999)],
                 ),
                 border: Border.all(color: ColorStyles.primary50),
               ),
+              alignment: .center,
               child: Text(
-                "${item.$1}위",
+                "${index + 1}위",
                 style: Pretendard.semiBold.set(
                   size: 13,
+                  letterSpacing: -0.104,
                   color: ColorStyles.white,
-                  height: 1.0,
                 ),
               ),
             ),
-
-            SizedBox(width: 12.w),
-
             Expanded(
               child: Column(
                 crossAxisAlignment: .start,
                 children: [
                   Text(
-                    item.$2,
+                    item.officialTitle,
                     maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+                    overflow: .ellipsis,
                     style: Pretendard.medium.set(
                       size: 16,
-                      color: ColorStyles.white,
                       height: 1.45,
+                      color: ColorStyles.white,
                     ),
                   ),
-
                   Row(
+                    spacing: 2.w,
                     children: [
                       Text(
                         "투표 완료",
@@ -80,20 +86,58 @@ class AgendaIntroItem extends StatelessWidget {
           ],
         ),
 
-        SizedBox(height: 16.h),
-
-        VoteProgressBar(item: (item.$3, item.$4, () {})),
-
-        SizedBox(height: 8.h),
+        MPHeight(16),
 
         Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: .spaceBetween,
           children: [
             Text(
-              "${item.$5}명 투표",
-              style: Pretendard.medium.set(size: 13, color: ColorStyles.gray40),
+              '응원해요 ${item.agreeRatio.toInt()}%',
+              style: Pretendard.medium.set(
+                size: 13,
+                color: ColorStyles.primary50,
+              ),
+            ),
+            Text(
+              '아쉬워요 ${item.disagreeRatio.toInt()}%',
+              style: Pretendard.medium.set(size: 13, color: ColorStyles.gray10),
             ),
           ],
+        ),
+
+        MPHeight(8),
+
+        Stack(
+          children: [
+            Container(
+              height: 8.h,
+              decoration: BoxDecoration(
+                color: ColorStyles.white,
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+
+            Container(
+              width: (229 * 1),
+              height: 8.h,
+              decoration: BoxDecoration(
+                color: ColorStyles.primary40,
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+          ],
+        ),
+
+        VoteProgressBar(item: (item.agreeRatio, item.disagreeRatio, () {})),
+
+        MPHeight(8),
+
+        Align(
+          alignment: .centerRight,
+          child: Text(
+            "${item.totalVoteCount}명 투표",
+            style: Pretendard.medium.set(size: 13, color: ColorStyles.gray40),
+          ),
         ),
       ],
     );

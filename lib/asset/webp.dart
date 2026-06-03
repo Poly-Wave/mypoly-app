@@ -12,6 +12,9 @@ class WebpImage {
   static const String popular1 = 'assets/webp/popular1.webp';
   static const String popular2 = 'assets/webp/popular2.webp';
   static const String popular3 = 'assets/webp/popular3.webp';
+  static const String rankDown = 'assets/webp/rank_down.webp';
+  static const String rankStable = 'assets/webp/rank_stable.webp';
+  static const String rankUp = 'assets/webp/rank_up.webp';
   static const String registerComplete = 'assets/webp/register_complete.webp';
   static const String registerOnboard = 'assets/webp/register_onboard.webp';
   static const String viewCount = 'assets/webp/view_count.webp';
