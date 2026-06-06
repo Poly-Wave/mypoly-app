@@ -108,6 +108,7 @@ class TopicView extends HookConsumerWidget {
                       ),
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
+                      padding: .zero,
                       itemCount: categories.value.length,
                       itemBuilder: (_, index) {
                         final item = categories.value.elementAt(index);
