@@ -372,9 +372,9 @@ class FavoriteTopicSection extends HookConsumerWidget {
               itemCount: interestAgendas.length,
               separatorBuilder: (context, index) => SizedBox(height: 6.h),
               itemBuilder: (context, index) {
-                final item = interestAgendas[index];
+                final item = interestAgendas.elementAt(index);
 
-                return FavoriteAgendaItem(item: item);
+                return FavoriteAgendaItem(item: item, onTap: () {});
               },
             ),
         ],

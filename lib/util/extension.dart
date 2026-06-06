@@ -39,6 +39,11 @@ extension DateTimeExtension on DateTime {
 
 extension CategoryResponseExtension on CategoryResponse {
   Color get colorBackground => Color(int.parse("0xFF$backgroundColor"));
+
+  Color get colorBadgeBackground =>
+      Color(int.parse("0xFF$badgeBackgroundColor"));
+
+  Color get colorBadgeTextColor => Color(int.parse("0xFF$textColor"));
 }
 
 extension StringExtension on String {

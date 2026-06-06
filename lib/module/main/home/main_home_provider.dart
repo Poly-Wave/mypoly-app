@@ -3,6 +3,7 @@ import 'package:mypoly/enum/sort.dart';
 import 'package:mypoly/generate/bills/model/agenda_response.dart';
 import 'package:mypoly/generate/bills/model/agenda_tab_response.dart';
 import 'package:mypoly/generate/bills/model/interest_agenda_response.dart';
+import 'package:mypoly/model/bill.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'main_home_provider.g.dart';
@@ -41,18 +42,17 @@ class AppTabAgendas extends _$AppTabAgendas {
 @Riverpod(keepAlive: true)
 class AppInterestAgendas extends _$AppInterestAgendas {
   @override
-  (List<InterestAgendaResponse>, List<InterestAgendaResponse>) build() =>
-      ([], []);
+  (List<BillListData>, List<BillListData>) build() => ([], []);
 
   Future<void> fetch() async =>
       state = await (_fetch(.popular), _fetch(.latest)).wait;
 
-  Future<List<InterestAgendaResponse>> _fetch(MPSort sort) async {
+  Future<List<BillListData>> _fetch(MPSort sort) async {
     final response = await ref
         .read(agendaServiceProvider)
         .getInterestAgendas(sort: sort, size: 3);
 
-    return response.content;
+    return response.content.map((item) => item.toBillListData(ref)).toList();
   }
 
   void reset() => state = ([], []);

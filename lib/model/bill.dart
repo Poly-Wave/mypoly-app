@@ -2,9 +2,10 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mypoly/generate/bills/model/bookmarked_bill_response.dart';
 import 'package:mypoly/generate/bills/model/category_response.dart';
+import 'package:mypoly/generate/bills/model/interest_agenda_response.dart';
 import 'package:mypoly/generate/bills/model/my_voted_bill_response.dart';
 import 'package:mypoly/generate/bills/model/search_agenda_response.dart';
-import 'package:mypoly/module/main/home/bookmark/bookmark_provider.dart';
+import 'package:mypoly/provider/app_provider.dart';
 
 part 'bill.freezed.dart';
 part 'bill.g.dart';
@@ -27,7 +28,7 @@ abstract class BillListData with _$BillListData {
 extension SearchAgendaResponseExtension on SearchAgendaResponse {
   BillListData toBillListData(Ref ref) {
     final category = ref
-        .read(categoriesProvider)
+        .read(appCategoriesProvider)
         .firstWhere((category) => category.code == categoryCode);
 
     return BillListData(
@@ -44,7 +45,7 @@ extension SearchAgendaResponseExtension on SearchAgendaResponse {
 extension BookmarkedBillResponseExtension on BookmarkedBillResponse {
   BillListData toBillListData(Ref ref) {
     final category = ref
-        .read(categoriesProvider)
+        .read(appCategoriesProvider)
         .firstWhere((category) => category.code == categoryCode);
 
     return BillListData(
@@ -61,7 +62,7 @@ extension BookmarkedBillResponseExtension on BookmarkedBillResponse {
 extension MyVotedBillResponseExtension on MyVotedBillResponse {
   BillListData toBillListData(Ref ref) {
     final category = ref
-        .read(categoriesProvider)
+        .read(appCategoriesProvider)
         .firstWhere((category) => category.code == categoryCode);
 
     return BillListData(
@@ -70,6 +71,23 @@ extension MyVotedBillResponseExtension on MyVotedBillResponse {
       category: category,
       viewCount: viewCount,
       voteCount: voteCount,
+      registeredDate: registeredDate,
+    );
+  }
+}
+
+extension InterestAgendaResponseExtension on InterestAgendaResponse {
+  BillListData toBillListData(Ref ref) {
+    final category = ref
+        .read(appCategoriesProvider)
+        .firstWhere((category) => category.code == categoryCode);
+
+    return BillListData(
+      id: 0,
+      title: title,
+      category: category,
+      viewCount: 0,
+      voteCount: 0,
       registeredDate: registeredDate,
     );
   }
