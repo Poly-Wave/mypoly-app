@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mypoly/model/bill.dart';
-import 'package:mypoly/module/common/bill/bill_widget.dart';
+import 'package:mypoly/module/main/widget/bill.dart';
 import 'package:mypoly/style/index.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mypoly/util/extension.dart';
