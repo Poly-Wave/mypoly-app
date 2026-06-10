@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mypoly/asset/index.dart';
 import 'package:mypoly/enum/date_range.dart';
-import 'package:mypoly/model/bill.dart';
+import 'package:mypoly/model/agenda.dart';
 import 'package:mypoly/module/main/widget/bill.dart';
 import 'package:mypoly/module/main/widget/list.dart';
 import 'package:mypoly/module/main/home/vote/vote_provider.dart';
@@ -89,8 +89,8 @@ class VoteView extends HookConsumerWidget {
               fetchNextPage: ref
                   .read(votesPagingProvider.notifier)
                   .fetchNextPage,
-              builderDelegate: PagedChildBuilderDelegate<BillListData>(
-                itemBuilder: (context, item, index) => BillCompactColumnItem(
+              builderDelegate: PagedChildBuilderDelegate<AgendaListData>(
+                itemBuilder: (context, item, index) => AgendaCompactColumnItem(
                   index: index,
                   item: item,
                   onTap: () {},

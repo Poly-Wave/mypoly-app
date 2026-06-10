@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mypoly/asset/index.dart';
 import 'package:mypoly/generate/bills/model/category_response.dart';
-import 'package:mypoly/model/bill.dart';
+import 'package:mypoly/model/agenda.dart';
 import 'package:mypoly/style/index.dart';
 import 'package:mypoly/util/extension.dart';
 import 'package:mypoly/widget/index.dart';
 
-class BillCompactColumnItem extends StatelessWidget {
+class AgendaCompactColumnItem extends StatelessWidget {
   final int index;
-  final BillListData item;
+  final AgendaListData item;
   final void Function() onTap;
 
-  const BillCompactColumnItem({
+  const AgendaCompactColumnItem({
     super.key,
     required this.index,
     required this.item,
@@ -40,7 +40,7 @@ class BillCompactColumnItem extends StatelessWidget {
               children: [
                 Align(
                   alignment: .centerLeft,
-                  child: BillCategoryBadge(category: item.category),
+                  child: AgendaCategoryBadge(category: item.category),
                 ),
                 MPHeight(4),
                 Text(
@@ -97,12 +97,12 @@ class BillCompactColumnItem extends StatelessWidget {
   }
 }
 
-class BillColumnItem extends StatelessWidget {
+class AgendaColumnItem extends StatelessWidget {
   final int index;
-  final BillListData item;
+  final AgendaListData item;
   final void Function() onTap;
 
-  const BillColumnItem({
+  const AgendaColumnItem({
     super.key,
     required this.index,
     required this.item,
@@ -138,7 +138,7 @@ class BillColumnItem extends StatelessWidget {
                         children: [
                           Align(
                             alignment: .centerLeft,
-                            child: BillCategoryBadge(category: item.category),
+                            child: AgendaCategoryBadge(category: item.category),
                           ),
                           MPHeight(4),
                           Text(
@@ -210,10 +210,10 @@ class BillColumnItem extends StatelessWidget {
   }
 }
 
-class BillCategoryBadge extends StatelessWidget {
+class AgendaCategoryBadge extends StatelessWidget {
   final CategoryResponse category;
 
-  const BillCategoryBadge({super.key, required this.category});
+  const AgendaCategoryBadge({super.key, required this.category});
 
   @override
   Widget build(BuildContext context) {

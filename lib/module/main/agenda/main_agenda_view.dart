@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mypoly/asset/index.dart';
-import 'package:mypoly/model/bill.dart';
+import 'package:mypoly/model/agenda.dart';
 import 'package:mypoly/module/main/widget/bill.dart';
 import 'package:mypoly/module/main/widget/list.dart';
 import 'package:mypoly/module/main/agenda/main_agenda_provider.dart';
@@ -59,9 +59,9 @@ class MainAgendaView extends HookConsumerWidget {
             fetchNextPage: ref
                 .read(agendasPagingProvider.notifier)
                 .fetchNextPage,
-            builderDelegate: PagedChildBuilderDelegate<BillListData>(
+            builderDelegate: PagedChildBuilderDelegate<AgendaListData>(
               itemBuilder: (context, item, index) =>
-                  BillColumnItem(index: index, item: item, onTap: () {}),
+                  AgendaColumnItem(index: index, item: item, onTap: () {}),
               firstPageProgressIndicatorBuilder: (_) =>
                   Column(children: [MPHeight(180), MPLoading()]),
               firstPageErrorIndicatorBuilder: (_) => Column(

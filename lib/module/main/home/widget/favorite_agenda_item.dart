@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mypoly/model/bill.dart';
+import 'package:mypoly/model/agenda.dart';
 import 'package:mypoly/module/main/widget/bill.dart';
 import 'package:mypoly/style/index.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,7 +7,7 @@ import 'package:mypoly/util/extension.dart';
 import 'package:mypoly/widget/index.dart';
 
 class FavoriteAgendaItem extends StatelessWidget {
-  final BillListData item;
+  final AgendaListData item;
   final void Function() onTap;
 
   const FavoriteAgendaItem({
@@ -54,7 +54,7 @@ class FavoriteAgendaItem extends StatelessWidget {
                   ),
                   Align(
                     alignment: .centerLeft,
-                    child: BillCategoryBadge(category: item.category),
+                    child: AgendaCategoryBadge(category: item.category),
                   ),
                 ],
               ),

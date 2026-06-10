@@ -5,7 +5,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mypoly/data/provider/service_provider.dart';
 import 'package:mypoly/enum/date_range.dart';
 import 'package:mypoly/enum/sort.dart';
-import 'package:mypoly/model/bill.dart';
+import 'package:mypoly/model/agenda.dart';
 import 'package:mypoly/widget/modal/index.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -16,7 +16,7 @@ class VotesPaging extends _$VotesPaging {
   CancelToken? _currentCancelToken;
 
   @override
-  PagingState<int?, BillListData> build() => PagingState();
+  PagingState<int?, AgendaListData> build() => PagingState();
 
   Future<void> onRefresh() async {
     _currentCancelToken?.cancel();
@@ -59,7 +59,7 @@ class VotesPaging extends _$VotesPaging {
           );
 
       final newItems = response.content
-          .map((item) => item.toBillListData(ref))
+          .map((item) => item.toAgendaListData(ref))
           .toList();
 
       state = prevState.copyWith(
