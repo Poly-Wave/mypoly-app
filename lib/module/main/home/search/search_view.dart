@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mypoly/asset/index.dart';
 import 'package:mypoly/model/bill.dart';
-import 'package:mypoly/module/main/home/bookmark/bookmark_view.dart';
+import 'package:mypoly/module/common/bill/bill_widget.dart';
 import 'package:mypoly/module/main/home/search/search_provider.dart';
 import 'package:mypoly/style/index.dart';
 import 'package:mypoly/util/extension.dart';
@@ -18,6 +18,7 @@ class SearchView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final appKeywords = ref.watch(appKeywordsProvider);
+    final lastKeyword = ref.watch(lastKeywordProvider);
 
     final searchPaging = ref.watch(searchPagingProvider);
 
@@ -39,11 +40,28 @@ class SearchView extends HookConsumerWidget {
                           .fetchNextPage,
                       builderDelegate: PagedChildBuilderDelegate<BillListData>(
                         itemBuilder: (context, item, index) =>
-                            BillCompactColumnItem(item: item),
+                            BillCompactColumnItem(
+                              index: index,
+                              item: item,
+                              onTap: () {},
+                            ),
                         firstPageProgressIndicatorBuilder: (_) =>
                             Column(children: [MPHeight(271), MPLoading()]),
-                        firstPageErrorIndicatorBuilder: (_) =>
-                            Column(children: [MPHeight(271), MPLoading()]),
+                        firstPageErrorIndicatorBuilder: (_) => Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: .stretch,
+                          children: [
+                            MPHeight(256),
+                            EmptyWidget(
+                              message: "문제가 발생했어요",
+                              subMessage: "잠시 후 다시 시도해 주세요",
+                              buttonText: "보러가기",
+                              onTap: ref
+                                  .read(searchPagingProvider.notifier)
+                                  .onRefresh,
+                            ),
+                          ],
+                        ),
                         newPageProgressIndicatorBuilder: (_) => MPSafeBox(
                           bottom: true,
                           child: Center(child: MPLoading(size: 18)),
@@ -53,9 +71,19 @@ class SearchView extends HookConsumerWidget {
                         noItemsFoundIndicatorBuilder: (_) => Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            MPHeight(271),
+                            MPHeight(267),
                             Text(
-                              "검색 결과가 없어요.",
+                              "‘$lastKeyword‘에 대한\n결과가 없어요",
+                              textAlign: .center,
+                              style: Pretendard.semiBold.set(
+                                size: 18,
+                                height: 1.4,
+                                color: ColorStyles.white,
+                              ),
+                            ),
+                            MPHeight(8),
+                            Text(
+                              "다른 검색어로 다시 시도해 보세요",
                               textAlign: .center,
                               style: Pretendard.medium.set(
                                 size: 15,
@@ -117,7 +145,9 @@ class SearchView extends HookConsumerWidget {
                             ...appKeywords.map(
                               (keyword) => SearchKeywordItem(
                                 text: keyword,
-                                onTap: () {},
+                                onTap: () => ref
+                                    .read(keywordProvider.notifier)
+                                    .onSet(keyword),
                                 onDeleteTap: () => ref
                                     .read(appKeywordsProvider.notifier)
                                     .delete(keyword),

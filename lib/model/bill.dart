@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mypoly/generate/bills/model/bookmarked_bill_response.dart';
 import 'package:mypoly/generate/bills/model/category_response.dart';
 import 'package:mypoly/generate/bills/model/interest_agenda_response.dart';
+import 'package:mypoly/generate/bills/model/main_agenda_response.dart';
 import 'package:mypoly/generate/bills/model/my_voted_bill_response.dart';
 import 'package:mypoly/generate/bills/model/search_agenda_response.dart';
 import 'package:mypoly/provider/app_provider.dart';
@@ -83,11 +84,28 @@ extension InterestAgendaResponseExtension on InterestAgendaResponse {
         .firstWhere((category) => category.code == categoryCode);
 
     return BillListData(
-      id: 0,
+      id: billId,
       title: title,
       category: category,
       viewCount: 0,
       voteCount: 0,
+      registeredDate: registeredDate,
+    );
+  }
+}
+
+extension MainAgendaResponseExtension on MainAgendaResponse {
+  BillListData toBillListData(Ref ref) {
+    final category = ref
+        .read(appCategoriesProvider)
+        .firstWhere((category) => category.code == categoryCode);
+
+    return BillListData(
+      id: billId,
+      title: title,
+      category: category,
+      viewCount: viewCount,
+      voteCount: voteCount,
       registeredDate: registeredDate,
     );
   }

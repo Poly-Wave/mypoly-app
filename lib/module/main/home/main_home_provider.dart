@@ -2,7 +2,6 @@ import 'package:mypoly/data/provider/service_provider.dart';
 import 'package:mypoly/enum/sort.dart';
 import 'package:mypoly/generate/bills/model/agenda_response.dart';
 import 'package:mypoly/generate/bills/model/agenda_tab_response.dart';
-import 'package:mypoly/generate/bills/model/interest_agenda_response.dart';
 import 'package:mypoly/model/bill.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

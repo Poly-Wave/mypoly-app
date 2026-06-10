@@ -9,6 +9,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mypoly/generate/users/model/user_me_response.dart';
 import 'package:mypoly/module/main/home/main_home_provider.dart';
+import 'package:mypoly/module/main/home/search/search_provider.dart';
 import 'package:mypoly/provider/app_provider.dart';
 import 'package:mypoly/provider/app_user_provider.dart';
 import 'package:mypoly/provider/router_provider.dart';
@@ -117,6 +118,7 @@ class SplashView extends HookConsumerWidget {
       await Future.wait([
         ref.read(appAccessTokenProvider.notifier).init(),
         ref.read(appRefreshTokenProvider.notifier).init(),
+        ref.read(appKeywordsProvider.notifier).init(),
       ]);
 
       await Future.wait([

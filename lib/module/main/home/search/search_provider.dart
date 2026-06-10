@@ -60,6 +60,8 @@ class SearchPaging extends _$SearchPaging {
           .map((item) => item.toBillListData(ref))
           .toList();
 
+      ref.read(lastKeywordProvider.notifier).update(keyword);
+
       state = prevState.copyWith(
         isLoading: false,
         pages: [...?prevState.pages, newItems],
@@ -70,6 +72,14 @@ class SearchPaging extends _$SearchPaging {
       state = prevState.copyWith(isLoading: false, error: e);
     }
   }
+}
+
+@riverpod
+class LastKeyword extends _$LastKeyword {
+  @override
+  String build() => "";
+
+  void update(String value) => state = value;
 }
 
 @riverpod
@@ -96,6 +106,13 @@ class Keyword extends _$Keyword {
 
     await ref.read(appKeywordsProvider.notifier).add(value);
 
+    state = value;
+
+    ref.read(searchPagingProvider.notifier).onRefresh();
+  }
+
+  void onSet(String value) {
+    controller.text = value;
     state = value;
 
     ref.read(searchPagingProvider.notifier).onRefresh();

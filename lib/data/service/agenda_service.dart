@@ -5,6 +5,7 @@ import 'package:mypoly/generate/bills/api/agenda_api.dart';
 import 'package:mypoly/generate/bills/model/agenda_slice_response.dart';
 import 'package:mypoly/generate/bills/model/agenda_tab_response.dart';
 import 'package:mypoly/generate/bills/model/interest_agenda_slice_response.dart';
+import 'package:mypoly/generate/bills/model/main_agenda_slice_response.dart';
 import 'package:mypoly/generate/bills/model/search_agenda_slice_response.dart';
 import 'package:mypoly/util/error.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -80,6 +81,29 @@ class AgendaService {
     try {
       return await _agendaApi.getAgendasByTab(
         tabCode: tabCode,
+        page: page,
+        size: size,
+        cancelToken: cancelToken,
+      );
+    } on DioException catch (e) {
+      return Future.error(getErrorMessage(e));
+    } catch (e) {
+      debugPrint(e.toString());
+      return Future.error("error");
+    }
+  }
+
+  Future<MainAgendaSliceResponse> getMainAgendas({
+    required List<String> categoryCodes,
+    required MPSort sort,
+    int page = 0,
+    int size = 20,
+    CancelToken? cancelToken,
+  }) async {
+    try {
+      return await _agendaApi.getMainAgendas(
+        categoryCodes: categoryCodes,
+        sortType: sort.value,
         page: page,
         size: size,
         cancelToken: cancelToken,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mypoly/model/bill.dart';
+import 'package:mypoly/module/common/bill/bill_widget.dart';
 import 'package:mypoly/style/index.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mypoly/util/extension.dart';
@@ -53,26 +54,7 @@ class FavoriteAgendaItem extends StatelessWidget {
                   ),
                   Align(
                     alignment: .centerLeft,
-                    child: Container(
-                      height: 22.h,
-                      padding: .symmetric(horizontal: 8.w),
-                      decoration: BoxDecoration(
-                        color: item.category.colorBadgeBackground,
-                        borderRadius: .circular(999.r),
-                      ),
-                      child: Row(
-                        mainAxisSize: .min,
-                        children: [
-                          Text(
-                            item.category.name,
-                            style: Pretendard.semiBold.set(
-                              size: 13,
-                              color: item.category.colorBadgeTextColor,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    child: BillCategoryBadge(category: item.category),
                   ),
                 ],
               ),
