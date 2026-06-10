@@ -49,18 +49,147 @@ class _RealtimePopularAgendaSection extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final popularAgendas = [
-    //   (rank: 1, status: 'up', title: 'A안건', categoryName: '법행정'),
-    //   (rank: 2, status: 'stable', title: 'B안건', categoryName: '법행정'),
-    //   (rank: 3, status: 'stable', title: 'C안건', categoryName: '법행정'),
-    //   (rank: 4, status: 'down', title: 'D안건', categoryName: '법행정'),
-    //   (rank: 5, status: 'up', title: 'E안건', categoryName: '법행정'),
-    // ];
-
     final isExpanded = useState(false);
     final currentRankIndex = useState(0);
-
     final popularAgendas = useState<List<PopularAgendaResponse>>([]);
+    final originalIds = useState<List<int>>([]);
+    final isDataChange = useState(false);
+
+    // final sampleSetA = [
+    //   PopularAgendaResponse(
+    //     rank: 1,
+    //     billId: 101,
+    //     title: '국가 첨단 전략산업 경쟁력 강화 특별법안',
+    //     categoryName: '산업통상',
+    //     registeredDate: DateTime.now(),
+    //     viewCount: 120,
+    //     viewCountWeekly: 15,
+    //     rankChangeSteps: 0,
+    //     rankChangeType: PopularAgendaResponseRankChangeTypeEnum.same,
+    //     voteCount: 45,
+    //     hasVoted: false,
+    //   ),
+    //   PopularAgendaResponse(
+    //     rank: 2,
+    //     billId: 102,
+    //     title: '소상공인 보호 및 지원에 관한 법률 개정안',
+    //     categoryName: '소상공인',
+    //     registeredDate: DateTime.now(),
+    //     viewCount: 230,
+    //     viewCountWeekly: 45,
+    //     rankChangeSteps: 1,
+    //     rankChangeType: PopularAgendaResponseRankChangeTypeEnum.up,
+    //     voteCount: 88,
+    //     hasVoted: false,
+    //   ),
+    //   PopularAgendaResponse(
+    //     rank: 3,
+    //     billId: 103,
+    //     title: '기후위기 대응을 위한 탄소중립 기본법',
+    //     categoryName: '환경노동',
+    //     registeredDate: DateTime.now(),
+    //     viewCount: 340,
+    //     viewCountWeekly: 12,
+    //     rankChangeSteps: -1,
+    //     rankChangeType: PopularAgendaResponseRankChangeTypeEnum.down,
+    //     voteCount: 67,
+    //     hasVoted: false,
+    //   ),
+    //   PopularAgendaResponse(
+    //     rank: 4,
+    //     billId: 104,
+    //     title: '인공지능 산업 육성 및 신뢰 기반 조성법',
+    //     categoryName: '과학기술',
+    //     registeredDate: DateTime.now(),
+    //     viewCount: 95,
+    //     viewCountWeekly: 8,
+    //     rankChangeSteps: 0,
+    //     rankChangeType: PopularAgendaResponseRankChangeTypeEnum.same,
+    //     voteCount: 23,
+    //     hasVoted: false,
+    //   ),
+    //   PopularAgendaResponse(
+    //     rank: 5,
+    //     billId: 105,
+    //     title: '가상자산 이용자 보호 등에 관한 법률',
+    //     categoryName: '정무위원회',
+    //     registeredDate: DateTime.now(),
+    //     viewCount: 512,
+    //     viewCountWeekly: 98,
+    //     rankChangeSteps: 3,
+    //     rankChangeType: PopularAgendaResponseRankChangeTypeEnum.up,
+    //     voteCount: 142,
+    //     hasVoted: false,
+    //   ),
+    // ];
+
+    // final sampleSetB = [
+    //   PopularAgendaResponse(
+    //     rank: 1,
+    //     billId: 201,
+    //     title: '[변경] 우주항공청 설립 및 운영에 관한 특별법안',
+    //     categoryName: '과학기술',
+    //     registeredDate: DateTime.now(),
+    //     viewCount: 180,
+    //     viewCountWeekly: 35,
+    //     rankChangeSteps: 1,
+    //     rankChangeType: PopularAgendaResponseRankChangeTypeEnum.up,
+    //     voteCount: 92,
+    //     hasVoted: false,
+    //   ),
+    //   PopularAgendaResponse(
+    //     rank: 2,
+    //     billId: 202,
+    //     title: '[변경] 전세사기 피해자 지원 및 주거안정 특별법안',
+    //     categoryName: '국토교통',
+    //     registeredDate: DateTime.now(),
+    //     viewCount: 420,
+    //     viewCountWeekly: 110,
+    //     rankChangeSteps: -1,
+    //     rankChangeType: PopularAgendaResponseRankChangeTypeEnum.down,
+    //     voteCount: 310,
+    //     hasVoted: false,
+    //   ),
+    //   PopularAgendaResponse(
+    //     rank: 3,
+    //     billId: 203,
+    //     title: '[변경] 고등교육법 일부개정법률안 처리 조율',
+    //     categoryName: '교육문화',
+    //     registeredDate: DateTime.now(),
+    //     viewCount: 115,
+    //     viewCountWeekly: 22,
+    //     rankChangeSteps: 0,
+    //     rankChangeType: PopularAgendaResponseRankChangeTypeEnum.same,
+    //     voteCount: 54,
+    //     hasVoted: false,
+    //   ),
+    //   PopularAgendaResponse(
+    //     rank: 4,
+    //     billId: 204,
+    //     title: '[변경] 국민건강보험법 개정안 보건복지위 통과',
+    //     categoryName: '보건복지',
+    //     registeredDate: DateTime.now(),
+    //     viewCount: 280,
+    //     viewCountWeekly: 64,
+    //     rankChangeSteps: 2,
+    //     rankChangeType: PopularAgendaResponseRankChangeTypeEnum.up,
+    //     voteCount: 119,
+    //     hasVoted: false,
+    //   ),
+    //   PopularAgendaResponse(
+    //     rank: 5,
+    //     billId: 205,
+    //     title: '[변경] 조세특례제한법 개정안 발의안 검토',
+    //     categoryName: '기획재정',
+    //     registeredDate: DateTime.now(),
+    //     viewCount: 195,
+    //     viewCountWeekly: 41,
+    //     rankChangeSteps: -2,
+    //     rankChangeType: PopularAgendaResponseRankChangeTypeEnum.down,
+    //     voteCount: 73,
+    //     hasVoted: false,
+    //   ),
+    // ];
 
     useEffect(() {
       Future(() async {
@@ -82,15 +211,62 @@ class _RealtimePopularAgendaSection extends HookConsumerWidget {
       return null;
     }, []);
 
+    // useEffect(() {
+    //   popularAgendas.value = sampleSetA;
+
+    //   bool isSetA = true;
+    //   final timer = Timer.periodic(const Duration(seconds: 30), (t) {
+    //     if (isSetA) {
+    //       popularAgendas.value = sampleSetB;
+    //     } else {
+    //       popularAgendas.value = sampleSetA;
+    //     }
+    //     isSetA = !isSetA;
+    //   });
+
+    //   return timer.cancel;
+    // }, []);
+
     useEffect(() {
       if (isExpanded.value || popularAgendas.value.isEmpty) return null;
 
-      final timer = Timer.periodic(const Duration(seconds: 4), (t) {
-        currentRankIndex.value =
-            (currentRankIndex.value + 1) % popularAgendas.value.length;
-      });
-      return timer.cancel;
-    }, [isExpanded.value]);
+      final List<int> newIds = popularAgendas.value
+          .map((e) => e.billId)
+          .toList();
+      final bool isDataChanged = !const DeepCollectionEquality().equals(
+        originalIds.value,
+        newIds,
+      );
+      if (originalIds.value.isEmpty) {
+        originalIds.value = newIds;
+        currentRankIndex.value = 0;
+        isDataChange.value = false;
+      } else if (isDataChanged) {
+        originalIds.value = newIds;
+        currentRankIndex.value = 0;
+        isDataChange.value = true;
+      } else {
+        currentRankIndex.value = 0;
+        isDataChange.value = false;
+      }
+
+      if (!isDataChange.value) {
+        currentRankIndex.value = 0;
+        return null;
+      } else {
+        final timer = Timer.periodic(const Duration(seconds: 4), (t) {
+          if (currentRankIndex.value == popularAgendas.value.length - 1) {
+            currentRankIndex.value = 0;
+            isDataChange.value = false;
+            t.cancel();
+          } else {
+            currentRankIndex.value =
+                (currentRankIndex.value + 1) % popularAgendas.value.length;
+          }
+        });
+        return timer.cancel;
+      }
+    }, [isExpanded.value, popularAgendas.value]);
 
     if (popularAgendas.value.isEmpty) {
       return const SizedBox.shrink();
@@ -200,12 +376,14 @@ class _AgendaListSection extends HookConsumerWidget {
               ? categoryCodes.value
               : appCategories.map((e) => e.code.toString()).toList();
 
-          // final result = await api.getMainAgendas(
-          //   pageable: Pageable(page: 0, size: 10, sort: _mapSort(sort.value)),
-          //   categoryCodes: targetCodes,
-          // );
+          final result = await api.getMainAgendas(
+            page: 0,
+            size: 10,
+            sortType: _mapSort(sort.value),
+            categoryCodes: targetCodes,
+          );
 
-          // agendas.value = (result.content ?? []) as List<dynamic>;
+          agendas.value = (result.content ?? []) as List<dynamic>;
         } catch (e) {
           debugPrint('메인 안건 조회 실패: $e');
         }
@@ -264,41 +442,18 @@ class _AgendaListSection extends HookConsumerWidget {
               );
             }),
           ),
-
-          // ListView.separated(
-          //   shrinkWrap: true,
-          //   physics: NeverScrollableScrollPhysics(),
-          //   itemCount: 10,
-          //   separatorBuilder: (_, __) => Center(
-          //     child: Container(
-          //       width: 320,
-          //       height: 1,
-          //       color: ColorStyles.divider,
-          //     ),
-          //   ),
-          //   itemBuilder: (_, i) {
-          //     return AgendaListItem(
-          //       category: '정책',
-          //       title: '타이틀이 들어올 수 있는 자리입니다.\n그 이상은 말줄임 됩니다.',
-          //       date: '2026.12.31',
-          //       viewCount: 23,
-          //       voteCount: 999,
-          //       thumbnail: MPSvgImage(SvgImage.logo, width: 64, height: 64),
-          //     );
-          //   },
-          // ),
         ],
       ),
     );
   }
 
-  List<String> _mapSort(String sortLabel) {
+  String _mapSort(String sortLabel) {
     switch (sortLabel) {
       case '인기순':
-        return ['POPULAR'];
+        return 'POPULAR';
       case '최신순':
       default:
-        return ['LATEST'];
+        return 'LATEST';
     }
   }
 

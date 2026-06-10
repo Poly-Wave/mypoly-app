@@ -24,13 +24,35 @@ class CollapsedRow extends HookWidget {
       return null;
     }, [item.rank]);
 
+    final String titleStr = item.title ?? '';
+    final String categoryStr = item.categoryName ?? '';
+
+    const int baseFadeMs = 200;
+    const int charIntervalMs = 50;
+
+    final int iconDelay = 0;
+    final int rankDelay = iconDelay + baseFadeMs;
+    final int titleBaseDelay = rankDelay + baseFadeMs;
+    final int categoryDelay =
+        titleBaseDelay + (titleStr.length * charIntervalMs);
+
     return Row(
       children: [
-        _buildStatusIcon('stable'),
+        _FadeInWidget(
+          key: ValueKey('collapsed_icon_${animationTrigger.value}'),
+          delay: Duration(milliseconds: iconDelay),
+          duration: Duration(milliseconds: baseFadeMs),
+          child: _buildStatusIcon(item.rankChangeType.value),
+        ),
         SizedBox(width: 4.w),
-        Text(
-          "${item.rank}",
-          style: Pretendard.medium.set(size: 15, color: ColorStyles.white),
+        _FadeInWidget(
+          key: ValueKey('collapsed_rank_${animationTrigger.value}'),
+          delay: Duration(milliseconds: rankDelay),
+          duration: Duration(milliseconds: baseFadeMs),
+          child: Text(
+            "${item.rank}",
+            style: Pretendard.medium.set(size: 15, color: ColorStyles.white),
+          ),
         ),
         SizedBox(width: 6.w),
         Expanded(
@@ -38,22 +60,30 @@ class CollapsedRow extends HookWidget {
             width: 189.w,
             child: Wrap(
               clipBehavior: Clip.hardEdge,
-              children: List.generate(item.title.length, (index) {
-                final char = item.title[index];
+              children: List.generate(titleStr.length, (index) {
+                final char = titleStr[index];
 
-                return _FadeInChar(
-                  key: ValueKey('${animationTrigger.value}_${index}_$char'),
+                return _FadeInWidget(
+                  key: ValueKey(
+                    'collapsed_char_${animationTrigger.value}_${index}_$char',
+                  ),
                   char: char,
-                  delay: Duration(milliseconds: index * 50),
+                  delay: Duration(
+                    milliseconds: titleBaseDelay + (index * charIntervalMs),
+                  ),
+                  duration: Duration(milliseconds: index * 50),
                 );
               }),
             ),
           ),
         ),
         SizedBox(width: 6.w),
-        SizedBox(
+        _FadeInWidget(
+          key: ValueKey('collapsed_category_${animationTrigger.value}'),
+          delay: Duration(milliseconds: categoryDelay),
+          duration: Duration(milliseconds: baseFadeMs),
           child: Text(
-            item.categoryName,
+            categoryStr,
             maxLines: 1,
             style: Pretendard.medium.set(size: 13, color: ColorStyles.gray20),
           ),
@@ -68,11 +98,19 @@ class CollapsedRow extends HookWidget {
   }
 }
 
-class _FadeInChar extends HookWidget {
-  final String char;
+class _FadeInWidget extends HookWidget {
+  final Widget? child;
+  final String? char;
   final Duration delay;
+  final Duration duration;
 
-  const _FadeInChar({super.key, required this.char, required this.delay});
+  const _FadeInWidget({
+    super.key,
+    this.child,
+    this.char,
+    required this.delay,
+    required this.duration,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -80,19 +118,23 @@ class _FadeInChar extends HookWidget {
 
     useEffect(() {
       final timer = Future.delayed(delay, () {
-        opacity.value = 1.0;
+        if (context.mounted) {
+          opacity.value = 1.0;
+        }
       });
       return null;
     }, []);
 
     return AnimatedOpacity(
-      duration: const Duration(milliseconds: 800),
+      duration: duration,
       curve: Curves.linear,
       opacity: opacity.value,
-      child: Text(
-        char,
-        style: Pretendard.medium.set(size: 15, color: Colors.white),
-      ),
+      child: char != null
+          ? Text(
+              char!,
+              style: Pretendard.medium.set(size: 15, color: Colors.white),
+            )
+          : child,
     );
   }
 }
