@@ -228,7 +228,7 @@ class _RealtimePopularAgendaSection extends HookConsumerWidget {
     // }, []);
 
     useEffect(() {
-      if (isExpanded.value || popularAgendas.value.isEmpty) return null;
+      if (popularAgendas.value.isEmpty) return null;
 
       final List<int> newIds = popularAgendas.value
           .map((e) => e.billId)
@@ -301,10 +301,12 @@ class _RealtimePopularAgendaSection extends HookConsumerWidget {
               child: isExpanded.value
                   ? ExpandedList(
                       items: popularAgendas.value,
+                      isDataChange: isDataChange.value,
                       onCollapsePressed: () => isExpanded.value = false,
                     )
                   : CollapsedRow(
                       item: popularAgendas.value[currentRankIndex.value],
+                      isDataChange: isDataChange.value,
                       onExpandPressed: () => isExpanded.value = true,
                     ),
             ),

@@ -7,11 +7,13 @@ import 'package:mypoly/widget/index.dart';
 
 class CollapsedRow extends HookWidget {
   final dynamic item;
+  final bool isDataChange;
   final VoidCallback onExpandPressed;
 
   const CollapsedRow({
     super.key,
     required this.item,
+    required this.isDataChange,
     required this.onExpandPressed,
   });
 
@@ -42,6 +44,7 @@ class CollapsedRow extends HookWidget {
           key: ValueKey('collapsed_icon_${animationTrigger.value}'),
           delay: Duration(milliseconds: iconDelay),
           duration: Duration(milliseconds: baseFadeMs),
+          isDataChange: isDataChange,
           child: _buildStatusIcon(item.rankChangeType.value),
         ),
         SizedBox(width: 4.w),
@@ -49,6 +52,7 @@ class CollapsedRow extends HookWidget {
           key: ValueKey('collapsed_rank_${animationTrigger.value}'),
           delay: Duration(milliseconds: rankDelay),
           duration: Duration(milliseconds: baseFadeMs),
+          isDataChange: isDataChange,
           child: Text(
             "${item.rank}",
             style: Pretendard.medium.set(size: 15, color: ColorStyles.white),
@@ -72,6 +76,7 @@ class CollapsedRow extends HookWidget {
                     milliseconds: titleBaseDelay + (index * charIntervalMs),
                   ),
                   duration: Duration(milliseconds: index * 50),
+                  isDataChange: isDataChange,
                 );
               }),
             ),
@@ -82,6 +87,7 @@ class CollapsedRow extends HookWidget {
           key: ValueKey('collapsed_category_${animationTrigger.value}'),
           delay: Duration(milliseconds: categoryDelay),
           duration: Duration(milliseconds: baseFadeMs),
+          isDataChange: isDataChange,
           child: Text(
             categoryStr,
             maxLines: 1,
@@ -103,6 +109,7 @@ class _FadeInWidget extends HookWidget {
   final String? char;
   final Duration delay;
   final Duration duration;
+  final bool isDataChange;
 
   const _FadeInWidget({
     super.key,
@@ -110,10 +117,20 @@ class _FadeInWidget extends HookWidget {
     this.char,
     required this.delay,
     required this.duration,
+    required this.isDataChange,
   });
 
   @override
   Widget build(BuildContext context) {
+    if (!isDataChange) {
+      return char != null
+          ? Text(
+              char!,
+              style: Pretendard.medium.set(size: 15, color: Colors.white),
+            )
+          : child!;
+    }
+
     final opacity = useState(0.0);
 
     useEffect(() {
