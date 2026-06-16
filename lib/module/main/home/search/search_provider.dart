@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mypoly/constant/storage_key.dart';
 import 'package:mypoly/data/provider/service_provider.dart';
-import 'package:mypoly/model/bill.dart';
+import 'package:mypoly/model/agenda.dart';
 import 'package:mypoly/provider/app_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -16,7 +16,7 @@ class SearchPaging extends _$SearchPaging {
   CancelToken? _currentCancelToken;
 
   @override
-  PagingState<int?, BillListData>? build() => null;
+  PagingState<int?, AgendaListData>? build() => null;
 
   Future<void> onRefresh() async {
     _currentCancelToken?.cancel();
@@ -57,8 +57,10 @@ class SearchPaging extends _$SearchPaging {
           );
 
       final newItems = response.content
-          .map((item) => item.toBillListData(ref))
+          .map((item) => item.toAgendaListData(ref))
           .toList();
+
+      ref.read(lastKeywordProvider.notifier).update(keyword);
 
       state = prevState.copyWith(
         isLoading: false,
@@ -70,6 +72,14 @@ class SearchPaging extends _$SearchPaging {
       state = prevState.copyWith(isLoading: false, error: e);
     }
   }
+}
+
+@riverpod
+class LastKeyword extends _$LastKeyword {
+  @override
+  String build() => "";
+
+  void update(String value) => state = value;
 }
 
 @riverpod
@@ -96,6 +106,13 @@ class Keyword extends _$Keyword {
 
     await ref.read(appKeywordsProvider.notifier).add(value);
 
+    state = value;
+
+    ref.read(searchPagingProvider.notifier).onRefresh();
+  }
+
+  void onSet(String value) {
+    controller.text = value;
     state = value;
 
     ref.read(searchPagingProvider.notifier).onRefresh();

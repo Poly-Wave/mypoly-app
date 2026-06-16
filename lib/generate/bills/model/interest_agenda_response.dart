@@ -11,6 +11,9 @@ part 'interest_agenda_response.g.dart';
 @freezed
 abstract class InterestAgendaResponse with _$InterestAgendaResponse {
   const factory InterestAgendaResponse({
+    /// 의안 ID
+    @JsonKey(name: r'billId') required int billId,
+
     /// 주제 코드
     @JsonKey(name: r'categoryCode') String? categoryCode,
 

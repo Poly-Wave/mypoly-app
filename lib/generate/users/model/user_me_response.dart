@@ -12,20 +12,20 @@ part 'user_me_response.g.dart';
 abstract class UserMeResponse with _$UserMeResponse {
   const factory UserMeResponse({
     /// 사용자 ID
-    @JsonKey(name: r'userId') int? userId,
+    @JsonKey(name: r'userId') required int userId,
 
     /// 소셜 provider
-    @JsonKey(name: r'provider') String? provider,
+    @JsonKey(name: r'provider') required String provider,
 
     /// 소셜 provider user id
-    @JsonKey(name: r'providerUserId') String? providerUserId,
+    @JsonKey(name: r'providerUserId') required String providerUserId,
 
     /// 닉네임
-    @JsonKey(name: r'nickname') String? nickname,
+    @JsonKey(name: r'nickname') required String nickname,
 
     /// 온보딩 상태
     @JsonKey(name: r'onboardingStatus')
-    UserMeResponseOnboardingStatusEnum? onboardingStatus,
+    required UserMeResponseOnboardingStatusEnum onboardingStatus,
 
     /// 성별
     @JsonKey(name: r'gender') UserMeResponseGenderEnum? gender,

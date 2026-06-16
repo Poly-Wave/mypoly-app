@@ -1,18 +1,18 @@
 import 'package:dio/dio.dart';
-
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mypoly/data/provider/service_provider.dart';
-import 'package:mypoly/enum/date_range.dart';
 import 'package:mypoly/enum/sort.dart';
+import 'package:mypoly/generate/bills/model/category_response.dart';
 import 'package:mypoly/model/agenda.dart';
+import 'package:mypoly/provider/app_provider.dart';
 import 'package:mypoly/widget/modal/index.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'vote_provider.g.dart';
+part 'main_agenda_provider.g.dart';
 
 @riverpod
-class VotesPaging extends _$VotesPaging {
+class AgendasPaging extends _$AgendasPaging {
   CancelToken? _currentCancelToken;
 
   @override
@@ -38,23 +38,20 @@ class VotesPaging extends _$VotesPaging {
       final newKey = lastKey != null ? lastKey + 1 : 0;
 
       final sort = ref.read(sortProvider);
-      final voteResult = ref.read(voteResultProvider);
-      final createdAtRange = ref.read(createdAtRangeProvider);
-      final votedAtRange = ref.read(votedAtRangeProvider);
+      final categoryCodes = ref
+          .read(categoriesProvider)
+          .map((category) => category.code)
+          .toList();
 
       _currentCancelToken?.cancel();
       _currentCancelToken = CancelToken();
 
       final response = await ref
-          .read(voteServiceProvider)
-          .getMyVotedBills(
+          .read(agendaServiceProvider)
+          .getMainAgendas(
             sort: sort,
+            categoryCodes: categoryCodes,
             page: newKey,
-            voteResult: voteResult,
-            proposalFromDate: createdAtRange.$2,
-            proposalToDate: createdAtRange.$3,
-            votedFromDate: votedAtRange.$2,
-            votedToDate: votedAtRange.$3,
             cancelToken: _currentCancelToken,
           );
 
@@ -75,44 +72,6 @@ class VotesPaging extends _$VotesPaging {
 }
 
 @riverpod
-class CreatedAtRange extends _$CreatedAtRange {
-  @override
-  (MPDateRange, DateTime?, DateTime?) build() => (.all, null, null);
-
-  void showBottomSheet(BuildContext context) => showDateRangeBottomSheetModal(
-    context,
-    values: MPDateRange.values,
-    value: state,
-    title: "안건 생성일",
-    onChanged: (value) {
-      if (state == value) return;
-      state = value;
-
-      ref.read(votesPagingProvider.notifier).onRefresh();
-    },
-  );
-}
-
-@riverpod
-class VotedAtRange extends _$VotedAtRange {
-  @override
-  (MPDateRange, DateTime?, DateTime?) build() => (.all, null, null);
-
-  void showBottomSheet(BuildContext context) => showDateRangeBottomSheetModal(
-    context,
-    values: MPDateRange.values,
-    value: state,
-    title: "투표 날짜",
-    onChanged: (value) {
-      if (state == value) return;
-      state = value;
-
-      ref.read(votesPagingProvider.notifier).onRefresh();
-    },
-  );
-}
-
-@riverpod
 class Sort extends _$Sort {
   @override
   MPSort build() => .popular;
@@ -121,23 +80,28 @@ class Sort extends _$Sort {
     if (state == value) return;
     state = value;
 
-    ref.read(votesPagingProvider.notifier).onRefresh();
+    ref.read(agendasPagingProvider.notifier).onRefresh();
   }
 }
 
 @riverpod
-class VoteResult extends _$VoteResult {
+class Categories extends _$Categories {
   @override
-  bool? build() => null;
+  List<CategoryResponse> build() => [];
 
-  void showBottomSheet(BuildContext context) => showBoolBottomSheetModal(
+  void showBottomSheet(BuildContext context) => showWrapBottomSheetModal(
     context,
+    multiple: true,
+    values: ref
+        .read(appCategoriesProvider)
+        .map((item) => (item, item.name))
+        .toList(),
     value: state,
     onChanged: (value) {
       if (state == value) return;
       state = value;
 
-      ref.read(votesPagingProvider.notifier).onRefresh();
+      ref.read(agendasPagingProvider.notifier).onRefresh();
     },
   );
 }
