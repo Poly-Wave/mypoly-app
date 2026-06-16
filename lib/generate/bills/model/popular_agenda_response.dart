@@ -18,13 +18,13 @@ abstract class PopularAgendaResponse with _$PopularAgendaResponse {
     @JsonKey(name: r'billId') required int billId,
 
     /// 주제 코드
-    @JsonKey(name: r'categoryCode') required String categoryCode,
+    @JsonKey(name: r'categoryCode') String? categoryCode,
 
     /// 주제 이름
-    @JsonKey(name: r'categoryName') required String categoryName,
+    @JsonKey(name: r'categoryName') String? categoryName,
 
     /// 주제 텍스트색(HEX, # 제외)
-    @JsonKey(name: r'categoryTextColor') required String categoryTextColor,
+    @JsonKey(name: r'categoryTextColor') String? categoryTextColor,
 
     /// 제목
     @JsonKey(name: r'title') required String title,

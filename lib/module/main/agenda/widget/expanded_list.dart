@@ -19,19 +19,19 @@ class ExpandedList extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    const int baseFadeMs = 200;
-    const int charIntervalMs = 50;
-
     List<int> computedRowDelays = [];
-    int accumulatedDelay = 0;
+    int accumulatedDelay = 100;
 
     for (int i = 0; i < items.length; i++) {
       computedRowDelays.add(accumulatedDelay);
-      final String currentTitle = items[i].title ?? '';
 
-      int rowRunningTime =
-          400 + (currentTitle.length * charIntervalMs) + 200 + 150;
-      accumulatedDelay += rowRunningTime;
+      final String titleStr = items[i].title ?? '';
+      final int lastCharDelay = titleStr.isEmpty
+          ? 0
+          : (titleStr.length - 1) * 50;
+      final int rowTotalTime = lastCharDelay + 250 + 250 + 300;
+
+      accumulatedDelay += rowTotalTime;
     }
 
     return Row(
@@ -42,22 +42,15 @@ class ExpandedList extends HookWidget {
             mainAxisSize: MainAxisSize.min,
             children: List.generate(items.length, (index) {
               final item = items[index];
-              final int rowBaseDelay = computedRowDelays[index];
-
               final bool isFirst = index == 0;
               final bool isLast = index == items.length - 1;
 
-              final String titleStr = item.title ?? '';
-              final String categoryStr = item.categoryName ?? '';
-
-              final int iconDelay = rowBaseDelay + 0;
-              final int rankDelay = iconDelay + baseFadeMs;
-              final int titleBaseDelay = rankDelay + baseFadeMs;
-              final int categoryDelay =
-                  titleBaseDelay + (titleStr.length * charIntervalMs);
+              final int rowDelayMs = isDataChange
+                  ? computedRowDelays[index]
+                  : 0;
 
               return Column(
-                key: ValueKey('expanded_row_${item.billId ?? index}'),
+                key: ValueKey('expanded_fixed_row_$index'),
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   if (!isFirst)
@@ -65,74 +58,18 @@ class ExpandedList extends HookWidget {
                       padding: EdgeInsets.only(),
                       child: Container(height: 1.h, color: ColorStyles.gray50),
                     ),
+
                   Container(
                     padding: EdgeInsets.only(
                       top: isFirst ? 0 : 8.h,
                       bottom: isLast ? 0 : 8.h,
                     ),
                     alignment: Alignment.centerLeft,
-                    child: Row(
-                      children: [
-                        _FadeInWidget(
-                          delay: Duration(milliseconds: iconDelay),
-                          duration: Duration(milliseconds: baseFadeMs),
-                          isDataChange: isDataChange,
-                          child: _buildStatusIcon(
-                            item.rankChangeType.toString(),
-                          ),
-                        ),
-                        SizedBox(width: 4.w),
-                        _FadeInWidget(
-                          delay: Duration(milliseconds: rankDelay),
-                          duration: Duration(milliseconds: baseFadeMs),
-                          isDataChange: isDataChange,
-                          child: Text(
-                            "${item.rank}",
-                            style: Pretendard.medium.set(
-                              size: 15,
-                              color: ColorStyles.white,
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 6.w),
-                        Expanded(
-                          child: SizedBox(
-                            width: 189.w,
-                            child: Wrap(
-                              clipBehavior: Clip.hardEdge,
-                              children: List.generate(titleStr.length, (
-                                charIndex,
-                              ) {
-                                final char = titleStr[charIndex];
-
-                                return _FadeInWidget(
-                                  char: char,
-                                  delay: Duration(
-                                    milliseconds:
-                                        titleBaseDelay +
-                                        (charIndex * charIntervalMs),
-                                  ),
-                                  duration: Duration(milliseconds: index * 50),
-                                  isDataChange: isDataChange,
-                                );
-                              }),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 6.w),
-                        _FadeInWidget(
-                          delay: Duration(milliseconds: categoryDelay),
-                          duration: Duration(milliseconds: baseFadeMs),
-                          isDataChange: isDataChange,
-                          child: Text(
-                            categoryStr,
-                            style: Pretendard.medium.set(
-                              size: 13,
-                              color: ColorStyles.gray20,
-                            ),
-                          ),
-                        ),
-                      ],
+                    child: _SequentialRowSwitcher(
+                      index: index,
+                      item: item,
+                      delay: Duration(milliseconds: rowDelayMs),
+                      isDataChange: isDataChange,
                     ),
                   ),
                 ],
@@ -140,7 +77,6 @@ class ExpandedList extends HookWidget {
             }),
           ),
         ),
-
         GestureDetector(
           onTap: onCollapsePressed,
           behavior: HitTestBehavior.translucent,
@@ -157,39 +93,112 @@ class ExpandedList extends HookWidget {
   }
 }
 
-class _FadeInWidget extends HookWidget {
-  final Widget? child;
-  final String? char;
+class _SequentialRowSwitcher extends HookWidget {
+  final int index;
+  final dynamic item;
   final Duration delay;
-  final Duration duration;
   final bool isDataChange;
 
-  const _FadeInWidget({
-    super.key,
-    this.child,
-    this.char,
+  const _SequentialRowSwitcher({
+    required this.index,
+    required this.item,
     required this.delay,
-    required this.duration,
     required this.isDataChange,
   });
 
   @override
   Widget build(BuildContext context) {
-    debugPrint(
-      '#################_FadeInWidget isDataChange: $isDataChange.value',
-    );
-    if (!isDataChange) {
-      return char != null
-          ? Text(
-              char!,
-              style: Pretendard.medium.set(size: 15, color: Colors.white),
-            )
-          : child!;
-    }
+    final currentItem = useState(item);
 
+    useEffect(() {
+      if (currentItem.value.billId != item.billId) {
+        if (!isDataChange) {
+          currentItem.value = item;
+          return null;
+        }
+
+        final timer = Future.delayed(delay, () {
+          if (context.mounted) {
+            currentItem.value = item;
+          }
+        });
+      }
+      return null;
+    }, [item.billId, isDataChange]);
+
+    final String titleStr = currentItem.value.title ?? '';
+    final String categoryStr = currentItem.value.categoryName ?? '';
+
+    final int lastCharDelayTime = titleStr.isEmpty
+        ? 0
+        : (titleStr.length - 1) * 50;
+    final int categoryDelayMs = isDataChange ? (lastCharDelayTime + 250) : 0;
+
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 350),
+      transitionBuilder: (Widget child, Animation<double> animation) {
+        return FadeTransition(opacity: animation, child: child);
+      },
+      child: Row(
+        key: ValueKey('row_content_${currentItem.value.billId}'),
+        children: [
+          _buildStatusIcon(currentItem.value.rankChangeType.toString()),
+          SizedBox(width: 4.w),
+          Text(
+            "${currentItem.value.rank}",
+            style: Pretendard.medium.set(size: 15, color: ColorStyles.white),
+          ),
+          SizedBox(width: 6.w),
+
+          Expanded(
+            child: SizedBox(
+              width: 189.w,
+              child: Wrap(
+                clipBehavior: Clip.hardEdge,
+                children: List.generate(titleStr.length, (charIndex) {
+                  final char = titleStr[charIndex];
+                  final int charDelay = isDataChange ? (charIndex * 50) : 0;
+
+                  return _TypingCharWidget(
+                    key: ValueKey(
+                      'char_${currentItem.value.billId}_${charIndex}_$char',
+                    ),
+                    char: char,
+                    delay: Duration(milliseconds: charDelay),
+                  );
+                }),
+              ),
+            ),
+          ),
+          SizedBox(width: 6.w),
+
+          _CategoryFadeWidget(
+            key: ValueKey('category_${currentItem.value.billId}_$categoryStr'),
+            categoryName: categoryStr,
+            delay: Duration(milliseconds: categoryDelayMs),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _TypingCharWidget extends HookWidget {
+  final String char;
+  final Duration delay;
+
+  const _TypingCharWidget({super.key, required this.char, required this.delay});
+
+  @override
+  Widget build(BuildContext context) {
     final opacity = useState(0.0);
 
     useEffect(() {
+      if (delay == Duration.zero) {
+        opacity.value = 1.0;
+        return null;
+      }
+
       final timer = Future.delayed(delay, () {
         if (context.mounted) {
           opacity.value = 1.0;
@@ -199,27 +208,63 @@ class _FadeInWidget extends HookWidget {
     }, []);
 
     return AnimatedOpacity(
-      duration: duration,
+      duration: const Duration(milliseconds: 250),
       curve: Curves.linear,
       opacity: opacity.value,
-      child: char != null
-          ? Text(
-              char!,
-              style: Pretendard.medium.set(size: 15, color: Colors.white),
-            )
-          : child,
+      child: Text(
+        char,
+        style: Pretendard.medium.set(size: 15, color: Colors.white),
+      ),
+    );
+  }
+}
+
+class _CategoryFadeWidget extends HookWidget {
+  final String categoryName;
+  final Duration delay;
+
+  const _CategoryFadeWidget({
+    super.key,
+    required this.categoryName,
+    required this.delay,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final opacity = useState(0.0);
+
+    useEffect(() {
+      if (delay == Duration.zero) {
+        opacity.value = 1.0;
+        return null;
+      }
+
+      final timer = Future.delayed(delay, () {
+        if (context.mounted) {
+          opacity.value = 1.0;
+        }
+      });
+      return null;
+    }, []);
+
+    return AnimatedOpacity(
+      duration: const Duration(milliseconds: 250),
+      curve: Curves.linear,
+      opacity: opacity.value,
+      child: Text(
+        categoryName,
+        style: Pretendard.medium.set(size: 13, color: ColorStyles.gray20),
+      ),
     );
   }
 }
 
 Widget _buildStatusIcon(String status) {
-  switch (status) {
-    case 'up':
-      return MPImage(WebpImage.rankUp, width: 12.0, height: 12.0);
-    case 'down':
-      return MPImage(WebpImage.rankDown, width: 12.0, height: 12.0);
-    case 'stable':
-    default:
-      return MPImage(WebpImage.rankStable, width: 8.2, height: 1.73);
+  if (status.contains('up') || status.contains('UP')) {
+    return MPImage(WebpImage.rankUp, width: 12.0, height: 12.0);
+  } else if (status.contains('down') || status.contains('DOWN')) {
+    return MPImage(WebpImage.rankDown, width: 12.0, height: 12.0);
+  } else {
+    return MPImage(WebpImage.rankStable, width: 8.2, height: 1.73);
   }
 }
