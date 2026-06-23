@@ -55,8 +55,8 @@ class BookmarksPaging extends _$BookmarksPaging {
       _currentCancelToken = CancelToken();
 
       final response = await ref
-          .read(billBookmarkServiceProvider)
-          .getBookmarkedBills(
+          .read(agendaServiceProvider)
+          .getBookmarkedAgendas(
             sort: sort,
             fromDate: createdAtRange.$2,
             toDate: createdAtRange.$3,

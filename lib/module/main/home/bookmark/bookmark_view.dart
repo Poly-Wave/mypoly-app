@@ -6,10 +6,11 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mypoly/asset/index.dart';
 import 'package:mypoly/enum/date_range.dart';
 import 'package:mypoly/model/agenda.dart';
-import 'package:mypoly/module/main/widget/bill.dart';
+import 'package:mypoly/module/main/widget/agenda.dart';
 import 'package:mypoly/module/main/widget/list.dart';
 import 'package:mypoly/module/main/home/bookmark/bookmark_provider.dart';
 import 'package:mypoly/module/main/main_provider.dart';
+import 'package:mypoly/provider/router_provider.dart';
 import 'package:mypoly/style/index.dart';
 import 'package:mypoly/widget/index.dart';
 
@@ -93,7 +94,8 @@ class BookmarkView extends HookConsumerWidget {
                 itemBuilder: (context, item, index) => AgendaCompactColumnItem(
                   index: index,
                   item: item,
-                  onTap: () {},
+                  onTap: () =>
+                      context.pushRoute(AgendaDetailRoute(id: item.id)),
                 ),
                 firstPageProgressIndicatorBuilder: (_) =>
                     Column(children: [MPHeight(180), MPLoading()]),

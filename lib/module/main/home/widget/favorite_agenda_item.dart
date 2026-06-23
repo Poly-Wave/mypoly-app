@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mypoly/model/agenda.dart';
-import 'package:mypoly/module/main/widget/bill.dart';
+import 'package:mypoly/module/main/widget/agenda.dart';
 import 'package:mypoly/style/index.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mypoly/util/extension.dart';
@@ -20,6 +20,7 @@ class FavoriteAgendaItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
+      behavior: .translucent,
       child: SizedBox(
         height: 112.h,
         child: Row(

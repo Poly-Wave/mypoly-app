@@ -1,7 +1,6 @@
 import 'package:mypoly/data/provider/api_provider.dart';
 import 'package:mypoly/data/service/agenda_service.dart';
 import 'package:mypoly/data/service/auth_service.dart';
-import 'package:mypoly/data/service/bill_bookmark_service.dart';
 import 'package:mypoly/data/service/category_service.dart';
 import 'package:mypoly/data/service/terms_service.dart';
 import 'package:mypoly/data/service/user_service.dart';
@@ -12,9 +11,11 @@ part 'service_provider.g.dart';
 
 @Riverpod(keepAlive: true)
 AgendaService agendaService(Ref ref) {
-  final api = ref.watch(agendaApiProvider);
+  final agendaApi = ref.watch(agendaApiProvider);
+  final bookmarkApi = ref.watch(billBookmarkApiProvider);
+  final detailApi = ref.watch(billDetailApiProvider);
 
-  return AgendaService(ref, api);
+  return AgendaService(ref, agendaApi, bookmarkApi, detailApi);
 }
 
 @Riverpod(keepAlive: true)
@@ -22,13 +23,6 @@ CategoryService categoryService(Ref ref) {
   final api = ref.watch(categoryApiProvider);
 
   return CategoryService(ref, api);
-}
-
-@Riverpod(keepAlive: true)
-BillBookmarkService billBookmarkService(Ref ref) {
-  final api = ref.watch(billBookmarkApiProvider);
-
-  return BillBookmarkService(ref, api);
 }
 
 @Riverpod(keepAlive: true)

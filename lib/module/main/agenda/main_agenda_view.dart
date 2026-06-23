@@ -6,11 +6,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mypoly/asset/index.dart';
 import 'package:mypoly/model/agenda.dart';
-import 'package:mypoly/module/main/widget/bill.dart';
+import 'package:mypoly/module/main/widget/agenda.dart';
 import 'package:mypoly/module/main/widget/list.dart';
 import 'package:mypoly/module/main/agenda/main_agenda_provider.dart';
 import 'package:mypoly/module/main/agenda/widget/filter_header.dart';
 import 'package:mypoly/provider/app_user_provider.dart';
+import 'package:mypoly/provider/router_provider.dart';
 import 'package:mypoly/style/index.dart';
 import 'package:mypoly/widget/index.dart';
 import 'package:collection/collection.dart';
@@ -60,8 +61,11 @@ class MainAgendaView extends HookConsumerWidget {
                 .read(agendasPagingProvider.notifier)
                 .fetchNextPage,
             builderDelegate: PagedChildBuilderDelegate<AgendaListData>(
-              itemBuilder: (context, item, index) =>
-                  AgendaColumnItem(index: index, item: item, onTap: () {}),
+              itemBuilder: (context, item, index) => AgendaColumnItem(
+                index: index,
+                item: item,
+                onTap: () => context.pushRoute(AgendaDetailRoute(id: item.id)),
+              ),
               firstPageProgressIndicatorBuilder: (_) =>
                   Column(children: [MPHeight(180), MPLoading()]),
               firstPageErrorIndicatorBuilder: (_) => Column(

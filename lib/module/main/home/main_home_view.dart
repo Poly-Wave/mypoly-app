@@ -343,7 +343,11 @@ class FavoriteTopicSection extends HookConsumerWidget {
               itemBuilder: (context, index) {
                 final item = interestAgendas.elementAt(index);
 
-                return FavoriteAgendaItem(item: item, onTap: () {});
+                return FavoriteAgendaItem(
+                  item: item,
+                  onTap: () =>
+                      context.pushRoute(AgendaDetailRoute(id: item.id)),
+                );
               },
             ),
         ],
