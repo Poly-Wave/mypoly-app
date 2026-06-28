@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:mypoly/enum/sort.dart';
 import 'package:mypoly/generate/bills/api/vote_api.dart';
 import 'package:mypoly/generate/bills/model/my_voted_bill_slice_response.dart';
 import 'package:mypoly/util/error.dart';
 import 'package:mypoly/util/extension.dart';
+import 'package:mypoly/util/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 class VoteService {
@@ -42,7 +42,7 @@ class VoteService {
     } on DioException catch (e) {
       return Future.error(getErrorMessage(e));
     } catch (e) {
-      debugPrint(e.toString());
+      AppLogger.instance.talker.handle(e);
       return Future.error("error");
     }
   }

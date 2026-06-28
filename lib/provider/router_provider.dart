@@ -7,6 +7,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:mypoly/module/common/term_detail/term_detail_view.dart';
 import 'package:mypoly/generate/users/model/terms_response.dart';
 import 'package:mypoly/module/common/topic/topic_view.dart';
+import 'package:mypoly/module/common/talker/talker_view.dart';
 
 // Splash
 import 'package:mypoly/module/splash/splash_view.dart';
@@ -60,6 +61,7 @@ class AppRouter extends RootStackRouter {
     // Common
     AutoRoute(page: TermDetailRoute.page),
     AutoRoute(page: TopicRoute.page),
+    AutoRoute(page: TalkerRoute.page),
 
     // Splash
     CustomRoute(

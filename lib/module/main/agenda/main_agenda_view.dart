@@ -347,7 +347,7 @@ class _RealtimePopularAgendaSection extends HookConsumerWidget {
         duration: const Duration(milliseconds: 300),
         curve: Curves.fastOutSlowIn,
         alignment: Alignment.topCenter,
-        child: Container(
+        child: SizedBox(
           width: 320.w,
           child: CustomPaint(
             painter: _GradientBorderPainter(

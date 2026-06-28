@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:mypoly/enum/gender.dart';
 import 'package:mypoly/generate/users/api/user_api.dart';
 import 'package:mypoly/generate/users/model/address_search_response.dart';
@@ -10,6 +9,7 @@ import 'package:mypoly/generate/users/model/user_update_basic_profile_request.da
 import 'package:mypoly/generate/users/model/user_update_profile_request.dart';
 import 'package:mypoly/provider/app_user_provider.dart';
 import 'package:mypoly/util/error.dart';
+import 'package:mypoly/util/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 class UserService {
@@ -30,7 +30,7 @@ class UserService {
     } on DioException catch (e) {
       return Future.error(getErrorMessage(e));
     } catch (e) {
-      debugPrint(e.toString());
+      AppLogger.instance.talker.handle(e);
       return Future.error("error");
     }
   }
@@ -43,7 +43,7 @@ class UserService {
     } on DioException catch (e) {
       return Future.error(getErrorMessage(e));
     } catch (e) {
-      debugPrint(e.toString());
+      AppLogger.instance.talker.handle(e);
       return Future.error("error");
     }
   }
@@ -54,7 +54,7 @@ class UserService {
     } on DioException catch (e) {
       return Future.error(getErrorMessage(e));
     } catch (e) {
-      debugPrint(e.toString());
+      AppLogger.instance.talker.handle(e);
       return Future.error("error");
     }
   }
@@ -81,7 +81,7 @@ class UserService {
     } on DioException catch (e) {
       return Future.error(getErrorMessage(e));
     } catch (e) {
-      debugPrint(e.toString());
+      AppLogger.instance.talker.handle(e);
       return Future.error("error");
     }
   }
@@ -106,7 +106,7 @@ class UserService {
     } on DioException catch (e) {
       return Future.error(getErrorMessage(e));
     } catch (e) {
-      debugPrint(e.toString());
+      AppLogger.instance.talker.handle(e);
       return Future.error("error");
     }
   }
@@ -126,7 +126,7 @@ class UserService {
     } on DioException catch (e) {
       return Future.error(getErrorMessage(e));
     } catch (e) {
-      debugPrint(e.toString());
+      AppLogger.instance.talker.handle(e);
       return Future.error("error");
     }
   }
@@ -147,7 +147,7 @@ class UserService {
     } on DioException catch (e) {
       return Future.error(getErrorMessage(e));
     } catch (e) {
-      debugPrint(e.toString());
+      AppLogger.instance.talker.handle(e);
       return Future.error("error");
     }
   }

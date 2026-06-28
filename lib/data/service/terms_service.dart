@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:mypoly/generate/users/api/terms_api.dart';
 import 'package:mypoly/generate/users/model/terms_response.dart';
 import 'package:mypoly/util/error.dart';
+import 'package:mypoly/util/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 class TermsService {
@@ -20,7 +20,7 @@ class TermsService {
     } on DioException catch (e) {
       return Future.error(getErrorMessage(e));
     } catch (e) {
-      debugPrint(e.toString());
+      AppLogger.instance.talker.handle(e);
       return Future.error("error");
     }
   }
@@ -31,7 +31,7 @@ class TermsService {
     } on DioException catch (e) {
       return Future.error(getErrorMessage(e));
     } catch (e) {
-      debugPrint(e.toString());
+      AppLogger.instance.talker.handle(e);
       return Future.error("error");
     }
   }

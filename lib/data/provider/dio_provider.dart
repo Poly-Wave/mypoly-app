@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:mypoly/generate/users/api/auth_api.dart';
 import 'package:mypoly/generate/users/model/token_refresh_request.dart';
 import 'package:mypoly/provider/app_provider.dart';
@@ -35,9 +34,9 @@ Dio dio(Ref ref) {
           }
 
           if (e.response?.statusCode == 401) {
-            debugPrint("토큰 재발급 시도");
+            AppLogger.instance.talker.info("토큰 재발급 시도");
 
-            final dio = Dio()..interceptors.add(dioLogger);
+            final dio = Dio()..interceptors.add(AppLogger.instance.dioLogger);
             final authApi = AuthApi(dio, baseUrl: apiUrl);
 
             try {
@@ -70,12 +69,12 @@ Dio dio(Ref ref) {
                   e.type == DioExceptionType.receiveTimeout ||
                   e.type == DioExceptionType.sendTimeout ||
                   e.type == DioExceptionType.connectionError) {
-                debugPrint("네트워크 오류 발생 - 토큰 유지");
+                AppLogger.instance.talker.warning("네트워크 오류 발생 - 토큰 유지");
                 return handler.next(e);
               }
 
               if (e.response?.statusCode == 401) {
-                debugPrint("401 - 토큰 삭제");
+                AppLogger.instance.talker.info("401 - 토큰 삭제");
                 await ref.read(appUserProvider.notifier).logout();
               }
 
@@ -87,7 +86,7 @@ Dio dio(Ref ref) {
         },
       ),
     )
-    ..add(dioLogger);
+    ..add(AppLogger.instance.dioLogger);
 
   return dio;
 }

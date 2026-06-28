@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:mypoly/model/error_response.dart';
+import 'package:mypoly/util/logger.dart';
 
 String getErrorMessage(DioException e) {
   if (e.type == DioExceptionType.cancel) {
-    debugPrint("$e");
+    AppLogger.instance.talker.handle(e);
     return "cancel";
   }
   final errorResponseData = e.response?.data;
@@ -12,14 +12,14 @@ String getErrorMessage(DioException e) {
   if (errorResponseData != null) {
     try {
       final response = ErrorResponse.fromJson(errorResponseData);
-      debugPrint(response.code);
+      AppLogger.instance.talker.handle(response.code);
       return response.code;
     } catch (e) {
-      debugPrint("$e");
+      AppLogger.instance.talker.handle(e);
       return "error";
     }
   } else {
-    debugPrint("$e");
+    AppLogger.instance.talker.handle(e);
     return "error";
   }
 }

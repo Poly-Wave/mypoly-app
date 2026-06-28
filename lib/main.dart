@@ -1,9 +1,12 @@
 import 'dart:io';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -20,6 +23,7 @@ import 'package:mypoly/style/index.dart';
 import 'package:mypoly/util/logger.dart';
 import 'package:mypoly/widget/index.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:shake_gesture/shake_gesture.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const systemUiOverlayStyle = SystemUiOverlayStyle(
@@ -41,6 +45,8 @@ Future<void> main() async {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+  AppLogger.instance;
 
   final flavor = Flavor.fromString(appFlavor ?? "prod");
   await dotenv.load(fileName: ".env.${flavor.name}");
@@ -71,9 +77,7 @@ Future<void> main() async {
 
   runApp(
     ProviderScope(
-      observers: [
-        ProviderLogger(ignoreKeywords: ["termHtml"]),
-      ],
+      observers: [AppLogger.instance.providerObserver],
       overrides: [
         flavorProvider.overrideWithValue(flavor),
         secureStorageProvider.overrideWithValue(secureStorage),
@@ -92,6 +96,44 @@ class MainApp extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.read(routerProvider);
+    final rootNavigatorKey = ref.read(rootNavigatorKeyProvider);
+
+    useEffect(() {
+      if (ref.read(flavorProvider) != .prod || !kReleaseMode) {
+        WidgetsBinding.instance.addPostFrameCallback((_) async {
+          int shakeCount = 0;
+          DateTime? lastShakeAt;
+
+          ShakeGesture.registerCallback(
+            onShake: () {
+              final navigatorContext = rootNavigatorKey.currentContext;
+              if (navigatorContext == null || !navigatorContext.mounted) return;
+
+              if (navigatorContext.router.current.name == TalkerRoute.name) {
+                return;
+              }
+
+              final now = DateTime.now();
+              if (lastShakeAt == null ||
+                  now.difference(lastShakeAt!) >
+                      const Duration(milliseconds: 3000)) {
+                shakeCount = 0;
+              }
+              lastShakeAt = now;
+              shakeCount++;
+
+              if (shakeCount >= 2) {
+                shakeCount = 0;
+                lastShakeAt = null;
+                navigatorContext.pushRoute(TalkerRoute());
+              }
+            },
+          );
+        });
+      }
+
+      return null;
+    }, []);
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: systemUiOverlayStyle,
@@ -110,7 +152,9 @@ class MainApp extends HookConsumerWidget {
               scaffoldBackgroundColor: ColorStyles.black,
             ),
             debugShowCheckedModeBanner: false,
-            routerConfig: router.config(),
+            routerConfig: router.config(
+              navigatorObservers: () => [AppLogger.instance.routeObserver],
+            ),
             builder: (context, widget) {
               final mediaQuery = MediaQuery.of(context);
               final screenWidth = mediaQuery.size.width;

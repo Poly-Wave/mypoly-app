@@ -8,11 +8,11 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mypoly/generate/users/model/user_me_response.dart';
-import 'package:mypoly/module/main/home/main_home_provider.dart';
 import 'package:mypoly/module/main/home/search/search_provider.dart';
 import 'package:mypoly/provider/app_provider.dart';
 import 'package:mypoly/provider/app_user_provider.dart';
 import 'package:mypoly/provider/router_provider.dart';
+import 'package:mypoly/util/logger.dart';
 import 'package:mypoly/widget/modal/index.dart';
 
 @RoutePage()
@@ -87,7 +87,7 @@ class SplashView extends HookConsumerWidget {
 
       // 네트워크 연결 없음 (모든 결과가 none일 때만)
       if (connectivityResult.every((result) => result == .none)) {
-        debugPrint('No network connection');
+        AppLogger.instance.talker.info('No network connection');
 
         if (context.mounted) {
           FlutterNativeSplash.remove();
@@ -124,7 +124,6 @@ class SplashView extends HookConsumerWidget {
       await Future.wait([
         ref.read(appCategoriesProvider.notifier).fetch(),
         ref.read(appTermsProvider.notifier).fetch(),
-        ref.read(appAgendaTabsProvider.notifier).fetch(),
       ]);
 
       UserMeResponse? user;
@@ -132,12 +131,12 @@ class SplashView extends HookConsumerWidget {
       try {
         user = await ref.read(appUserProvider.notifier).fetch();
       } catch (e) {
-        debugPrint("$e");
+        AppLogger.instance.talker.handle(e);
       }
 
       return InitResult(success: true, user: user);
     } catch (e) {
-      debugPrint('Initialization error: $e');
+      AppLogger.instance.talker.error('Initialization error', e);
 
       if (context.mounted) {
         FlutterNativeSplash.remove();
