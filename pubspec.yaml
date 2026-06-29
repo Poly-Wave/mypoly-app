@@ -51,6 +51,7 @@ dependencies:
 
   # Native Util
   connectivity_plus: ^7.0.0
+  shake_gesture: ^2.1.0
 
   # Social
   kakao_flutter_sdk_user: ^1.10.0
@@ -64,6 +65,11 @@ dependencies:
   # Storage
   flutter_secure_storage: ^10.0.0
   shared_preferences: ^2.5.4
+
+  # Log
+  talker_flutter: ^5.1.16
+  talker_dio_logger: ^5.1.16
+  talker_riverpod_logger: ^5.1.16
 
 dev_dependencies:
   flutter_test:

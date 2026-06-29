@@ -11,7 +11,6 @@ import 'package:mypoly/style/index.dart';
 import 'package:mypoly/util/extension.dart';
 import 'package:mypoly/widget/index.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 @RoutePage()

@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:mypoly/generate/bills/api/category_api.dart';
 import 'package:mypoly/generate/bills/model/category_interest_update_request.dart';
 import 'package:mypoly/generate/bills/model/category_response.dart';
 import 'package:mypoly/util/error.dart';
+import 'package:mypoly/util/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 class CategoryService {
@@ -21,7 +21,7 @@ class CategoryService {
     } on DioException catch (e) {
       return Future.error(getErrorMessage(e));
     } catch (e) {
-      debugPrint(e.toString());
+      AppLogger.instance.talker.handle(e);
       return Future.error("error");
     }
   }
@@ -34,7 +34,7 @@ class CategoryService {
     } on DioException catch (e) {
       return Future.error(getErrorMessage(e));
     } catch (e) {
-      debugPrint(e.toString());
+      AppLogger.instance.talker.handle(e);
       return Future.error("error");
     }
   }
@@ -62,7 +62,7 @@ class CategoryService {
     } on DioException catch (e) {
       return Future.error(getErrorMessage(e));
     } catch (e) {
-      debugPrint(e.toString());
+      AppLogger.instance.talker.handle(e);
       return Future.error("error");
     }
   }

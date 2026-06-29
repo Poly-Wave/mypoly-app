@@ -1,60 +1,33 @@
-import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
+import 'package:mypoly/enum/flavor.dart';
+import 'package:talker_dio_logger/talker_dio_logger.dart';
+import 'package:talker_flutter/talker_flutter.dart';
+import 'package:talker_riverpod_logger/talker_riverpod_logger.dart';
 
-final class ProviderLogger extends ProviderObserver {
-  final List<String>? ignoreKeywords;
-  const ProviderLogger({this.ignoreKeywords});
+final class AppLogger {
+  AppLogger._() {
+    final flavor = Flavor.fromString(appFlavor ?? 'prod');
+    final enabled = flavor != Flavor.prod || !kReleaseMode;
 
-  @override
-  void didUpdateProvider(
-    ProviderObserverContext context,
-    Object? previousValue,
-    Object? newValue,
-  ) {
-    for (var keyword in ignoreKeywords ?? []) {
-      if ((context.provider.name?.toLowerCase() ?? "").contains(
-        keyword.toLowerCase(),
-      )) {
-        return;
-      }
-    }
-
-    debugPrint('''
-{
-  "provider": "${context.provider.name ?? context.provider.runtimeType}",
-  "newValue": "$newValue"
-}''');
-  }
-}
-
-final dioLogger = InterceptorsWrapper(
-  onRequest: (options, handler) {
-    debugPrint('[${options.method}] ${options.path}');
-    debugPrint('REQUEST');
-    if (options.method == "GET") {
-      debugPrint('${options.queryParameters}');
-    } else {
-      debugPrint('${options.data}');
-    }
-    debugPrint('${options.headers}');
-    debugPrint('____________________________________________');
-    return handler.next(options);
-  },
-  onResponse: (response, handler) {
-    debugPrint(
-      '[${response.requestOptions.method}] ${response.requestOptions.path}',
+    talker = TalkerFlutter.init(settings: TalkerSettings(enabled: enabled));
+    dioLogger = TalkerDioLogger(
+      talker: talker,
+      settings: TalkerDioLoggerSettings(
+        printRequestHeaders: true,
+        printErrorHeaders: false,
+        responseFilter: (response) =>
+            !response.requestOptions.path.startsWith("/sseusaems/v4"),
+      ),
     );
-    debugPrint('RESPONSE [${response.statusCode}]');
-    debugPrint('${response.data}');
-    debugPrint('____________________________________________');
-    return handler.next(response);
-  },
-  onError: (DioException e, handler) {
-    debugPrint('[${e.requestOptions.method}] ${e.requestOptions.path}');
-    debugPrint('ERROR  [${e.response?.statusCode}]');
-    debugPrint('${e.response?.data}');
-    debugPrint('____________________________________________');
-    return handler.next(e);
-  },
-);
+    providerObserver = TalkerRiverpodObserver(talker: talker);
+    routeObserver = TalkerRouteObserver(talker);
+  }
+
+  static final AppLogger instance = AppLogger._();
+
+  late final Talker talker;
+  late final TalkerDioLogger dioLogger;
+  late final TalkerRiverpodObserver providerObserver;
+  late final TalkerRouteObserver routeObserver;
+}

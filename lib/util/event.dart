@@ -1,5 +1,5 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:flutter/foundation.dart';
+import 'package:mypoly/util/logger.dart';
 
 class Event {
   Event._();
@@ -16,7 +16,7 @@ class Event {
         callOptions: callOptions,
       );
     } catch (e) {
-      debugPrint("$e");
+      AppLogger.instance.talker.handle(e);
     }
   }
 }

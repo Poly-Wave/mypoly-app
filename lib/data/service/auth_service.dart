@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:mypoly/enum/social.dart';
 import 'package:mypoly/generate/users/api/auth_api.dart';
 import 'package:mypoly/generate/users/model/social_login_response.dart';
@@ -7,6 +6,7 @@ import 'package:mypoly/generate/users/model/social_token_login_request.dart';
 import 'package:mypoly/generate/users/model/social_token_signup_request.dart';
 import 'package:mypoly/generate/users/model/terms_agreement_request.dart';
 import 'package:mypoly/util/error.dart';
+import 'package:mypoly/util/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 class AuthService {
@@ -32,7 +32,7 @@ class AuthService {
     } on DioException catch (e) {
       return Future.error(getErrorMessage(e));
     } catch (e) {
-      debugPrint(e.toString());
+      AppLogger.instance.talker.handle(e);
       return Future.error("error");
     }
   }
@@ -57,7 +57,7 @@ class AuthService {
     } on DioException catch (e) {
       return Future.error(getErrorMessage(e));
     } catch (e) {
-      debugPrint(e.toString());
+      AppLogger.instance.talker.handle(e);
       return Future.error("error");
     }
   }

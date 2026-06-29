@@ -17,6 +17,7 @@ import 'package:mypoly/provider/app_user_provider.dart';
 import 'package:mypoly/provider/router_provider.dart';
 import 'package:mypoly/style/index.dart';
 import 'package:mypoly/util/event.dart';
+import 'package:mypoly/util/logger.dart';
 import 'package:mypoly/widget/index.dart';
 import 'package:mypoly/widget/modal/index.dart';
 import 'package:collection/collection.dart';
@@ -66,9 +67,9 @@ Future<void> onLogin(WidgetRef ref, SocialProvider provider) async {
         showLoginError(context, provider);
         try {
           await UserApi.instance.logout();
-          debugPrint('카카오 로그아웃 완료');
+          AppLogger.instance.talker.info('카카오 로그아웃 완료');
         } catch (e) {
-          debugPrint('카카오 로그아웃 중 에러: ${e.toString()}');
+          AppLogger.instance.talker.error('카카오 로그아웃 중 에러', e);
         }
       }
       break;
