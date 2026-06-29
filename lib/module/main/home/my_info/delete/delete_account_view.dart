@@ -27,6 +27,14 @@ class DeleteAccountView extends HookConsumerWidget {
       List.generate(reasonList.length, (_) => false),
     );
 
+    final textController = useTextEditingController();
+    final textLength = useState(0);
+    useEffect(() {
+      void listener() => textLength.value = textController.text.length;
+      textController.addListener(listener);
+      return () => textController.removeListener(listener);
+    }, [textController]);
+
     return Scaffold(
       appBar: MPAppBar(context, text: "탈퇴"),
       body: Column(
@@ -289,6 +297,60 @@ class DeleteAccountView extends HookConsumerWidget {
                                   ),
                                 ),
                                 if (index < reasonList.length - 1) MPHeight(6),
+                                if (reasonList[index] == '기타' &&
+                                    isSelected) ...[
+                                  MPHeight(6),
+                                  Container(
+                                    width: 320.w,
+                                    height: 100.h,
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 14.h,
+                                      horizontal: 16.w,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: ColorStyles.divider,
+                                      borderRadius: BorderRadius.circular(8.r),
+                                    ),
+                                    child: TextField(
+                                      controller: textController,
+                                      maxLines: null,
+                                      maxLength: 200,
+                                      cursorColor: ColorStyles.primary60,
+                                      enableSuggestions: false,
+                                      autocorrect: false,
+                                      style: Pretendard.medium.set(
+                                        size: 16,
+                                        color: ColorStyles.white,
+                                      ),
+                                      decoration: InputDecoration(
+                                        hintText: '불편했던 점이나 바라는 점을 자유롭게 남겨주세요.',
+                                        hintStyle: Pretendard.medium.set(
+                                          size: 16,
+                                          color: ColorStyles.gray60,
+                                        ),
+                                        border: InputBorder.none,
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.zero,
+                                        counterText: '',
+                                      ),
+                                    ),
+                                  ),
+                                  MPHeight(4),
+
+                                  SizedBox(
+                                    width: 320.w,
+                                    child: Align(
+                                      alignment: Alignment.centerRight,
+                                      child: Text(
+                                        '${textLength.value}/200',
+                                        style: Pretendard.medium.set(
+                                          size: 14,
+                                          color: ColorStyles.gray50,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ],
                             );
                           }),
