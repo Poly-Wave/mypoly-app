@@ -48,6 +48,17 @@ class UserService {
     }
   }
 
+  Future<void> deleteMe() async {
+    try {
+      return await _userApi.deleteMe();
+    } on DioException catch (e) {
+      return Future.error(getErrorMessage(e));
+    } catch (e) {
+      debugPrint(e.toString());
+      return Future.error("error");
+    }
+  }
+
   Future<UserMeResponse> getMe() async {
     try {
       return await _userApi.getMe();

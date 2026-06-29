@@ -87,7 +87,10 @@ class MyInfoView extends HookConsumerWidget {
                         onTap: () => context.pushRoute(NoticeRoute()),
                       ),
                       MyInfoGroupItem("고객센터", onTap: () {}),
-                      MyInfoGroupItem("탈퇴하기", onTap: () {}),
+                      MyInfoGroupItem(
+                        "탈퇴하기",
+                        onTap: () => context.pushRoute(DeleteAccountRoute()),
+                      ),
                       MyInfoGroupItem(
                         "로그아웃",
                         onTap: () => showMPConfirmModal(

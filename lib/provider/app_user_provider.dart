@@ -61,6 +61,11 @@ class AppUser extends _$AppUser {
     return await fetch();
   }
 
+  Future<void> deleteMe() async {
+    await ref.read(userServiceProvider).deleteMe();
+    logout();
+  }
+
   Future<UserMeResponse> fetch() async {
     final response = await ref.read(userServiceProvider).getMe();
 

@@ -42,6 +42,7 @@ import 'package:mypoly/module/main/home/my_info/term/term_view.dart';
 import 'package:mypoly/module/main/home/my_info/notice/notice_view.dart';
 import 'package:mypoly/module/main/home/my_info/notice/detail/notice_detail_view.dart';
 import 'package:mypoly/module/main/home/my_info/oss/oss_view.dart';
+import 'package:mypoly/module/main/home/my_info/delete/delete_account_view.dart';
 
 // Agenda
 import 'package:mypoly/module/main/agenda/main_agenda_view.dart';
@@ -95,6 +96,7 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: NoticeRoute.page),
     AutoRoute(page: NoticeDetailRoute.page),
     AutoRoute(page: OSSRoute.page),
+    AutoRoute(page: DeleteAccountRoute.page),
 
     // Agenda
 
