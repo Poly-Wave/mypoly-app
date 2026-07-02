@@ -368,7 +368,36 @@ class DeleteAccountView extends HookConsumerWidget {
                         return GestureDetector(
                           onTap: isButtonEnabled
                               ? () {
-                                  ref.read(appUserProvider.notifier).deleteMe();
+                                  ref
+                                      .read(appUserProvider.notifier)
+                                      .withdrawMe(
+                                        reasons: List.generate(
+                                          reasonList.length,
+                                          (index) {
+                                            if (!selectedIndices.value[index]) {
+                                              return null;
+                                            }
+
+                                            switch (reasonList[index]) {
+                                              case '사용하는 빈도가 낮아요':
+                                                return 'INFREQUENT_USE';
+                                              case '원하는 기능이 없어요':
+                                                return 'MISSING_FEATURE';
+                                              case '사용방법이 어렵고 불편해요':
+                                                return 'HARD_TO_USE';
+                                              case '결과물 품질이 기대와 달라요':
+                                                return 'LOW_QUALITY';
+                                              case '다른 유사 서비스를 이용해요':
+                                                return 'USING_ALTERNATIVE';
+                                              case '기타':
+                                                return 'ETC';
+                                              default:
+                                                return null;
+                                            }
+                                          },
+                                        ).whereType<String>().toList(),
+                                        etcText: textController.text,
+                                      );
                                 }
                               : null,
                           behavior: HitTestBehavior.translucent,

@@ -7,6 +7,7 @@ import 'package:mypoly/generate/users/model/update_onboarding_status_request.dar
 import 'package:mypoly/generate/users/model/user_me_response.dart';
 import 'package:mypoly/generate/users/model/user_update_basic_profile_request.dart';
 import 'package:mypoly/generate/users/model/user_update_profile_request.dart';
+import 'package:mypoly/generate/users/model/withdraw_me_request.dart';
 import 'package:mypoly/provider/app_user_provider.dart';
 import 'package:mypoly/util/error.dart';
 import 'package:mypoly/util/logger.dart';
@@ -54,7 +55,26 @@ class UserService {
     } on DioException catch (e) {
       return Future.error(getErrorMessage(e));
     } catch (e) {
-      debugPrint(e.toString());
+      AppLogger.instance.talker.handle(e);
+      return Future.error("error");
+    }
+  }
+
+  Future<void> withdrawMe({
+    required List<String> reasons,
+    required String etcText,
+  }) async {
+    try {
+      return await _userApi.withdrawMe(
+        withdrawMeRequest: WithdrawMeRequest(
+          reasons: reasons,
+          etcText: etcText,
+        ),
+      );
+    } on DioException catch (e) {
+      return Future.error(getErrorMessage(e));
+    } catch (e) {
+      AppLogger.instance.talker.handle(e);
       return Future.error("error");
     }
   }

@@ -13,6 +13,7 @@ import 'package:mypoly/generate/users/model/update_onboarding_status_request.dar
 import 'package:mypoly/generate/users/model/user_me_response.dart';
 import 'package:mypoly/generate/users/model/user_update_basic_profile_request.dart';
 import 'package:mypoly/generate/users/model/user_update_profile_request.dart';
+import 'package:mypoly/generate/users/model/withdraw_me_request.dart';
 
 part 'user_api.g.dart';
 
@@ -34,13 +35,26 @@ abstract class UserApi {
   });
 
   /// [DEV/LOCAL] 내 계정 탈퇴
-  /// 개발/테스트 환경에서만 임시로 사용하는 회원 탈퇴 API입니다. - &#x60;user.dev-delete.enabled&#x3D;true&#x60; 일 때만 활성화됩니다. - JWT로 로그인한 본인 계정을 삭제합니다. - Swagger 우측 상단 Authorize에 &#x60;Bearer {jwt}&#x60; 입력 후 호출하세요.  주의 - user-service 내부의 사용자 데이터만 삭제합니다. - 다른 서비스(bill-service 등)에 남아 있는 userId 연관 데이터는 별도 정리가 필요할 수 있습니다.
+  /// 개발/테스트 환경에서만 임시로 사용하는 회원 탈퇴 API입니다.
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   ///
   @DELETE('/dev-users/me')
   Future<void> deleteMe({CancelToken? cancelToken});
+
+  /// 회원 탈퇴
+  /// 로그인한 사용자를 즉시 탈퇴 처리합니다.
+  ///
+  /// Parameters:
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  ///
+  @POST('/me/withdraw')
+  @Headers(<String, dynamic>{'Content-Type': 'application/json'})
+  Future<void> withdrawMe({
+    @Body() required WithdrawMeRequest withdrawMeRequest,
+    CancelToken? cancelToken,
+  });
 
   /// 내 정보 조회
   /// 로그인한 사용자의 정보를 조회합니다.  포함 정보 - 온보딩 상태 - 닉네임 - 프로필(성별/생년월일/프로필 이미지/주소)  인증 - JWT 인증이 필요합니다. - Swagger 우측 상단 Authorize에 &#x60;Bearer {jwt}&#x60; 입력 후 호출하세요.

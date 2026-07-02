@@ -66,6 +66,16 @@ class AppUser extends _$AppUser {
     logout();
   }
 
+  Future<void> withdrawMe({
+    required List<String> reasons,
+    required String etcText,
+  }) async {
+    await ref
+        .read(userServiceProvider)
+        .withdrawMe(reasons: reasons, etcText: etcText);
+    logout();
+  }
+
   Future<UserMeResponse> fetch() async {
     final response = await ref.read(userServiceProvider).getMe();
 
