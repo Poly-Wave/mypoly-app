@@ -26,28 +26,32 @@ abstract class AgendaListData with _$AgendaListData {
       _$AgendaListDataFromJson(json);
 }
 
-AgendaListData _syncAgendaCount(
-  Ref ref,
-  AgendaListData item, {
-  bool save = true,
-}) {
-  final agendaCount = ref.read(agendaCountProvider.notifier);
-
-  if (save) {
-    agendaCount.save(
-      billId: item.id,
-      viewCount: item.viewCount,
-      voteCount: item.voteCount,
-    );
-  }
-
-  final count = agendaCount.get(item.id);
+AgendaListData _applyAgendaCount(Ref ref, AgendaListData item) {
+  final count = ref.read(agendaCountProvider.notifier).get(item.id);
   if (count == null) return item;
 
   return item.copyWith(
     viewCount: count.viewCount ?? item.viewCount,
     voteCount: count.voteCount ?? item.voteCount,
   );
+}
+
+extension AgendaListDataListExtension on List<AgendaListData> {
+  List<AgendaListData> syncAgendaCount(Ref ref) {
+    ref
+        .read(agendaCountProvider.notifier)
+        .saveAll(
+          map(
+            (item) => (
+              billId: item.id,
+              viewCount: item.viewCount,
+              voteCount: item.voteCount,
+            ),
+          ),
+        );
+
+    return this;
+  }
 }
 
 extension SearchAgendaResponseExtension on SearchAgendaResponse {
@@ -65,7 +69,7 @@ extension SearchAgendaResponseExtension on SearchAgendaResponse {
       registeredDate: registeredDate,
     );
 
-    return _syncAgendaCount(ref, item);
+    return item;
   }
 }
 
@@ -84,7 +88,7 @@ extension BookmarkedBillResponseExtension on BookmarkedBillResponse {
       registeredDate: registeredDate,
     );
 
-    return _syncAgendaCount(ref, item);
+    return item;
   }
 }
 
@@ -103,7 +107,7 @@ extension MyVotedBillResponseExtension on MyVotedBillResponse {
       registeredDate: registeredDate,
     );
 
-    return _syncAgendaCount(ref, item);
+    return item;
   }
 }
 
@@ -122,7 +126,7 @@ extension InterestAgendaResponseExtension on InterestAgendaResponse {
       registeredDate: registeredDate,
     );
 
-    return _syncAgendaCount(ref, item, save: false);
+    return _applyAgendaCount(ref, item);
   }
 }
 
@@ -141,6 +145,6 @@ extension MainAgendaResponseExtension on MainAgendaResponse {
       registeredDate: registeredDate,
     );
 
-    return _syncAgendaCount(ref, item);
+    return item;
   }
 }

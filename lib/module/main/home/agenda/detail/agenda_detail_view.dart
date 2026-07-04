@@ -5,7 +5,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mypoly/asset/index.dart';
+import 'package:mypoly/enum/similar_topic_sort.dart';
+import 'package:mypoly/generate/bills/model/similar_topic_bill_response.dart';
+import 'package:mypoly/module/main/agenda/main_agenda_provider.dart';
 import 'package:mypoly/module/main/home/agenda/detail/agenda_detail_provider.dart';
+import 'package:mypoly/module/main/main_provider.dart';
 import 'package:mypoly/module/main/widget/agenda.dart';
 import 'package:mypoly/provider/app_provider.dart';
 import 'package:mypoly/provider/router_provider.dart';
@@ -29,6 +33,7 @@ class AgendaDetailProviderView extends StatelessWidget {
       overrides: [
         agendaIdProvider.overrideWithValue(id),
         agendaDetailProvider.overrideWith(AgendaDetail.new),
+        similarTopicsProvider.overrideWith(SimilarTopics.new),
       ],
       child: AgendaDetailView(),
     );
@@ -46,21 +51,32 @@ class AgendaDetailView extends HookConsumerWidget {
     useEffect(() {
       SchedulerBinding.instance.addPostFrameCallback((_) {
         ref.read(agendaDetailProvider.notifier).fetch();
+        ref.read(similarTopicsProvider.notifier).fetch();
+        ref.read(appSimilarMembersProvider.notifier).fetch();
       });
 
       return null;
     }, []);
 
-    if (agendaDetail == null) {
+    final selectedSort = useState(SimilarTopicSort.hotDebate);
+    final similarTopics = ref.watch(similarTopicsProvider);
+    final similarMembers = ref.watch(appSimilarMembersProvider);
+
+    if (agendaDetail == null || similarMembers == null) {
       return Scaffold(
         appBar: MPAppBar(context, text: "의안 상세"),
         body: MPSafeBox(bottom: true, child: Center(child: MPLoading())),
       );
     }
 
-    final similarMembers = ref.watch(appSimilarMembersProvider);
-
     final agendaCategory = ref.watch(agendaCategoryProvider(agendaDetail));
+
+    final similarTopicMatches = similarTopics.where(
+      (entry) => entry.$1 == selectedSort.value,
+    );
+    final similarTopicBills = similarTopicMatches.isEmpty
+        ? const <SimilarTopicBillResponse>[]
+        : similarTopicMatches.first.$2;
 
     return Scaffold(
       appBar: MPAppBar(
@@ -587,7 +603,7 @@ class AgendaDetailView extends HookConsumerWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            "디지털과 관련된\n다른 안건들 더 보기",
+                            "${agendaDetail.category.categoryName}과 관련된\n다른 안건들 더 보기",
                             style: Pretendard.semiBold.set(
                               size: 20,
                               height: 1.35,
@@ -595,9 +611,81 @@ class AgendaDetailView extends HookConsumerWidget {
                             ),
                           ),
                         ),
+                        GestureDetector(
+                          onTap: () {
+                            ref.read(mainPageProvider.notifier).update(0);
+                            ref.read(categoriesProvider.notifier).update([
+                              agendaCategory,
+                            ]);
+                            context.pop();
+                          },
+                          child: Row(
+                            children: [
+                              Text(
+                                "더보기",
+                                style: Pretendard.medium.set(
+                                  size: 14,
+                                  color: ColorStyles.gray30,
+                                ),
+                              ),
+                              MPSvgImage(
+                                SvgImage.arrowRight,
+                                size: 16,
+                                color: ColorStyles.gray30,
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                     MPHeight(22),
+                    SizedBox(
+                      height: 32.h,
+                      child: MPSingleScroll(
+                        scrollDirection: .horizontal,
+                        child: Row(
+                          spacing: 8.w,
+                          children: SimilarTopicSort.values
+                              .map(
+                                (sort) => MPChip(
+                                  text: sort.label,
+                                  isActive: selectedSort.value == sort,
+                                  onTap: () => selectedSort.value = sort,
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      ),
+                    ),
+                    MPHeight(20),
+                    for (var i = 0; i < similarTopicBills.length; i++) ...[
+                      if (i > 0) MPHeight(6),
+                      AgendaDetailSimilarTopicItem(
+                        item: similarTopicBills.elementAt(i),
+                        onTap: () {
+                          final billId = similarTopicBills.elementAt(i).billId;
+                          if (billId == null) return;
+
+                          final router = context.router;
+                          final detailRoutes = router.stackData
+                              .where(
+                                (data) => data.name == AgendaDetailRoute.name,
+                              )
+                              .toList();
+
+                          if (detailRoutes.length >= 2) {
+                            router.removeRoute(detailRoutes.first);
+                          }
+
+                          router.push(
+                            AgendaDetailRoute(
+                              key: Key("agenda_$billId"),
+                              id: billId,
+                            ),
+                          );
+                        },
+                      ),
+                    ],
                     MPHeight(12),
                   ],
                 ),
@@ -605,6 +693,68 @@ class AgendaDetailView extends HookConsumerWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class AgendaDetailSimilarTopicItem extends ConsumerWidget {
+  final SimilarTopicBillResponse item;
+  final void Function() onTap;
+
+  const AgendaDetailSimilarTopicItem({
+    super.key,
+    required this.item,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final matches = ref
+        .watch(appCategoriesProvider)
+        .where((category) => category.code == item.categoryCode);
+    final category = matches.isEmpty ? null : matches.first;
+
+    return GestureDetector(
+      onTap: onTap,
+      behavior: .translucent,
+      child: SizedBox(
+        height: 112.h,
+        child: Row(
+          spacing: 12.w,
+          children: [
+            if (category != null)
+              Container(
+                width: 80.r,
+                height: 80.r,
+                decoration: BoxDecoration(
+                  color: category.colorBackground,
+                  borderRadius: .circular(8.r),
+                ),
+                child: Center(
+                  child: MPNetworkImage(category.iconUrl, size: 40),
+                ),
+              ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: .stretch,
+                mainAxisAlignment: .center,
+                children: [
+                  Text(
+                    item.officialTitle?.wrapped ?? "",
+                    maxLines: 2,
+                    overflow: .ellipsis,
+                    style: Pretendard.medium.set(
+                      size: 16,
+                      height: 1.45,
+                      color: ColorStyles.white,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

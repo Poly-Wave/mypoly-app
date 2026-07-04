@@ -76,6 +76,21 @@ class AgendaCount extends _$AgendaCount {
     };
   }
 
+  /// 여러 건을 한 번의 상태 변경으로 저장한다. (페이지 단위 갱신 시 notify 1회)
+  void saveAll(Iterable<({int billId, int? viewCount, int? voteCount})> items) {
+    if (items.isEmpty) return;
+
+    final next = {...state};
+    for (final item in items) {
+      final current = next[item.billId];
+      next[item.billId] = current == null
+          ? AgendaCountData(viewCount: item.viewCount, voteCount: item.voteCount)
+          : current.merge(viewCount: item.viewCount, voteCount: item.voteCount);
+    }
+
+    state = next;
+  }
+
   void saveAgendaResponse(AgendaResponse item) =>
       save(billId: item.billId, voteCount: item.totalVoteCount);
 
@@ -122,10 +137,10 @@ class AgendaBookmark extends _$AgendaBookmark {
 @Riverpod(keepAlive: true)
 class AppSimilarMembers extends _$AppSimilarMembers {
   @override
-  List<SimilarMemberResponse> build() => [];
+  List<SimilarMemberResponse>? build() => null;
 
   Future<void> fetch() async =>
       state = await ref.read(memberServiceProvider).getSimilarMembers();
 
-  void reset() => state = [];
+  void reset() => state = null;
 }

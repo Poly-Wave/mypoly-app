@@ -58,7 +58,8 @@ class SearchPaging extends _$SearchPaging {
 
       final newItems = response.content
           .map((item) => item.toAgendaListData(ref))
-          .toList();
+          .toList()
+          .syncAgendaCount(ref);
 
       ref.read(lastKeywordProvider.notifier).update(keyword);
 

@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:mypoly/data/provider/service_provider.dart';
+import 'package:mypoly/enum/similar_topic_sort.dart';
 import 'package:mypoly/generate/bills/model/bill_detail_response.dart';
 import 'package:mypoly/generate/bills/model/bill_vote_summary_response.dart';
 import 'package:mypoly/generate/bills/model/category_response.dart';
+import 'package:mypoly/generate/bills/model/similar_topic_bill_response.dart';
 import 'package:mypoly/module/main/home/bookmark/bookmark_provider.dart';
 import 'package:mypoly/provider/app_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -290,3 +292,29 @@ CategoryResponse agendaCategory(Ref ref, BillDetailResponse agendaDetail) => ref
     .firstWhere(
       (category) => category.code == agendaDetail.category.categoryCode,
     );
+
+@riverpod
+class SimilarTopics extends _$SimilarTopics {
+  @override
+  List<(SimilarTopicSort, List<SimilarTopicBillResponse>)> build() => [];
+
+  Future<void> fetch() async {
+    final billId = ref.read(agendaIdProvider);
+    final service = ref.read(agendaServiceProvider);
+
+    final result = await Future.wait(
+      SimilarTopicSort.values.map((sort) async {
+        final bills = await service.getSimilarTopics(
+          billId: billId,
+          sortType: sort.value,
+        );
+
+        return (sort, bills);
+      }),
+    );
+
+    if (!ref.mounted) return;
+
+    state = result;
+  }
+}

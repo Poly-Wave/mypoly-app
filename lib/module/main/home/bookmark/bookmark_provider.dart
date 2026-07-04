@@ -68,7 +68,8 @@ class BookmarksPaging extends _$BookmarksPaging {
 
       final newItems = response.content
           .map((item) => item.toAgendaListData(ref))
-          .toList();
+          .toList()
+          .syncAgendaCount(ref);
 
       state = prevState.copyWith(
         isLoading: false,

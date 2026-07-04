@@ -57,7 +57,8 @@ class AgendasPaging extends _$AgendasPaging {
 
       final newItems = response.content
           .map((item) => item.toAgendaListData(ref))
-          .toList();
+          .toList()
+          .syncAgendaCount(ref);
 
       state = prevState.copyWith(
         isLoading: false,
@@ -104,4 +105,10 @@ class Categories extends _$Categories {
       ref.read(agendasPagingProvider.notifier).onRefresh();
     },
   );
+
+  void update(List<CategoryResponse> value) {
+    state = value;
+
+    ref.read(agendasPagingProvider.notifier).onRefresh();
+  }
 }
