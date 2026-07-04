@@ -6,10 +6,12 @@ import 'package:mypoly/generate/bills/api/bill_detail_api.dart';
 import 'package:mypoly/generate/bills/model/agenda_slice_response.dart';
 import 'package:mypoly/generate/bills/model/agenda_tab_response.dart';
 import 'package:mypoly/generate/bills/model/bill_detail_response.dart';
+import 'package:mypoly/generate/bills/model/bill_vote_detail_response.dart';
 import 'package:mypoly/generate/bills/model/bookmarked_bill_slice_response.dart';
 import 'package:mypoly/generate/bills/model/interest_agenda_slice_response.dart';
 import 'package:mypoly/generate/bills/model/main_agenda_slice_response.dart';
 import 'package:mypoly/generate/bills/model/search_agenda_slice_response.dart';
+import 'package:mypoly/generate/bills/model/similar_topic_bill_response.dart';
 import 'package:mypoly/util/error.dart';
 import 'package:mypoly/util/extension.dart';
 import 'package:mypoly/util/logger.dart';
@@ -160,6 +162,53 @@ class AgendaService {
   Future<BillDetailResponse> getAgenda(int billId) async {
     try {
       return await _billDetailApi.getBillDetail(billId: billId);
+    } on DioException catch (e) {
+      return Future.error(getErrorMessage(e));
+    } catch (e) {
+      AppLogger.instance.talker.handle(e);
+      return Future.error("error");
+    }
+  }
+
+  Future<BillVoteDetailResponse> getVote(int billId) async {
+    try {
+      return await _billDetailApi.getBillVoteDetail(billId: billId);
+    } on DioException catch (e) {
+      return Future.error(getErrorMessage(e));
+    } catch (e) {
+      AppLogger.instance.talker.handle(e);
+      return Future.error("error");
+    }
+  }
+
+  Future<bool> updateBookmark({
+    required int billId,
+    required bool bookmarked,
+  }) async {
+    try {
+      final response = bookmarked
+          ? await _billDetailApi.bookmarkBill(billId: billId)
+          : await _billDetailApi.unbookmarkBill(billId: billId);
+
+      return response.bookmarked;
+    } on DioException catch (e) {
+      return Future.error(getErrorMessage(e));
+    } catch (e) {
+      AppLogger.instance.talker.handle(e);
+      return Future.error("error");
+    }
+  }
+
+  Future<List<SimilarTopicBillResponse>> getSimilarTopics({
+    required int billId,
+    required String sortType,
+  }) async {
+    try {
+      return await _billDetailApi.getSimilarTopics(
+        billId: billId,
+        sortType: sortType,
+        size: 3,
+      );
     } on DioException catch (e) {
       return Future.error(getErrorMessage(e));
     } catch (e) {

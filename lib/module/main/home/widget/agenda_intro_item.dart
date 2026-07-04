@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mypoly/asset/index.dart';
 import 'package:mypoly/generate/bills/model/agenda_response.dart';
+import 'package:mypoly/provider/app_provider.dart';
 import 'package:mypoly/style/index.dart';
 import 'package:mypoly/widget/index.dart';
 import 'package:mypoly/module/main/home/widget/vote_progress_bar.dart';
@@ -12,7 +14,7 @@ import 'package:mypoly/module/main/home/widget/vote_progress_bar.dart';
 /// 4. '아쉬워요' 퍼센트
 /// 5. 투표수
 
-class AgendaIntroItem extends StatelessWidget {
+class AgendaIntroItem extends ConsumerWidget {
   final int index;
   final AgendaResponse item;
   final void Function() onTap;
@@ -25,7 +27,12 @@ class AgendaIntroItem extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final count = ref.watch(
+      agendaCountProvider.select((state) => state[item.billId]),
+    );
+    final voteCount = count?.voteCount ?? item.totalVoteCount;
+
     return Column(
       crossAxisAlignment: .start,
       children: [
@@ -135,7 +142,7 @@ class AgendaIntroItem extends StatelessWidget {
         Align(
           alignment: .centerRight,
           child: Text(
-            "${item.totalVoteCount}명 투표",
+            "$voteCount명 투표",
             style: Pretendard.medium.set(size: 13, color: ColorStyles.gray40),
           ),
         ),

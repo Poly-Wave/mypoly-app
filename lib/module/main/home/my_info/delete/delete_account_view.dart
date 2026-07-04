@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mypoly/asset/index.dart';
+import 'package:mypoly/generate/users/model/user_withdraw_request.dart';
 import 'package:mypoly/style/index.dart';
 import 'package:mypoly/widget/index.dart';
 import 'package:mypoly/provider/app_user_provider.dart';
@@ -15,13 +16,13 @@ class DeleteAccountView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isAgreed = useState(false);
-    final reasonList = [
-      '사용하는 빈도가 낮아요',
-      '원하는 기능이 없어요',
-      '사용방법이 어렵고 불편해요',
-      '결과물 품질이 기대와 달라요',
-      '다른 유사 서비스를 이용해요',
-      '기타',
+    final reasonList = <(UserWithdrawRequestReasonsEnum, String)>[
+      (.infrequentUse, '사용하는 빈도가 낮아요'),
+      (.missingFeature, '원하는 기능이 없어요'),
+      (.hardToUse, '사용방법이 어렵고 불편해요'),
+      (.lowQuality, '결과물 품질이 기대와 달라요'),
+      (.usingAlternative, '다른 유사 서비스를 이용해요'),
+      (.etc, '기타'),
     ];
     final selectedIndices = useState<List<bool>>(
       List.generate(reasonList.length, (_) => false),
@@ -286,7 +287,7 @@ class DeleteAccountView extends HookConsumerWidget {
                                         MPWidth(6),
 
                                         Text(
-                                          reasonList[index],
+                                          reasonList[index].$2,
                                           style: Pretendard.medium.set(
                                             size: 15,
                                             color: ColorStyles.white,
@@ -297,7 +298,7 @@ class DeleteAccountView extends HookConsumerWidget {
                                   ),
                                 ),
                                 if (index < reasonList.length - 1) MPHeight(6),
-                                if (reasonList[index] == '기타' &&
+                                if (reasonList[index].$1 == .etc &&
                                     isSelected) ...[
                                   MPHeight(6),
                                   Container(
@@ -370,32 +371,22 @@ class DeleteAccountView extends HookConsumerWidget {
                               ? () {
                                   ref
                                       .read(appUserProvider.notifier)
-                                      .withdrawMe(
-                                        reasons: List.generate(
-                                          reasonList.length,
-                                          (index) {
-                                            if (!selectedIndices.value[index]) {
-                                              return null;
-                                            }
+                                      .withdraw(
+                                        reasons:
+                                            List.generate(reasonList.length, (
+                                                  index,
+                                                ) {
+                                                  if (!selectedIndices
+                                                      .value[index]) {
+                                                    return null;
+                                                  }
 
-                                            switch (reasonList[index]) {
-                                              case '사용하는 빈도가 낮아요':
-                                                return 'INFREQUENT_USE';
-                                              case '원하는 기능이 없어요':
-                                                return 'MISSING_FEATURE';
-                                              case '사용방법이 어렵고 불편해요':
-                                                return 'HARD_TO_USE';
-                                              case '결과물 품질이 기대와 달라요':
-                                                return 'LOW_QUALITY';
-                                              case '다른 유사 서비스를 이용해요':
-                                                return 'USING_ALTERNATIVE';
-                                              case '기타':
-                                                return 'ETC';
-                                              default:
-                                                return null;
-                                            }
-                                          },
-                                        ).whereType<String>().toList(),
+                                                  return reasonList[index].$1;
+                                                })
+                                                .whereType<
+                                                  UserWithdrawRequestReasonsEnum
+                                                >()
+                                                .toList(),
                                         etcText: textController.text,
                                       );
                                 }

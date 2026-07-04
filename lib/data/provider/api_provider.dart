@@ -2,7 +2,9 @@ import 'package:mypoly/data/provider/dio_provider.dart';
 import 'package:mypoly/generate/bills/api/agenda_api.dart';
 import 'package:mypoly/generate/bills/api/bill_bookmark_api.dart';
 import 'package:mypoly/generate/bills/api/bill_detail_api.dart';
+import 'package:mypoly/generate/bills/api/bill_member_api.dart';
 import 'package:mypoly/generate/bills/api/category_api.dart';
+import 'package:mypoly/generate/bills/api/similar_member_api.dart';
 import 'package:mypoly/generate/bills/api/vote_api.dart';
 import 'package:mypoly/generate/users/api/auth_api.dart';
 import 'package:mypoly/generate/users/api/terms_api.dart';
@@ -42,6 +44,22 @@ BillDetailApi billDetailApi(Ref ref) {
   final apiUrl = ref.watch(envProvider).billsApiUrl;
 
   return BillDetailApi(dio, baseUrl: apiUrl);
+}
+
+@Riverpod(keepAlive: true)
+BillMemberApi billMemberApi(Ref ref) {
+  final dio = ref.watch(dioProvider);
+  final apiUrl = ref.watch(envProvider).billsApiUrl;
+
+  return BillMemberApi(dio, baseUrl: apiUrl);
+}
+
+@Riverpod(keepAlive: true)
+SimilarMemberApi similarMemberApi(Ref ref) {
+  final dio = ref.watch(dioProvider);
+  final apiUrl = ref.watch(envProvider).billsApiUrl;
+
+  return SimilarMemberApi(dio, baseUrl: apiUrl);
 }
 
 @Riverpod(keepAlive: true)

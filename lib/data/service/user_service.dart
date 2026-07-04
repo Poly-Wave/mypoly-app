@@ -7,7 +7,7 @@ import 'package:mypoly/generate/users/model/update_onboarding_status_request.dar
 import 'package:mypoly/generate/users/model/user_me_response.dart';
 import 'package:mypoly/generate/users/model/user_update_basic_profile_request.dart';
 import 'package:mypoly/generate/users/model/user_update_profile_request.dart';
-import 'package:mypoly/generate/users/model/withdraw_me_request.dart';
+import 'package:mypoly/generate/users/model/user_withdraw_request.dart';
 import 'package:mypoly/provider/app_user_provider.dart';
 import 'package:mypoly/util/error.dart';
 import 'package:mypoly/util/logger.dart';
@@ -60,13 +60,13 @@ class UserService {
     }
   }
 
-  Future<void> withdrawMe({
-    required List<String> reasons,
+  Future<void> withdraw({
+    required List<UserWithdrawRequestReasonsEnum> reasons,
     required String etcText,
   }) async {
     try {
-      return await _userApi.withdrawMe(
-        withdrawMeRequest: WithdrawMeRequest(
+      return await _userApi.withdraw(
+        userWithdrawRequest: UserWithdrawRequest(
           reasons: reasons,
           etcText: etcText,
         ),

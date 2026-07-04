@@ -3,6 +3,7 @@ import 'package:mypoly/enum/sort.dart';
 import 'package:mypoly/generate/bills/model/agenda_response.dart';
 import 'package:mypoly/generate/bills/model/agenda_tab_response.dart';
 import 'package:mypoly/model/agenda.dart';
+import 'package:mypoly/provider/app_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'main_home_provider.g.dart';
@@ -32,7 +33,12 @@ class AppTabAgendas extends _$AppTabAgendas {
         .read(agendaServiceProvider)
         .getAgendasByTab(tabCode: tab.code, size: 3);
 
-    return response.content;
+    final agendaCount = ref.read(agendaCountProvider.notifier);
+
+    return response.content.map((item) {
+      agendaCount.saveAgendaResponse(item);
+      return agendaCount.applyToAgendaResponse(item);
+    }).toList();
   }
 
   void reset() => state = [];

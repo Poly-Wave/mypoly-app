@@ -13,7 +13,7 @@ import 'package:mypoly/generate/users/model/update_onboarding_status_request.dar
 import 'package:mypoly/generate/users/model/user_me_response.dart';
 import 'package:mypoly/generate/users/model/user_update_basic_profile_request.dart';
 import 'package:mypoly/generate/users/model/user_update_profile_request.dart';
-import 'package:mypoly/generate/users/model/withdraw_me_request.dart';
+import 'package:mypoly/generate/users/model/user_withdraw_request.dart';
 
 part 'user_api.g.dart';
 
@@ -35,26 +35,13 @@ abstract class UserApi {
   });
 
   /// [DEV/LOCAL] 내 계정 탈퇴
-  /// 개발/테스트 환경에서만 임시로 사용하는 회원 탈퇴 API입니다.
+  /// 개발/테스트 환경에서만 임시로 사용하는 회원 탈퇴 API입니다. - &#x60;user.dev-delete.enabled&#x3D;true&#x60; 일 때만 활성화됩니다. - JWT로 로그인한 본인 계정을 삭제합니다. - Swagger 우측 상단 Authorize에 &#x60;Bearer {jwt}&#x60; 입력 후 호출하세요.  주의 - user-service 내부의 사용자 데이터만 삭제합니다. - 다른 서비스(bill-service 등)에 남아 있는 userId 연관 데이터는 별도 정리가 필요할 수 있습니다.
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   ///
   @DELETE('/dev-users/me')
   Future<void> deleteMe({CancelToken? cancelToken});
-
-  /// 회원 탈퇴
-  /// 로그인한 사용자를 즉시 탈퇴 처리합니다.
-  ///
-  /// Parameters:
-  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
-  ///
-  @POST('/me/withdraw')
-  @Headers(<String, dynamic>{'Content-Type': 'application/json'})
-  Future<void> withdrawMe({
-    @Body() required WithdrawMeRequest withdrawMeRequest,
-    CancelToken? cancelToken,
-  });
 
   /// 내 정보 조회
   /// 로그인한 사용자의 정보를 조회합니다.  포함 정보 - 온보딩 상태 - 닉네임 - 프로필(성별/생년월일/프로필 이미지/주소)  인증 - JWT 인증이 필요합니다. - Swagger 우측 상단 Authorize에 &#x60;Bearer {jwt}&#x60; 입력 후 호출하세요.
@@ -147,6 +134,20 @@ abstract class UserApi {
   @Headers(<String, dynamic>{'Content-Type': 'application/json'})
   Future<void> updateProfile({
     @Body() required UserUpdateProfileRequest userUpdateProfileRequest,
+    CancelToken? cancelToken,
+  });
+
+  /// 회원 탈퇴
+  /// 로그인한 사용자를 즉시 탈퇴 처리합니다.  처리 내용 - user-service 의 계정/소셜 연동/약관 동의 등 개인정보가 즉시 삭제됩니다. - 닉네임은 즉시 말소되어 다른 사용자가 사용할 수 있습니다(소셜 신원 기준 차단이며 닉네임 기준이 아닙니다). - 탈퇴 후 7일간 동일 소셜 계정으로는 재가입할 수 없습니다(가입 시 REJOIN_BLOCKED). - 탈퇴 사유(중복 선택)와 기타 텍스트(최대 200자)는 통계 목적으로 저장됩니다. 사유 입력은 선택값입니다.  인증 - JWT 인증이 필요합니다. - Swagger 우측 상단 Authorize에 &#x60;Bearer {jwt}&#x60; 입력 후 호출하세요.
+  ///
+  /// Parameters:
+  /// * [userWithdrawRequest] - 탈퇴 사유(선택)
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  ///
+  @POST('/me/withdraw')
+  @Headers(<String, dynamic>{'Content-Type': 'application/json'})
+  Future<void> withdraw({
+    @Body() required UserWithdrawRequest userWithdrawRequest,
     CancelToken? cancelToken,
   });
 }

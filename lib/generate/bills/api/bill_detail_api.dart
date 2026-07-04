@@ -7,6 +7,7 @@ import 'package:dio/dio.dart' hide Headers;
 import 'package:mypoly/generate/bills/model/bill_bookmark_status_response.dart';
 import 'package:mypoly/generate/bills/model/bill_detail_response.dart';
 import 'package:mypoly/generate/bills/model/bill_status_history_response.dart';
+import 'package:mypoly/generate/bills/model/bill_vote_detail_response.dart';
 import 'package:mypoly/generate/bills/model/bill_vote_summary_response.dart';
 import 'package:mypoly/generate/bills/model/error_response.dart';
 import 'package:mypoly/generate/bills/model/similar_topic_bill_response.dart';
@@ -52,6 +53,19 @@ abstract class BillDetailApi {
   ///
   @GET('/{billId}/status-history')
   Future<List<BillStatusHistoryResponse>> getBillStatusHistory({
+    @Path('billId') required int billId,
+    CancelToken? cancelToken,
+  });
+
+  /// 의안 투표 상세 조회
+  /// 의안 투표 참여자의 전체 찬반 집계와 연령대·성별 분포를 반환합니다. vote-summary와 달리 인구통계 breakdown을 함께 제공합니다. breakdown의 ratio 분모는 해당 구분값(연령대/성별)이 저장된 투표 수 합계입니다.
+  ///
+  /// Parameters:
+  /// * [billId] - 의안 ID
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  ///
+  @GET('/{billId}/vote-detail')
+  Future<BillVoteDetailResponse> getBillVoteDetail({
     @Path('billId') required int billId,
     CancelToken? cancelToken,
   });

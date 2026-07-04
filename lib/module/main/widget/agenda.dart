@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mypoly/asset/index.dart';
 import 'package:mypoly/generate/bills/model/category_response.dart';
 import 'package:mypoly/model/agenda.dart';
+import 'package:mypoly/provider/app_provider.dart';
 import 'package:mypoly/style/index.dart';
 import 'package:mypoly/util/extension.dart';
 import 'package:mypoly/widget/index.dart';
 
-class AgendaCompactColumnItem extends StatelessWidget {
+class AgendaCompactColumnItem extends ConsumerWidget {
   final int index;
   final AgendaListData item;
   final void Function() onTap;
@@ -20,7 +22,13 @@ class AgendaCompactColumnItem extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final count = ref.watch(
+      agendaCountProvider.select((state) => state[item.id]),
+    );
+    final viewCount = count?.viewCount ?? item.viewCount;
+    final voteCount = count?.voteCount ?? item.voteCount;
+
     return Column(
       crossAxisAlignment: .stretch,
       children: [
@@ -68,7 +76,7 @@ class AgendaCompactColumnItem extends StatelessWidget {
                     MPSvgImage(SvgImage.icCountView, size: 16),
                     MPWidth(2),
                     Text(
-                      "${item.viewCount}",
+                      "$viewCount",
                       style: Pretendard.medium.set(
                         size: 13,
                         height: 1.4,
@@ -79,7 +87,7 @@ class AgendaCompactColumnItem extends StatelessWidget {
                     MPSvgImage(SvgImage.icVoteView, size: 16),
                     MPWidth(2),
                     Text(
-                      "${item.voteCount}",
+                      "$voteCount",
                       style: Pretendard.medium.set(
                         size: 13,
                         height: 1.4,
@@ -97,7 +105,7 @@ class AgendaCompactColumnItem extends StatelessWidget {
   }
 }
 
-class AgendaColumnItem extends StatelessWidget {
+class AgendaColumnItem extends ConsumerWidget {
   final int index;
   final AgendaListData item;
   final void Function() onTap;
@@ -110,7 +118,13 @@ class AgendaColumnItem extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final count = ref.watch(
+      agendaCountProvider.select((state) => state[item.id]),
+    );
+    final viewCount = count?.viewCount ?? item.viewCount;
+    final voteCount = count?.voteCount ?? item.voteCount;
+
     return Column(
       crossAxisAlignment: .stretch,
       children: [
@@ -181,7 +195,7 @@ class AgendaColumnItem extends StatelessWidget {
                     MPSvgImage(SvgImage.icCountView, size: 16),
                     MPWidth(2),
                     Text(
-                      "${item.viewCount}",
+                      "$viewCount",
                       style: Pretendard.medium.set(
                         size: 13,
                         height: 1.4,
@@ -192,7 +206,7 @@ class AgendaColumnItem extends StatelessWidget {
                     MPSvgImage(SvgImage.icVoteView, size: 16),
                     MPWidth(2),
                     Text(
-                      "${item.voteCount}",
+                      "$voteCount",
                       style: Pretendard.medium.set(
                         size: 13,
                         height: 1.4,

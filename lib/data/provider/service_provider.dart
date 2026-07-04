@@ -2,6 +2,7 @@ import 'package:mypoly/data/provider/api_provider.dart';
 import 'package:mypoly/data/service/agenda_service.dart';
 import 'package:mypoly/data/service/auth_service.dart';
 import 'package:mypoly/data/service/category_service.dart';
+import 'package:mypoly/data/service/member_service.dart';
 import 'package:mypoly/data/service/terms_service.dart';
 import 'package:mypoly/data/service/user_service.dart';
 import 'package:mypoly/data/service/vote_service.dart';
@@ -19,6 +20,13 @@ AgendaService agendaService(Ref ref) {
 }
 
 @Riverpod(keepAlive: true)
+AuthService authService(Ref ref) {
+  final api = ref.watch(authApiProvider);
+
+  return AuthService(ref, api);
+}
+
+@Riverpod(keepAlive: true)
 CategoryService categoryService(Ref ref) {
   final api = ref.watch(categoryApiProvider);
 
@@ -26,10 +34,11 @@ CategoryService categoryService(Ref ref) {
 }
 
 @Riverpod(keepAlive: true)
-AuthService authService(Ref ref) {
-  final api = ref.watch(authApiProvider);
+MemberService memberService(Ref ref) {
+  final billMemberApi = ref.watch(billMemberApiProvider);
+  final similarMemberApi = ref.watch(similarMemberApiProvider);
 
-  return AuthService(ref, api);
+  return MemberService(ref, billMemberApi, similarMemberApi);
 }
 
 @Riverpod(keepAlive: true)

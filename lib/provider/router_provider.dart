@@ -30,6 +30,7 @@ import 'package:mypoly/module/main/main_view.dart';
 // Home
 import 'package:mypoly/module/main/home/main_home_view.dart';
 import 'package:mypoly/module/main/home/agenda/detail/agenda_detail_view.dart';
+import 'package:mypoly/module/main/home/agenda/vote/agenda_vote_view.dart';
 import 'package:mypoly/module/main/home/search/search_view.dart';
 import 'package:mypoly/module/main/home/notification/notification_view.dart';
 
@@ -85,6 +86,7 @@ class AppRouter extends RootStackRouter {
 
     // Home
     AutoRoute(page: AgendaDetailRoute.page),
+    AutoRoute(page: AgendaVoteRoute.page),
     AutoRoute(page: SearchRoute.page),
     AutoRoute(page: NotificationRoute.page),
 

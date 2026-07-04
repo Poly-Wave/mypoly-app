@@ -6,8 +6,8 @@ class MPAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool isBackEnabled;
   final void Function()? onBack;
   final String text;
-  final List<Widget>? left;
-  final List<Widget>? right;
+  final Widget? left;
+  final Widget? right;
 
   const MPAppBar(
     this.context, {
@@ -36,12 +36,13 @@ class MPAppBar extends StatelessWidget implements PreferredSizeWidget {
           child: Row(
             spacing: 24.w,
             children: [
-              isBackEnabled
-                  ? GestureDetector(
-                      onTap: onBack ?? context.maybePop,
-                      child: MPSvgImage(SvgImage.icBack, size: 32),
-                    )
-                  : MPWidth(32),
+              left ??
+                  (isBackEnabled
+                      ? GestureDetector(
+                          onTap: onBack ?? context.maybePop,
+                          child: MPSvgImage(SvgImage.icBack, size: 32),
+                        )
+                      : MPWidth(32)),
               Expanded(
                 child: Text(
                   text,
@@ -52,7 +53,7 @@ class MPAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ),
                 ),
               ),
-              MPWidth(32),
+              right ?? MPWidth(32),
             ],
           ),
         ),

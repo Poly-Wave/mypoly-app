@@ -12,6 +12,7 @@ void main() {
     expect(File(SvgImage.arrowRight).existsSync(), isTrue);
     expect(File(SvgImage.arrowRightCalender).existsSync(), isTrue);
     expect(File(SvgImage.arrowUp).existsSync(), isTrue);
+    expect(File(SvgImage.emptyMembers).existsSync(), isTrue);
     expect(File(SvgImage.icBack).existsSync(), isTrue);
     expect(File(SvgImage.icCalender).existsSync(), isTrue);
     expect(File(SvgImage.icChange).existsSync(), isTrue);
@@ -24,16 +25,22 @@ void main() {
     expect(File(SvgImage.icSearch).existsSync(), isTrue);
     expect(File(SvgImage.icSearchClock).existsSync(), isTrue);
     expect(File(SvgImage.icSearchClose).existsSync(), isTrue);
+    expect(File(SvgImage.icVote).existsSync(), isTrue);
     expect(File(SvgImage.icVoteView).existsSync(), isTrue);
+    expect(File(SvgImage.icWrite).existsSync(), isTrue);
     expect(File(SvgImage.logo).existsSync(), isTrue);
     expect(File(SvgImage.mainAgenda).existsSync(), isTrue);
     expect(File(SvgImage.mainHome).existsSync(), isTrue);
     expect(File(SvgImage.mainSubsidy).existsSync(), isTrue);
     expect(File(SvgImage.noticeSectionLogo).existsSync(), isTrue);
+    expect(File(SvgImage.selectorBookmarkOff).existsSync(), isTrue);
+    expect(File(SvgImage.selectorBookmarkOn).existsSync(), isTrue);
     expect(File(SvgImage.selectorCheckboxCircleOff).existsSync(), isTrue);
     expect(File(SvgImage.selectorCheckboxCircleOn).existsSync(), isTrue);
     expect(File(SvgImage.selectorCheckmarkOff).existsSync(), isTrue);
     expect(File(SvgImage.selectorCheckmarkOn).existsSync(), isTrue);
+    expect(File(SvgImage.selectorNotificationOff).existsSync(), isTrue);
+    expect(File(SvgImage.selectorNotificationOn).existsSync(), isTrue);
     expect(File(SvgImage.selectorRadioOff).existsSync(), isTrue);
     expect(File(SvgImage.selectorRadioOn).existsSync(), isTrue);
     expect(File(SvgImage.socialApple).existsSync(), isTrue);
@@ -42,5 +49,6 @@ void main() {
     expect(File(SvgImage.socialGoogleCircle).existsSync(), isTrue);
     expect(File(SvgImage.socialKakao).existsSync(), isTrue);
     expect(File(SvgImage.socialKakaoCircle).existsSync(), isTrue);
+    expect(File(SvgImage.voteGender).existsSync(), isTrue);
   });
 }

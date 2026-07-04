@@ -26,13 +26,37 @@ abstract class AgendaListData with _$AgendaListData {
       _$AgendaListDataFromJson(json);
 }
 
+AgendaListData _syncAgendaCount(
+  Ref ref,
+  AgendaListData item, {
+  bool save = true,
+}) {
+  final agendaCount = ref.read(agendaCountProvider.notifier);
+
+  if (save) {
+    agendaCount.save(
+      billId: item.id,
+      viewCount: item.viewCount,
+      voteCount: item.voteCount,
+    );
+  }
+
+  final count = agendaCount.get(item.id);
+  if (count == null) return item;
+
+  return item.copyWith(
+    viewCount: count.viewCount ?? item.viewCount,
+    voteCount: count.voteCount ?? item.voteCount,
+  );
+}
+
 extension SearchAgendaResponseExtension on SearchAgendaResponse {
   AgendaListData toAgendaListData(Ref ref) {
     final category = ref
         .read(appCategoriesProvider)
         .firstWhere((category) => category.code == categoryCode);
 
-    return AgendaListData(
+    final item = AgendaListData(
       id: billId,
       title: title,
       category: category,
@@ -40,6 +64,8 @@ extension SearchAgendaResponseExtension on SearchAgendaResponse {
       voteCount: voteCount,
       registeredDate: registeredDate,
     );
+
+    return _syncAgendaCount(ref, item);
   }
 }
 
@@ -49,7 +75,7 @@ extension BookmarkedBillResponseExtension on BookmarkedBillResponse {
         .read(appCategoriesProvider)
         .firstWhere((category) => category.code == categoryCode);
 
-    return AgendaListData(
+    final item = AgendaListData(
       id: billId,
       title: title,
       category: category,
@@ -57,6 +83,8 @@ extension BookmarkedBillResponseExtension on BookmarkedBillResponse {
       voteCount: voteCount,
       registeredDate: registeredDate,
     );
+
+    return _syncAgendaCount(ref, item);
   }
 }
 
@@ -66,7 +94,7 @@ extension MyVotedBillResponseExtension on MyVotedBillResponse {
         .read(appCategoriesProvider)
         .firstWhere((category) => category.code == categoryCode);
 
-    return AgendaListData(
+    final item = AgendaListData(
       id: billId,
       title: title,
       category: category,
@@ -74,6 +102,8 @@ extension MyVotedBillResponseExtension on MyVotedBillResponse {
       voteCount: voteCount,
       registeredDate: registeredDate,
     );
+
+    return _syncAgendaCount(ref, item);
   }
 }
 
@@ -83,7 +113,7 @@ extension InterestAgendaResponseExtension on InterestAgendaResponse {
         .read(appCategoriesProvider)
         .firstWhere((category) => category.code == categoryCode);
 
-    return AgendaListData(
+    final item = AgendaListData(
       id: billId,
       title: title,
       category: category,
@@ -91,6 +121,8 @@ extension InterestAgendaResponseExtension on InterestAgendaResponse {
       voteCount: 0,
       registeredDate: registeredDate,
     );
+
+    return _syncAgendaCount(ref, item, save: false);
   }
 }
 
@@ -100,7 +132,7 @@ extension MainAgendaResponseExtension on MainAgendaResponse {
         .read(appCategoriesProvider)
         .firstWhere((category) => category.code == categoryCode);
 
-    return AgendaListData(
+    final item = AgendaListData(
       id: billId,
       title: title,
       category: category,
@@ -108,5 +140,7 @@ extension MainAgendaResponseExtension on MainAgendaResponse {
       voteCount: voteCount,
       registeredDate: registeredDate,
     );
+
+    return _syncAgendaCount(ref, item);
   }
 }

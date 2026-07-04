@@ -5,6 +5,7 @@ import 'package:mypoly/enum/social.dart';
 import 'package:mypoly/generate/bills/model/category_response.dart';
 import 'package:mypoly/generate/users/model/terms_agreement_request.dart';
 import 'package:mypoly/generate/users/model/user_me_response.dart';
+import 'package:mypoly/generate/users/model/user_withdraw_request.dart';
 import 'package:mypoly/module/main/home/main_home_provider.dart';
 import 'package:mypoly/module/main/home/search/search_provider.dart';
 import 'package:mypoly/provider/app_provider.dart';
@@ -66,14 +67,14 @@ class AppUser extends _$AppUser {
     logout();
   }
 
-  Future<void> withdrawMe({
-    required List<String> reasons,
+  Future<void> withdraw({
+    required List<UserWithdrawRequestReasonsEnum> reasons,
     required String etcText,
   }) async {
     await ref
         .read(userServiceProvider)
-        .withdrawMe(reasons: reasons, etcText: etcText);
-    logout();
+        .withdraw(reasons: reasons, etcText: etcText);
+    await logout();
   }
 
   Future<UserMeResponse> fetch() async {
@@ -85,6 +86,7 @@ class AppUser extends _$AppUser {
       ref.read(appUserCategoriesProvider.notifier).fetch(),
       ref.read(appInterestAgendasProvider.notifier).fetch(),
       ref.read(appTabAgendasProvider.notifier).fetch(),
+      ref.read(appSimilarMembersProvider.notifier).fetch(),
     ]);
 
     return response;
@@ -142,6 +144,7 @@ class AppUser extends _$AppUser {
     ref.read(appUserCategoriesProvider.notifier).reset();
     ref.read(appInterestAgendasProvider.notifier).reset();
     ref.read(appTabAgendasProvider.notifier).reset();
+    ref.read(appSimilarMembersProvider.notifier).reset();
 
     final router = ref.read(routerProvider);
 
