@@ -53,6 +53,7 @@ const allDependencies = <Package>[
   _conventional_commit,
   _convert,
   _coverage,
+  _cross_file,
   _crypto,
   _csslib,
   _dart_pubspec_licenses,
@@ -62,6 +63,7 @@ const allDependencies = <Package>[
   _dio_web_adapter,
   _dotenv,
   _encrypt,
+  _equatable,
   _fake_async,
   _ffi,
   _file,
@@ -72,6 +74,7 @@ const allDependencies = <Package>[
   _firebase_core_platform_interface,
   _firebase_core_web,
   _fixnum,
+  _fl_chart,
   _flutter,
   _flutter_dotenv,
   _flutter_hooks,
@@ -103,6 +106,7 @@ const allDependencies = <Package>[
   _google_sign_in_web,
   _gradient_borders,
   _graphs,
+  _group_button,
   _hive_ce,
   _hooks,
   _hooks_riverpod,
@@ -179,6 +183,12 @@ const allDependencies = <Package>[
   _riverpod_generator,
   _riverpod_lint,
   _safe_url_check,
+  _shake_gesture,
+  _shake_gesture_android,
+  _shake_gesture_ios,
+  _shake_gesture_platform_interface,
+  _share_plus,
+  _share_plus_platform_interface,
   _shared_preferences,
   _shared_preferences_android,
   _shared_preferences_foundation,
@@ -210,6 +220,11 @@ const allDependencies = <Package>[
   _stream_transform,
   _string_scanner,
   _table_calendar,
+  _talker,
+  _talker_dio_logger,
+  _talker_flutter,
+  _talker_logger,
+  _talker_riverpod_logger,
   _term_glyph,
   _test,
   _test_api,
@@ -224,6 +239,7 @@ const allDependencies = <Package>[
   _url_launcher_platform_interface,
   _url_launcher_web,
   _url_launcher_windows,
+  _uuid,
   _vector_graphics,
   _vector_graphics_codec,
   _vector_graphics_compiler,
@@ -263,6 +279,7 @@ const dependencies = <Package>[
   _infinite_scroll_pagination,
   _table_calendar,
   _gradient_borders,
+  _fl_chart,
   _flutter_native_splash,
   _flutter_dotenv,
   _collection,
@@ -271,13 +288,17 @@ const dependencies = <Package>[
   _package_info_plus,
   _url_launcher,
   _connectivity_plus,
+  _shake_gesture,
   _kakao_flutter_sdk_user,
   _sign_in_with_apple,
   _google_sign_in,
   _firebase_core,
   _firebase_analytics,
   _flutter_secure_storage,
-  _shared_preferences
+  _shared_preferences,
+  _talker_flutter,
+  _talker_dio_logger,
+  _talker_riverpod_logger
 ];
 
 /// Direct `dev_dependencies`.
@@ -2668,6 +2689,45 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
   );
 
+/// cross_file 0.3.5+2
+const _cross_file = Package(
+    name: 'cross_file',
+    description: 'An abstraction to allow working with files across multiple platforms.',
+    repository: 'https://github.com/flutter/packages/tree/main/packages/cross_file',
+    authors: [],
+    version: '0.3.5+2',
+    spdxIdentifiers: ['BSD-3-Clause'],
+    isMarkdown: false,
+    isSdk: false,
+    dependencies: [PackageRef('meta'), PackageRef('web')],
+    devDependencies: [PackageRef('path'), PackageRef('test')],
+    license: '''Copyright 2013 The Flutter Authors
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above
+      copyright notice, this list of conditions and the following
+      disclaimer in the documentation and/or other materials provided
+      with the distribution.
+    * Neither the name of Google Inc. nor the names of its
+      contributors may be used to endorse or promote products derived
+      from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
+  );
+
 /// crypto 3.0.7
 const _crypto = Package(
     name: 'crypto',
@@ -3370,6 +3430,42 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
   );
 
+/// equatable 2.0.8
+const _equatable = Package(
+    name: 'equatable',
+    description: 'A Dart package that helps to implement value based equality without needing to explicitly override == and hashCode.',
+    homepage: 'https://github.com/felangel/equatable',
+    repository: 'https://github.com/felangel/equatable',
+    authors: [],
+    version: '2.0.8',
+    spdxIdentifiers: ['MIT'],
+    isMarkdown: false,
+    isSdk: false,
+    dependencies: [PackageRef('collection'), PackageRef('meta')],
+    devDependencies: [PackageRef('test')],
+    license: '''MIT License
+
+Copyright (c) 2026 Felix Angelov
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.''',
+  );
+
 /// fake_async 1.3.3
 const _fake_async = Package(
     name: 'fake_async',
@@ -3954,6 +4050,42 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
+  );
+
+/// fl_chart 1.2.0
+const _fl_chart = Package(
+    name: 'fl_chart',
+    description: 'A highly customizable Flutter chart library that supports Line Chart, Bar Chart, Pie Chart, Scatter Chart, and Radar Chart.',
+    homepage: 'https://flchart.dev/',
+    repository: 'https://github.com/imaNNeo/fl_chart',
+    authors: [],
+    version: '1.2.0',
+    spdxIdentifiers: ['MIT'],
+    isMarkdown: false,
+    isSdk: false,
+    dependencies: [PackageRef('equatable'), PackageRef('flutter'), PackageRef('vector_math')],
+    devDependencies: [PackageRef('build_runner'), PackageRef('flutter_test'), PackageRef('mockito')],
+    license: '''MIT License
+
+Copyright (c) 2022 Flutter 4 Fun
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.''',
   );
 
 /// flutter 3.41.6
@@ -5276,6 +5408,42 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
+  );
+
+/// group_button 5.3.4
+const _group_button = Package(
+    name: 'group_button',
+    description: 'Flutter custom widget to make a group buttons. Included Radio and CheckBox buttons.',
+    homepage: 'https://github.com/Frezyx/group_button',
+    repository: 'https://github.com/Frezyx/group_button',
+    authors: [],
+    version: '5.3.4',
+    spdxIdentifiers: ['MIT'],
+    isMarkdown: false,
+    isSdk: false,
+    dependencies: [PackageRef('flutter')],
+    devDependencies: [PackageRef('flutter_test'), PackageRef('flutter_lints')],
+    license: '''MIT License
+
+Copyright (c) 2020 Stanislav Ilin
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.''',
   );
 
 /// hive_ce 2.19.3
@@ -8690,18 +8858,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.''',
   );
 
-/// openapi_generator_cli 6.1.0
+/// openapi_generator_cli 7.0.0
 const _openapi_generator_cli = Package(
     name: 'openapi_generator_cli',
     description: 'A dart wrapper around openapi-generator inspired by the node implementation.',
     homepage: 'https://github.com/gibahjoe/openapi-generator-dart',
     authors: [],
-    version: '6.1.0',
+    version: '7.0.0',
     spdxIdentifiers: ['BSD-3-Clause'],
     isMarkdown: false,
     isSdk: false,
     dependencies: [PackageRef('http'), PackageRef('path'), PackageRef('args'), PackageRef('cli_launcher')],
-    devDependencies: [PackageRef('test')],
+    devDependencies: [PackageRef('lints'), PackageRef('test')],
     license: '''Copyright 2020 Joseph Gibah
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following
@@ -9399,7 +9567,7 @@ const _posix = Package(
     isMarkdown: false,
     isSdk: false,
     dependencies: [PackageRef('ffi'), PackageRef('meta'), PackageRef('path')],
-    devDependencies: [PackageRef('logging'), PackageRef('stack_trace'), PackageRef('test')],
+    devDependencies: [PackageRef('logging'), PackageRef('stack_trace'), PackageRef('test'), PackageRef('uuid')],
     license: '''MIT License
 
 Copyright (c) 2020 Brett Sutton
@@ -10337,6 +10505,234 @@ const _safe_url_check = Package(
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.''',
+  );
+
+/// shake_gesture 2.1.0
+const _shake_gesture = Package(
+    name: 'shake_gesture',
+    description: 'Provides a widget to detect shake gestures. It allows you to easily add shake detection to your Flutter app on Android and iOS.',
+    homepage: 'https://github.com/tpucci/shake_gesture',
+    repository: 'https://github.com/tpucci/shake_gesture',
+    authors: [],
+    version: '2.1.0',
+    spdxIdentifiers: ['MIT'],
+    isMarkdown: false,
+    isSdk: false,
+    dependencies: [PackageRef('flutter'), PackageRef('shake_gesture_android'), PackageRef('shake_gesture_ios'), PackageRef('shake_gesture_platform_interface')],
+    devDependencies: [PackageRef('flutter_test'), PackageRef('plugin_platform_interface')],
+    license: '''MIT License
+
+Copyright (c) 2023 Thomas Pucci
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.''',
+  );
+
+/// shake_gesture_android 2.0.0
+const _shake_gesture_android = Package(
+    name: 'shake_gesture_android',
+    description: 'Android implementation of the shake_gesture plugin',
+    homepage: 'https://github.com/tpucci/shake_gesture',
+    repository: 'https://github.com/tpucci/shake_gesture',
+    authors: [],
+    version: '2.0.0',
+    spdxIdentifiers: ['MIT'],
+    isMarkdown: false,
+    isSdk: false,
+    dependencies: [PackageRef('flutter'), PackageRef('shake_gesture_platform_interface')],
+    devDependencies: [PackageRef('flutter_test'), PackageRef('plugin_platform_interface')],
+    license: '''MIT License
+
+Copyright (c) 2023 Thomas Pucci
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.''',
+  );
+
+/// shake_gesture_ios 1.1.0
+const _shake_gesture_ios = Package(
+    name: 'shake_gesture_ios',
+    description: 'iOS implementation of the shake_gesture plugin',
+    homepage: 'https://github.com/tpucci/shake_gesture',
+    repository: 'https://github.com/tpucci/shake_gesture',
+    authors: [],
+    version: '1.1.0',
+    spdxIdentifiers: ['MIT'],
+    isMarkdown: false,
+    isSdk: false,
+    dependencies: [PackageRef('flutter'), PackageRef('shake_gesture_platform_interface')],
+    devDependencies: [PackageRef('flutter_test'), PackageRef('plugin_platform_interface')],
+    license: '''MIT License
+
+Copyright (c) 2023 Thomas Pucci
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.''',
+  );
+
+/// shake_gesture_platform_interface 1.0.1
+const _shake_gesture_platform_interface = Package(
+    name: 'shake_gesture_platform_interface',
+    description: 'A common platform interface for the shake_gesture plugin.',
+    homepage: 'https://github.com/tpucci/shake_gesture',
+    repository: 'https://github.com/tpucci/shake_gesture',
+    authors: [],
+    version: '1.0.1',
+    spdxIdentifiers: ['MIT'],
+    isMarkdown: false,
+    isSdk: false,
+    dependencies: [PackageRef('flutter'), PackageRef('plugin_platform_interface')],
+    devDependencies: [PackageRef('flutter_test')],
+    license: '''MIT License
+
+Copyright (c) 2023 Thomas Pucci
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.''',
+  );
+
+/// share_plus 12.0.2
+const _share_plus = Package(
+    name: 'share_plus',
+    description: 'Flutter plugin for sharing content via the platform share UI, using the ACTION_SEND intent on Android and UIActivityViewController on iOS.',
+    homepage: 'https://github.com/fluttercommunity/plus_plugins',
+    repository: 'https://github.com/fluttercommunity/plus_plugins/tree/main/packages/share_plus/share_plus',
+    authors: [],
+    version: '12.0.2',
+    spdxIdentifiers: ['BSD-3-Clause'],
+    isMarkdown: false,
+    isSdk: false,
+    dependencies: [PackageRef('cross_file'), PackageRef('meta'), PackageRef('mime'), PackageRef('flutter'), PackageRef('flutter_web_plugins'), PackageRef('share_plus_platform_interface'), PackageRef('file'), PackageRef('url_launcher_web'), PackageRef('url_launcher_windows'), PackageRef('url_launcher_linux'), PackageRef('url_launcher_platform_interface'), PackageRef('ffi'), PackageRef('web'), PackageRef('win32')],
+    devDependencies: [PackageRef('flutter_test'), PackageRef('flutter_lints')],
+    license: '''Copyright 2017, the Flutter project authors. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+   * Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above
+copyright notice, this list of conditions and the following disclaimer
+in the documentation and/or other materials provided with the
+distribution.
+   * Neither the name of Google Inc. nor the names of its
+contributors may be used to endorse or promote products derived from
+this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
+  );
+
+/// share_plus_platform_interface 6.1.0
+const _share_plus_platform_interface = Package(
+    name: 'share_plus_platform_interface',
+    description: 'A common platform interface for the share_plus plugin.',
+    homepage: 'https://github.com/fluttercommunity/plus_plugins',
+    repository: 'https://github.com/fluttercommunity/plus_plugins/tree/main/packages/',
+    authors: [],
+    version: '6.1.0',
+    spdxIdentifiers: ['BSD-3-Clause'],
+    isMarkdown: false,
+    isSdk: false,
+    dependencies: [PackageRef('cross_file'), PackageRef('flutter'), PackageRef('meta'), PackageRef('mime'), PackageRef('plugin_platform_interface'), PackageRef('path_provider'), PackageRef('uuid')],
+    devDependencies: [PackageRef('flutter_test'), PackageRef('mockito'), PackageRef('flutter_lints'), PackageRef('test')],
+    license: '''Copyright 2017 The Chromium Authors. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+   * Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above
+copyright notice, this list of conditions and the following disclaimer
+in the documentation and/or other materials provided with the
+distribution.
+   * Neither the name of Google Inc. nor the names of its
+contributors may be used to endorse or promote products derived from
+this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
   );
 
 /// shared_preferences 2.5.4
@@ -42704,6 +43100,186 @@ const _table_calendar = Package(
    limitations under the License.''',
   );
 
+/// talker 5.1.17
+const _talker = Package(
+    name: 'talker',
+    description: 'Advanced error handler and logger package for flutter and dart. App monitoring, logs history, report sharing, custom logs, and etc.',
+    homepage: 'https://github.com/Frezyx/talker',
+    repository: 'https://github.com/Frezyx/talker',
+    authors: [],
+    version: '5.1.17',
+    spdxIdentifiers: ['MIT'],
+    isMarkdown: false,
+    isSdk: false,
+    dependencies: [PackageRef('talker_logger')],
+    devDependencies: [PackageRef('lints'), PackageRef('test')],
+    license: '''MIT License
+
+Copyright (c) 2022 Stanislav Ilin
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.''',
+  );
+
+/// talker_dio_logger 5.1.17
+const _talker_dio_logger = Package(
+    name: 'talker_dio_logger',
+    description: 'Lightweight and customizable dio http client logger on talker base',
+    homepage: 'https://github.com/Frezyx/talker',
+    repository: 'https://github.com/Frezyx/talker',
+    authors: [],
+    version: '5.1.17',
+    spdxIdentifiers: ['MIT'],
+    isMarkdown: false,
+    isSdk: false,
+    dependencies: [PackageRef('dio'), PackageRef('talker')],
+    devDependencies: [PackageRef('lints'), PackageRef('test')],
+    license: '''MIT License
+
+Copyright (c) 2022 Stanislav Ilin
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.''',
+  );
+
+/// talker_flutter 5.1.16
+const _talker_flutter = Package(
+    name: 'talker_flutter',
+    description: 'Advanced error handler and logger package for flutter and dart. App monitoring, logs history, report sharing, custom logs, and etc.',
+    homepage: 'https://github.com/Frezyx/talker',
+    repository: 'https://github.com/Frezyx/talker',
+    authors: [],
+    version: '5.1.16',
+    spdxIdentifiers: ['MIT'],
+    isMarkdown: false,
+    isSdk: false,
+    dependencies: [PackageRef('flutter'), PackageRef('talker'), PackageRef('group_button'), PackageRef('path_provider'), PackageRef('share_plus'), PackageRef('web')],
+    devDependencies: [PackageRef('flutter_test'), PackageRef('flutter_lints')],
+    license: '''MIT License
+
+Copyright (c) 2022 Stanislav Ilin
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.''',
+  );
+
+/// talker_logger 5.1.17
+const _talker_logger = Package(
+    name: 'talker_logger',
+    description: 'Logger. Easy, customizable, extensible logging, lightweight with filters, formatters, custom logs, log levels.',
+    homepage: 'https://github.com/Frezyx/talker',
+    repository: 'https://github.com/Frezyx/talker',
+    authors: [],
+    version: '5.1.17',
+    spdxIdentifiers: ['MIT'],
+    isMarkdown: false,
+    isSdk: false,
+    dependencies: [PackageRef('ansicolor'), PackageRef('web')],
+    devDependencies: [PackageRef('test')],
+    license: '''MIT License
+
+Copyright (c) 2022 Stanislav Ilin
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.''',
+  );
+
+/// talker_riverpod_logger 5.1.17
+const _talker_riverpod_logger = Package(
+    name: 'talker_riverpod_logger',
+    description: 'Lightweight and customizable Riverpod state management library logger on talker base.',
+    homepage: 'https://github.com/Frezyx/talker',
+    repository: 'https://github.com/Frezyx/talker',
+    authors: [],
+    version: '5.1.17',
+    spdxIdentifiers: ['MIT'],
+    isMarkdown: false,
+    isSdk: false,
+    dependencies: [PackageRef('talker'), PackageRef('riverpod'), PackageRef('meta')],
+    devDependencies: [PackageRef('lints'), PackageRef('test')],
+    license: '''MIT License
+
+Copyright (c) 2022 Stanislav Ilin
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.''',
+  );
+
 /// term_glyph 1.2.2
 const _term_glyph = Package(
     name: 'term_glyph',
@@ -43617,6 +44193,28 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
   );
 
+/// uuid 4.5.3
+const _uuid = Package(
+    name: 'uuid',
+    description: '''RFC4122 (v1, v4, v5, v6, v7, v8) UUID Generator and Parser for Dart
+''',
+    repository: 'https://github.com/Daegalus/dart-uuid',
+    authors: [],
+    version: '4.5.3',
+    spdxIdentifiers: ['MIT'],
+    isMarkdown: false,
+    isSdk: false,
+    dependencies: [PackageRef('crypto'), PackageRef('fixnum')],
+    devDependencies: [PackageRef('lints'), PackageRef('test')],
+    license: '''Copyright (c) 2021 Yulian Kuncheff
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.''',
+  );
+
 /// vector_graphics 1.1.19
 const _vector_graphics = Package(
     name: 'vector_graphics',
@@ -44269,16 +44867,16 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
   );
 
-/// mypoly 0.1.0+13
+/// mypoly 0.1.0+14
 const _mypoly = Package(
     name: 'mypoly',
     description: 'MyPOLY',
     authors: [],
-    version: '0.1.0+13',
+    version: '0.1.0+14',
     spdxIdentifiers: [],
     isMarkdown: false,
     isSdk: false,
-    dependencies: [PackageRef('flutter'), PackageRef('hooks_riverpod'), PackageRef('flutter_hooks'), PackageRef('riverpod_annotation'), PackageRef('retrofit'), PackageRef('dio'), PackageRef('freezed_annotation'), PackageRef('json_annotation'), PackageRef('auto_route'), PackageRef('flutter_screenutil'), PackageRef('loader_overlay'), PackageRef('skeletonizer'), PackageRef('flutter_svg'), PackageRef('cached_network_image_ce'), PackageRef('lottie'), PackageRef('flutter_html'), PackageRef('infinite_scroll_pagination'), PackageRef('table_calendar'), PackageRef('gradient_borders'), PackageRef('flutter_native_splash'), PackageRef('flutter_dotenv'), PackageRef('collection'), PackageRef('intl'), PackageRef('keyboard_detection'), PackageRef('package_info_plus'), PackageRef('url_launcher'), PackageRef('connectivity_plus'), PackageRef('kakao_flutter_sdk_user'), PackageRef('sign_in_with_apple'), PackageRef('google_sign_in'), PackageRef('firebase_core'), PackageRef('firebase_analytics'), PackageRef('flutter_secure_storage'), PackageRef('shared_preferences')],
+    dependencies: [PackageRef('flutter'), PackageRef('hooks_riverpod'), PackageRef('flutter_hooks'), PackageRef('riverpod_annotation'), PackageRef('retrofit'), PackageRef('dio'), PackageRef('freezed_annotation'), PackageRef('json_annotation'), PackageRef('auto_route'), PackageRef('flutter_screenutil'), PackageRef('loader_overlay'), PackageRef('skeletonizer'), PackageRef('flutter_svg'), PackageRef('cached_network_image_ce'), PackageRef('lottie'), PackageRef('flutter_html'), PackageRef('infinite_scroll_pagination'), PackageRef('table_calendar'), PackageRef('gradient_borders'), PackageRef('fl_chart'), PackageRef('flutter_native_splash'), PackageRef('flutter_dotenv'), PackageRef('collection'), PackageRef('intl'), PackageRef('keyboard_detection'), PackageRef('package_info_plus'), PackageRef('url_launcher'), PackageRef('connectivity_plus'), PackageRef('shake_gesture'), PackageRef('kakao_flutter_sdk_user'), PackageRef('sign_in_with_apple'), PackageRef('google_sign_in'), PackageRef('firebase_core'), PackageRef('firebase_analytics'), PackageRef('flutter_secure_storage'), PackageRef('shared_preferences'), PackageRef('talker_flutter'), PackageRef('talker_dio_logger'), PackageRef('talker_riverpod_logger')],
     devDependencies: [PackageRef('flutter_test'), PackageRef('build_runner'), PackageRef('auto_route_generator'), PackageRef('riverpod_generator'), PackageRef('retrofit_generator'), PackageRef('freezed'), PackageRef('json_serializable'), PackageRef('flutter_lints'), PackageRef('riverpod_lint'), PackageRef('melos'), PackageRef('spider'), PackageRef('change_app_package_name'), PackageRef('flutter_launcher_icons'), PackageRef('openapi_generator_cli'), PackageRef('dotenv'), PackageRef('dart_pubspec_licenses')],
   );
 
