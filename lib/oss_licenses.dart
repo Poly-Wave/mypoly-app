@@ -44867,12 +44867,12 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
   );
 
-/// mypoly 0.1.0+14
+/// mypoly 0.1.0+15
 const _mypoly = Package(
     name: 'mypoly',
     description: 'MyPOLY',
     authors: [],
-    version: '0.1.0+14',
+    version: '0.1.0+15',
     spdxIdentifiers: [],
     isMarkdown: false,
     isSdk: false,
