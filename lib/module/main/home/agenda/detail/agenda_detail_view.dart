@@ -617,7 +617,7 @@ class AgendaDetailView extends HookConsumerWidget {
                             ref.read(categoriesProvider.notifier).update([
                               agendaCategory,
                             ]);
-                            context.pop();
+                            context.router.popUntilRoot();
                           },
                           child: Row(
                             children: [
