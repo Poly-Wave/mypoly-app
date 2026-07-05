@@ -120,7 +120,7 @@ class AgendaDetailView extends HookConsumerWidget {
                     ),
                     MPHeight(10),
                     Text(
-                      agendaDetail.officialTitle.wrapped,
+                      agendaDetail.aiSummary.headline.wrapped,
                       style: Pretendard.semiBold.set(
                         size: 24,
                         height: 1.3,
