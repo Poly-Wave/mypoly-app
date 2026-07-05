@@ -9,6 +9,7 @@ import 'package:mypoly/asset/index.dart';
 import 'package:mypoly/data/provider/service_provider.dart';
 import 'package:mypoly/enum/gender.dart';
 import 'package:mypoly/generate/users/model/address_info_response.dart';
+import 'package:mypoly/provider/app_user_provider.dart';
 import 'package:mypoly/provider/router_provider.dart';
 import 'package:mypoly/style/index.dart';
 import 'package:mypoly/util/extension.dart';
@@ -489,13 +490,14 @@ Future<void> onMore(WidgetRef ref) async {
 
   try {
     await ref
-        .read(userServiceProvider)
-        .updateOnboardProfile(
+        .read(appUserProvider.notifier)
+        .updateProfile(
           gender: gender,
           birthDate: birthDate,
           sido: residence.sido,
           sigungu: residence.sigungu,
           emdName: residence.emdName,
+          isOnboard: true,
         );
 
     if (!context.mounted) return;

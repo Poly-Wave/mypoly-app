@@ -93,26 +93,47 @@ class AppUser extends _$AppUser {
   }
 
   Future<void> updateProfile({
-    required String nickname,
+    String? nickname,
     required Gender gender,
     required String birthDate,
     required String sido,
     required String sigungu,
     required String emdName,
+    required bool isOnboard,
   }) async {
-    await ref
-        .read(userServiceProvider)
-        .updateProfile(
-          nickname: nickname,
-          gender: gender,
-          birthDate: birthDate,
-          sido: sido,
-          sigungu: sigungu,
-          emdName: emdName,
-        );
+    final user = state;
+
+    if (user == null) {
+      return;
+    }
+
+    final newNickname = nickname ?? user.nickname;
+
+    if (isOnboard) {
+      await ref
+          .read(userServiceProvider)
+          .updateOnboardProfile(
+            gender: gender,
+            birthDate: birthDate,
+            sido: sido,
+            sigungu: sigungu,
+            emdName: emdName,
+          );
+    } else {
+      await ref
+          .read(userServiceProvider)
+          .updateProfile(
+            nickname: newNickname,
+            gender: gender,
+            birthDate: birthDate,
+            sido: sido,
+            sigungu: sigungu,
+            emdName: emdName,
+          );
+    }
 
     state = state?.copyWith(
-      nickname: nickname,
+      nickname: newNickname,
       gender: gender.me,
       birthDate: birthDate,
       sido: sido,
@@ -121,17 +142,20 @@ class AppUser extends _$AppUser {
     );
   }
 
-  Future<void> updateCategories(List<CategoryResponse> value) async {
+  Future<void> updateCategories({
+    required List<CategoryResponse> categories,
+    required bool isOnboard,
+  }) async {
     await ref
         .read(categoryServiceProvider)
-        .updateCategories(categories: value, isOnboard: false);
+        .updateCategories(categories: categories, isOnboard: isOnboard);
 
     await Future.wait([
       ref.read(appInterestAgendasProvider.notifier).fetch(),
       ref.read(appTabAgendasProvider.notifier).fetch(),
     ]);
 
-    ref.read(appUserCategoriesProvider.notifier).update(value);
+    ref.read(appUserCategoriesProvider.notifier).update(categories);
   }
 
   Future<void> logout() async {

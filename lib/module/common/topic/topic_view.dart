@@ -140,18 +140,12 @@ class TopicView extends HookConsumerWidget {
                   .toList();
 
               try {
-                if (isOnboard) {
-                  await ref
-                      .read(categoryServiceProvider)
-                      .updateCategories(
-                        categories: selectedCategories,
-                        isOnboard: isOnboard,
-                      );
-                } else {
-                  await ref
-                      .read(appUserProvider.notifier)
-                      .updateCategories(selectedCategories);
-                }
+                await ref
+                    .read(categoryServiceProvider)
+                    .updateCategories(
+                      categories: selectedCategories,
+                      isOnboard: isOnboard,
+                    );
 
                 if (!context.mounted) return;
                 context.loaderOverlay.hide();
