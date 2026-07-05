@@ -451,6 +451,7 @@ Future<void> onSave(WidgetRef ref) async {
           sido: residence.sido,
           sigungu: residence.sigungu,
           emdName: residence.emdName,
+          isOnboard: false,
         );
 
     if (!context.mounted) return;
