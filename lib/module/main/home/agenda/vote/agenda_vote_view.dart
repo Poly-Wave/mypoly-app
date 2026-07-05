@@ -210,18 +210,13 @@ class AgendaVoteView extends HookConsumerWidget {
                         padding: .symmetric(vertical: 20.h),
                         child: AgendaVoteDonutChart(
                           sections: [
-                            AgendaVoteDonutSection(
-                              label: Gender.man.label,
-                              count: 90,
-                              color: Gender.man.color,
-                              gradient: Gender.man.gradient,
-                            ),
-                            AgendaVoteDonutSection(
-                              label: Gender.woman.label,
-                              count: 10,
-                              color: Gender.woman.color,
-                              gradient: Gender.woman.gradient,
-                            ),
+                            for (final g in voteDetail.genderBreakdown)
+                              AgendaVoteDonutSection(
+                                label: g.gender.label,
+                                count: g.count,
+                                color: g.gender.color,
+                                gradient: g.gender.gradient,
+                              ),
                           ],
                         ),
                       ),
