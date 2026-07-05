@@ -569,28 +569,34 @@ class AgendaDetailView extends HookConsumerWidget {
                             ),
                             MPHeight(20),
                             Center(
-                              child: Container(
-                                height: 32.h,
-                                padding: .symmetric(horizontal: 10.w),
-                                decoration: BoxDecoration(
-                                  borderRadius: .circular(8.r),
-                                  border: .all(
-                                    width: 1.r,
-                                    color: ColorStyles.gray50,
-                                  ),
-                                  color: ColorStyles.gray70,
-                                ),
-                                child: Row(
-                                  mainAxisSize: .min,
-                                  children: [
-                                    Text(
-                                      "안건 투표하기",
-                                      style: Pretendard.semiBold.set(
-                                        size: 14,
-                                        color: ColorStyles.white,
-                                      ),
+                              child: GestureDetector(
+                                onTap: () {
+                                  ref.read(mainPageProvider.notifier).update(0);
+                                  context.router.popUntilRoot();
+                                },
+                                child: Container(
+                                  height: 32.h,
+                                  padding: .symmetric(horizontal: 10.w),
+                                  decoration: BoxDecoration(
+                                    borderRadius: .circular(8.r),
+                                    border: .all(
+                                      width: 1.r,
+                                      color: ColorStyles.gray50,
                                     ),
-                                  ],
+                                    color: ColorStyles.gray70,
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: .min,
+                                    children: [
+                                      Text(
+                                        "안건 투표하기",
+                                        style: Pretendard.semiBold.set(
+                                          size: 14,
+                                          color: ColorStyles.white,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
