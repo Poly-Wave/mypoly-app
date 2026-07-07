@@ -196,6 +196,21 @@ Future<void> onNext(
   } catch (e) {
     if (!context.mounted) return;
     context.loaderOverlay.hide();
-    showMPAlertModal(context, title: "회원가입에 실패하였습니다.\n잠시 후 다시 시도해 주세요.");
+
+    switch (e) {
+      case "REJOIN_BLOCKED":
+        showMPAlertModal(
+          context,
+          barrierDismissible: false,
+          title: "탈퇴 후 7일이 지나야\n다시 가입할 수 있어요.",
+          onTap: () {
+            ref.read(routerProvider).replaceAll([OnboardRoute()]);
+          },
+        );
+        break;
+      default:
+        showMPAlertModal(context, title: "회원가입에 실패하였습니다.\n잠시 후 다시 시도해 주세요.");
+        break;
+    }
   }
 }

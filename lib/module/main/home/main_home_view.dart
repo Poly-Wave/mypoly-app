@@ -27,8 +27,7 @@ class MainHomeView extends HookConsumerWidget {
       color: ColorStyles.black,
       child: ListView(
         children: [
-          NoticeSection(), // 공지사항
-
+          // NoticeSection(), // 공지사항
           MyInfoSection(), // 내 정보
 
           AgendaIntroSection(), // 안건 소개
