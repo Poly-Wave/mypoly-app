@@ -49,6 +49,10 @@ class MainAgendaView extends HookConsumerWidget {
             delegate: MainFilterHeaderDelegate(
               sort: sort,
               categories: categories,
+              categoryText: () {
+                final selectedCount = categories.length;
+                return selectedCount > 0 ? '주제 $selectedCount' : '주제';
+              }(),
               onSortChanged: ref.read(sortProvider.notifier).onChanged,
               onCategoryTap: () => ref
                   .read(categoriesProvider.notifier)

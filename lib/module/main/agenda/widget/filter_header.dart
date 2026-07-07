@@ -8,12 +8,14 @@ import 'package:mypoly/widget/index.dart';
 class MainFilterHeaderDelegate extends SliverPersistentHeaderDelegate {
   final MPSort sort;
   final List<CategoryResponse> categories;
+  final String categoryText;
   final void Function(MPSort) onSortChanged;
   final void Function() onCategoryTap;
 
   MainFilterHeaderDelegate({
     required this.sort,
     required this.categories,
+    required this.categoryText,
     required this.onSortChanged,
     required this.onCategoryTap,
   });
@@ -81,7 +83,7 @@ class MainFilterHeaderDelegate extends SliverPersistentHeaderDelegate {
                   ),
                 ),
                 MPFilterChip(
-                  text: "주제",
+                  text: categoryText,
                   isActive: categories.isNotEmpty,
                   onTap: onCategoryTap,
                 ),
