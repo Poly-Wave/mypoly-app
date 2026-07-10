@@ -1,3 +1,5 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:mypoly/provider/router_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -143,50 +145,58 @@ class _SequentialRowSwitcher extends HookWidget {
       transitionBuilder: (Widget child, Animation<double> animation) {
         return FadeTransition(opacity: animation, child: child);
       },
-      child: Row(
-        key: ValueKey('row_content_${currentItem.value.billId}'),
-        children: [
-          _buildStatusIcon(currentItem.value.rankChangeType.toString()),
-          SizedBox(width: 4.w),
-          Text(
-            "${currentItem.value.rank}",
-            style: Pretendard.medium.set(size: 15, color: ColorStyles.white),
-          ),
-          SizedBox(width: 6.w),
+      child: GestureDetector(
+        key: ValueKey('row_gesturedetector_${currentItem.value.billId}'),
+        behavior: HitTestBehavior.translucent,
+        onTap: () =>
+            context.pushRoute(AgendaDetailRoute(id: currentItem.value.billId)),
+        child: Row(
+          key: ValueKey('row_content_${currentItem.value.billId}'),
+          children: [
+            _buildStatusIcon(currentItem.value.rankChangeType.toString()),
+            SizedBox(width: 4.w),
+            Text(
+              "${currentItem.value.rank}",
+              style: Pretendard.medium.set(size: 15, color: ColorStyles.white),
+            ),
+            SizedBox(width: 6.w),
 
-          Expanded(
-            child: SizedBox(
-              width: 189.w,
-              child: Text.rich(
-                TextSpan(
-                  children: List.generate(titleStr.length, (charIndex) {
-                    final char = titleStr[charIndex];
-                    final int charDelay = triggerAnim ? (charIndex * 50) : 0;
+            Expanded(
+              child: SizedBox(
+                width: 189.w,
+                child: Text.rich(
+                  TextSpan(
+                    children: List.generate(titleStr.length, (charIndex) {
+                      final char = titleStr[charIndex];
+                      final int charDelay = triggerAnim ? (charIndex * 50) : 0;
 
-                    return WidgetSpan(
-                      child: _TypingCharWidget(
-                        key: ValueKey(
-                          'char_${currentItem.value.billId}_${charIndex}_$char',
+                      return WidgetSpan(
+                        child: _TypingCharWidget(
+                          key: ValueKey(
+                            'char_${currentItem.value.billId}_${charIndex}_$char',
+                          ),
+                          char: char,
+                          delay: Duration(milliseconds: charDelay),
                         ),
-                        char: char,
-                        delay: Duration(milliseconds: charDelay),
-                      ),
-                    );
-                  }),
+                      );
+                    }),
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
               ),
             ),
-          ),
-          SizedBox(width: 6.w),
+            SizedBox(width: 6.w),
 
-          _CategoryFadeWidget(
-            key: ValueKey('category_${currentItem.value.billId}_$categoryStr'),
-            categoryName: categoryStr,
-            delay: Duration(milliseconds: categoryDelayMs),
-          ),
-        ],
+            _CategoryFadeWidget(
+              key: ValueKey(
+                'category_${currentItem.value.billId}_$categoryStr',
+              ),
+              categoryName: categoryStr,
+              delay: Duration(milliseconds: categoryDelayMs),
+            ),
+          ],
+        ),
       ),
     );
   }
