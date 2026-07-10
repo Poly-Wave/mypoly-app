@@ -25,7 +25,7 @@ class ExpandedList extends HookWidget {
     for (int i = 0; i < items.length; i++) {
       computedRowDelays.add(accumulatedDelay);
 
-      final String titleStr = items[i].title ?? '';
+      final String titleStr = items[i].headline ?? items[i].title ?? '';
       final int lastCharDelay = titleStr.isEmpty
           ? 0
           : (titleStr.length - 1) * 50;
@@ -126,7 +126,8 @@ class _SequentialRowSwitcher extends HookWidget {
       return null;
     }, [item.billId, isDataChange]);
 
-    final String titleStr = currentItem.value.title ?? '';
+    final String titleStr =
+        currentItem.value.headline ?? currentItem.value.title ?? '';
     final String categoryStr = currentItem.value.categoryName ?? '';
 
     final int lastCharDelayTime = titleStr.isEmpty

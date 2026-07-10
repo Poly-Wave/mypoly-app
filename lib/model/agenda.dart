@@ -20,6 +20,7 @@ abstract class AgendaListData with _$AgendaListData {
     required int viewCount,
     required int voteCount,
     required DateTime registeredDate,
+    String? headline,
   }) = _AgendaListData;
 
   factory AgendaListData.fromJson(Map<String, dynamic> json) =>
@@ -138,7 +139,7 @@ extension MainAgendaResponseExtension on MainAgendaResponse {
 
     final item = AgendaListData(
       id: billId,
-      title: title,
+      title: (headline != null && headline!.isNotEmpty) ? headline! : title,
       category: category,
       viewCount: viewCount,
       voteCount: voteCount,

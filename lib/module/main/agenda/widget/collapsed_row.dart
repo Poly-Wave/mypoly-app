@@ -26,7 +26,7 @@ class CollapsedRow extends HookWidget {
       return null;
     }, [item.rank]);
 
-    final String titleStr = item.title ?? '';
+    final String titleStr = item.headline ?? item.title ?? '';
     final String categoryStr = item.categoryName ?? '';
 
     const int baseFadeMs = 200;
