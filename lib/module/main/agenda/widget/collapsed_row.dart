@@ -62,23 +62,27 @@ class CollapsedRow extends HookWidget {
         Expanded(
           child: SizedBox(
             width: 189.w,
-            child: Wrap(
-              clipBehavior: Clip.hardEdge,
-              children: List.generate(titleStr.length, (index) {
-                final char = titleStr[index];
+            child: Text.rich(
+              TextSpan(
+                children: List.generate(titleStr.length, (charIndex) {
+                  final char = titleStr[charIndex];
+                  final int charDelay = isDataChange
+                      ? (titleBaseDelay + (charIndex * charIntervalMs))
+                      : 0;
 
-                return _FadeInWidget(
-                  key: ValueKey(
-                    'collapsed_char_${animationTrigger.value}_${index}_$char',
-                  ),
-                  char: char,
-                  delay: Duration(
-                    milliseconds: titleBaseDelay + (index * charIntervalMs),
-                  ),
-                  duration: Duration(milliseconds: index * 50),
-                  isDataChange: isDataChange,
-                );
-              }),
+                  return WidgetSpan(
+                    child: _TypingCharWidget(
+                      key: ValueKey(
+                        'collapsed_char_${item.billId}_${charIndex}_$char',
+                      ),
+                      char: char,
+                      delay: Duration(milliseconds: charDelay),
+                    ),
+                  );
+                }),
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ),
@@ -100,6 +104,42 @@ class CollapsedRow extends HookWidget {
           child: MPSvgImage(SvgImage.arrowDown, width: 16.0, height: 16.0),
         ),
       ],
+    );
+  }
+}
+
+class _TypingCharWidget extends HookWidget {
+  final String char;
+  final Duration delay;
+
+  const _TypingCharWidget({super.key, required this.char, required this.delay});
+
+  @override
+  Widget build(BuildContext context) {
+    final opacity = useState(0.0);
+
+    useEffect(() {
+      if (delay == Duration.zero) {
+        opacity.value = 1.0;
+        return null;
+      }
+
+      final timer = Future.delayed(delay, () {
+        if (context.mounted) {
+          opacity.value = 1.0;
+        }
+      });
+      return null;
+    }, []);
+
+    return AnimatedOpacity(
+      duration: const Duration(milliseconds: 250),
+      curve: Curves.linear,
+      opacity: opacity.value,
+      child: Text(
+        char,
+        style: Pretendard.medium.set(size: 15, color: Colors.white),
+      ),
     );
   }
 }
@@ -157,13 +197,11 @@ class _FadeInWidget extends HookWidget {
 }
 
 Widget _buildStatusIcon(String status) {
-  switch (status) {
-    case 'up':
-      return MPImage(WebpImage.rankUp, width: 12.0, height: 12.0);
-    case 'down':
-      return MPImage(WebpImage.rankDown, width: 12.0, height: 12.0);
-    case 'stable':
-    default:
-      return MPImage(WebpImage.rankStable, width: 8.2, height: 1.73);
+  if (status.contains('up') || status.contains('UP')) {
+    return MPImage(WebpImage.rankUp, width: 12.0, height: 12.0);
+  } else if (status.contains('down') || status.contains('DOWN')) {
+    return MPImage(WebpImage.rankDown, width: 12.0, height: 12.0);
+  } else {
+    return MPImage(WebpImage.rankStable, width: 8.2, height: 1.73);
   }
 }

@@ -109,6 +109,7 @@ class _SequentialRowSwitcher extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final currentItem = useState(item);
+    final hasItemChanged = useState(false);
 
     useEffect(() {
       if (currentItem.value.billId != item.billId) {
@@ -117,6 +118,7 @@ class _SequentialRowSwitcher extends HookWidget {
           return null;
         }
 
+        hasItemChanged.value = true;
         final timer = Future.delayed(delay, () {
           if (context.mounted) {
             currentItem.value = item;
@@ -133,6 +135,7 @@ class _SequentialRowSwitcher extends HookWidget {
     final int lastCharDelayTime = titleStr.isEmpty
         ? 0
         : (titleStr.length - 1) * 50;
+    final bool triggerAnim = isDataChange && hasItemChanged.value;
     final int categoryDelayMs = isDataChange ? (lastCharDelayTime + 250) : 0;
 
     return AnimatedSwitcher(
@@ -154,20 +157,25 @@ class _SequentialRowSwitcher extends HookWidget {
           Expanded(
             child: SizedBox(
               width: 189.w,
-              child: Wrap(
-                clipBehavior: Clip.hardEdge,
-                children: List.generate(titleStr.length, (charIndex) {
-                  final char = titleStr[charIndex];
-                  final int charDelay = isDataChange ? (charIndex * 50) : 0;
+              child: Text.rich(
+                TextSpan(
+                  children: List.generate(titleStr.length, (charIndex) {
+                    final char = titleStr[charIndex];
+                    final int charDelay = triggerAnim ? (charIndex * 50) : 0;
 
-                  return _TypingCharWidget(
-                    key: ValueKey(
-                      'char_${currentItem.value.billId}_${charIndex}_$char',
-                    ),
-                    char: char,
-                    delay: Duration(milliseconds: charDelay),
-                  );
-                }),
+                    return WidgetSpan(
+                      child: _TypingCharWidget(
+                        key: ValueKey(
+                          'char_${currentItem.value.billId}_${charIndex}_$char',
+                        ),
+                        char: char,
+                        delay: Duration(milliseconds: charDelay),
+                      ),
+                    );
+                  }),
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ),
