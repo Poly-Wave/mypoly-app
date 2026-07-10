@@ -1,5 +1,3 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:mypoly/provider/router_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -40,88 +38,75 @@ class CollapsedRow extends HookWidget {
     final int categoryDelay =
         titleBaseDelay + (titleStr.length * charIntervalMs);
 
-    return Row(
-      children: [
-        Expanded(
-          child: GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: () => context.pushRoute(AgendaDetailRoute(id: item.billId)),
-            child: Row(
-              children: [
-                _FadeInWidget(
-                  key: ValueKey('collapsed_icon_${animationTrigger.value}'),
-                  delay: Duration(milliseconds: iconDelay),
-                  duration: Duration(milliseconds: baseFadeMs),
-                  isDataChange: isDataChange,
-                  child: _buildStatusIcon(item.rankChangeType.value),
-                ),
-                SizedBox(width: 4.w),
-                _FadeInWidget(
-                  key: ValueKey('collapsed_rank_${animationTrigger.value}'),
-                  delay: Duration(milliseconds: rankDelay),
-                  duration: Duration(milliseconds: baseFadeMs),
-                  isDataChange: isDataChange,
-                  child: Text(
-                    "${item.rank}",
-                    style: Pretendard.medium.set(
-                      size: 15,
-                      color: ColorStyles.white,
-                    ),
-                  ),
-                ),
-                SizedBox(width: 6.w),
-                Expanded(
-                  child: SizedBox(
-                    width: 189.w,
-                    child: Text.rich(
-                      TextSpan(
-                        children: List.generate(titleStr.length, (charIndex) {
-                          final char = titleStr[charIndex];
-                          final int charDelay = isDataChange
-                              ? (titleBaseDelay + (charIndex * charIntervalMs))
-                              : 0;
-
-                          return WidgetSpan(
-                            child: _TypingCharWidget(
-                              key: ValueKey(
-                                'collapsed_char_${item.billId}_${charIndex}_$char',
-                              ),
-                              char: char,
-                              delay: Duration(milliseconds: charDelay),
-                            ),
-                          );
-                        }),
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ),
-                SizedBox(width: 6.w),
-                _FadeInWidget(
-                  key: ValueKey('collapsed_category_${animationTrigger.value}'),
-                  delay: Duration(milliseconds: categoryDelay),
-                  duration: Duration(milliseconds: baseFadeMs),
-                  isDataChange: isDataChange,
-                  child: Text(
-                    categoryStr,
-                    maxLines: 1,
-                    style: Pretendard.medium.set(
-                      size: 13,
-                      color: ColorStyles.gray20,
-                    ),
-                  ),
-                ),
-              ],
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 14.h),
+      child: Row(
+        children: [
+          _FadeInWidget(
+            key: ValueKey('collapsed_icon_${animationTrigger.value}'),
+            delay: Duration(milliseconds: iconDelay),
+            duration: Duration(milliseconds: baseFadeMs),
+            isDataChange: isDataChange,
+            child: _buildStatusIcon(item.rankChangeType.value),
+          ),
+          SizedBox(width: 4.w),
+          _FadeInWidget(
+            key: ValueKey('collapsed_rank_${animationTrigger.value}'),
+            delay: Duration(milliseconds: rankDelay),
+            duration: Duration(milliseconds: baseFadeMs),
+            isDataChange: isDataChange,
+            child: Text(
+              "${item.rank}",
+              style: Pretendard.medium.set(size: 15, color: ColorStyles.white),
             ),
           ),
-        ),
-        SizedBox(width: 21.w),
-        GestureDetector(
-          onTap: onExpandPressed,
-          child: MPSvgImage(SvgImage.arrowDown, width: 16.0, height: 16.0),
-        ),
-      ],
+          SizedBox(width: 6.w),
+          Expanded(
+            child: SizedBox(
+              width: 189.w,
+              child: Text.rich(
+                TextSpan(
+                  children: List.generate(titleStr.length, (charIndex) {
+                    final char = titleStr[charIndex];
+                    final int charDelay = isDataChange
+                        ? (titleBaseDelay + (charIndex * charIntervalMs))
+                        : 0;
+
+                    return WidgetSpan(
+                      child: _TypingCharWidget(
+                        key: ValueKey(
+                          'collapsed_char_${item.billId}_${charIndex}_$char',
+                        ),
+                        char: char,
+                        delay: Duration(milliseconds: charDelay),
+                      ),
+                    );
+                  }),
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ),
+          SizedBox(width: 6.w),
+          _FadeInWidget(
+            key: ValueKey('collapsed_category_${animationTrigger.value}'),
+            delay: Duration(milliseconds: categoryDelay),
+            duration: Duration(milliseconds: baseFadeMs),
+            isDataChange: isDataChange,
+            child: Text(
+              categoryStr,
+              maxLines: 1,
+              style: Pretendard.medium.set(size: 13, color: ColorStyles.gray20),
+            ),
+          ),
+          SizedBox(width: 10.w),
+          GestureDetector(
+            onTap: onExpandPressed,
+            child: MPSvgImage(SvgImage.arrowDown, width: 16.0, height: 16.0),
+          ),
+        ],
+      ),
     );
   }
 }

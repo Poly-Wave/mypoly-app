@@ -62,10 +62,7 @@ class ExpandedList extends HookWidget {
                     ),
 
                   Container(
-                    padding: EdgeInsets.only(
-                      top: isFirst ? 0 : 8.h,
-                      bottom: isLast ? 0 : 8.h,
-                    ),
+                    padding: EdgeInsets.symmetric(vertical: 14.h),
                     alignment: Alignment.centerLeft,
                     child: _SequentialRowSwitcher(
                       index: index,
@@ -79,15 +76,18 @@ class ExpandedList extends HookWidget {
             }),
           ),
         ),
-        GestureDetector(
-          onTap: onCollapsePressed,
-          behavior: HitTestBehavior.translucent,
-          child: Container(
-            width: 16.0.w,
-            height: 16.h,
-            margin: EdgeInsets.only(left: 9.w),
-            alignment: Alignment.center,
-            child: MPSvgImage(SvgImage.arrowUp, width: 16.w, height: 16.h),
+        SizedBox(width: 10.w),
+        Padding(
+          padding: EdgeInsets.only(top: 12.h),
+          child: GestureDetector(
+            onTap: onCollapsePressed,
+            behavior: HitTestBehavior.translucent,
+            child: Container(
+              width: 16.0.w,
+              height: 16.h,
+              alignment: Alignment.center,
+              child: MPSvgImage(SvgImage.arrowUp, width: 16.w, height: 16.h),
+            ),
           ),
         ),
       ],

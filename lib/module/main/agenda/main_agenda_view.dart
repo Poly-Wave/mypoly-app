@@ -342,8 +342,8 @@ class _RealtimePopularAgendaSection extends HookConsumerWidget {
     }
 
     final EdgeInsets dynamicPadding = isExpanded.value
-        ? EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w)
-        : EdgeInsets.symmetric(vertical: 12.h, horizontal: 10.w);
+        ? EdgeInsets.symmetric(vertical: 0.h, horizontal: 16.w)
+        : EdgeInsets.symmetric(vertical: 0.h, horizontal: 16.w);
 
     return Padding(
       padding: EdgeInsets.only(top: 16.h),
