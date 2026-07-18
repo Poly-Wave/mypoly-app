@@ -33,7 +33,7 @@ class MPSortSwitch<T extends MPSortOption> extends StatelessWidget {
             curve: Curves.easeOutCubic,
             alignment: value == first ? .centerLeft : .centerRight,
             child: Container(
-              width: 44.w,
+              width: 46.w,
               height: 20.h,
               decoration: BoxDecoration(
                 borderRadius: .circular(4.r),
@@ -43,16 +43,19 @@ class MPSortSwitch<T extends MPSortOption> extends StatelessWidget {
           ),
           Row(
             children: [
-              MPSortItem(
-                text: first.text,
-                isActive: value == first,
-                onTap: () => onChanged(first),
+              Expanded(
+                child: MPSortItem(
+                  text: first.text,
+                  isActive: value == first,
+                  onTap: () => onChanged(first),
+                ),
               ),
-              SizedBox(width: 4.w),
-              MPSortItem(
-                text: second.text,
-                isActive: value == second,
-                onTap: () => onChanged(second),
+              Expanded(
+                child: MPSortItem(
+                  text: second.text,
+                  isActive: value == second,
+                  onTap: () => onChanged(second),
+                ),
               ),
             ],
           ),
@@ -80,7 +83,7 @@ class MPSortItem extends StatelessWidget {
       behavior: .opaque,
       onTap: onTap,
       child: SizedBox(
-        width: 44.w,
+        width: 46.w,
         height: 20.h,
         child: Center(
           child: AnimatedDefaultTextStyle(
