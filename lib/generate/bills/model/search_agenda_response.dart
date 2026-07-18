@@ -26,6 +26,9 @@ abstract class SearchAgendaResponse with _$SearchAgendaResponse {
     /// 제목
     @JsonKey(name: r'title') required String title,
 
+    /// AI 헤드라인
+    @JsonKey(name: r'headline') required String headline,
+
     /// 등록일자
     @JsonKey(name: r'registeredDate') required DateTime registeredDate,
 

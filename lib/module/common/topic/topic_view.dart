@@ -141,7 +141,7 @@ class TopicView extends HookConsumerWidget {
 
               try {
                 await ref
-                    .read(categoryServiceProvider)
+                    .read(appUserProvider.notifier)
                     .updateCategories(
                       categories: selectedCategories,
                       isOnboard: isOnboard,

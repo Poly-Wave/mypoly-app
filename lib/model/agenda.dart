@@ -20,7 +20,6 @@ abstract class AgendaListData with _$AgendaListData {
     required int viewCount,
     required int voteCount,
     required DateTime registeredDate,
-    String? headline,
   }) = _AgendaListData;
 
   factory AgendaListData.fromJson(Map<String, dynamic> json) =>
@@ -63,7 +62,7 @@ extension SearchAgendaResponseExtension on SearchAgendaResponse {
 
     final item = AgendaListData(
       id: billId,
-      title: title,
+      title: headline,
       category: category,
       viewCount: viewCount,
       voteCount: voteCount,
@@ -82,7 +81,7 @@ extension BookmarkedBillResponseExtension on BookmarkedBillResponse {
 
     final item = AgendaListData(
       id: billId,
-      title: title,
+      title: headline,
       category: category,
       viewCount: viewCount,
       voteCount: voteCount,
@@ -101,7 +100,7 @@ extension MyVotedBillResponseExtension on MyVotedBillResponse {
 
     final item = AgendaListData(
       id: billId,
-      title: title,
+      title: headline,
       category: category,
       viewCount: viewCount,
       voteCount: voteCount,
@@ -120,7 +119,7 @@ extension InterestAgendaResponseExtension on InterestAgendaResponse {
 
     final item = AgendaListData(
       id: billId,
-      title: title,
+      title: headline,
       category: category,
       viewCount: 0,
       voteCount: 0,
@@ -139,7 +138,7 @@ extension MainAgendaResponseExtension on MainAgendaResponse {
 
     final item = AgendaListData(
       id: billId,
-      title: (headline != null && headline!.isNotEmpty) ? headline! : title,
+      title: headline,
       category: category,
       viewCount: viewCount,
       voteCount: voteCount,

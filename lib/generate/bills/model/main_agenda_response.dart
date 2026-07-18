@@ -32,8 +32,8 @@ abstract class MainAgendaResponse with _$MainAgendaResponse {
     /// 제목
     @JsonKey(name: r'title') required String title,
 
-    /// AI 요약
-    @JsonKey(name: r'headline') String? headline,
+    /// AI 헤드라인
+    @JsonKey(name: r'headline') required String headline,
 
     /// 내용 요약
     @JsonKey(name: r'content') String? content,

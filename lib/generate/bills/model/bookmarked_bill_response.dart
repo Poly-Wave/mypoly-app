@@ -17,6 +17,9 @@ abstract class BookmarkedBillResponse with _$BookmarkedBillResponse {
     /// 의안 제목
     @JsonKey(name: r'title') required String title,
 
+    /// AI 헤드라인
+    @JsonKey(name: r'headline') required String headline,
+
     /// 의안 접수일
     @JsonKey(name: r'registeredDate') required DateTime registeredDate,
 

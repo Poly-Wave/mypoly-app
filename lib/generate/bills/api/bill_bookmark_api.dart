@@ -14,7 +14,7 @@ abstract class BillBookmarkApi {
   factory BillBookmarkApi(Dio dio, {String? baseUrl}) = _BillBookmarkApi;
 
   /// 보관함 안건 목록 조회
-  /// 로그인 사용자가 보관한 의안 목록을 조회합니다.  - 날짜 필터는 &#39;보관한 날짜&#39; 기준입니다. - categoryCodes는 의안의 AI 카테고리 중 하나라도 매칭되면 포함됩니다. - stageCodes는 앱용 진행 단계 코드 기준입니다. 사용 가능 값: RECEIVED, REVIEW, DECISION, COMPLETED - sortType 기본값은 LATEST입니다. - 정렬은 pageable.sort가 아닌 sortType으로 제어합니다. - 사용 가능 값: LATEST, POPULAR
+  /// 로그인 사용자가 보관한 의안 목록을 조회합니다.  - 날짜 필터는 &#39;보관한 날짜&#39; 기준입니다. - categoryCodes는 의안의 AI 카테고리 중 하나라도 매칭되면 포함됩니다. - stageCodes는 앱용 진행 단계 코드 기준입니다. 사용 가능 값: RECEIVED, REVIEW, DECISION, COMPLETED - sortType 기본값은 LATEST입니다. - 정렬은 pageable.sort가 아닌 sortType으로 제어합니다. - 사용 가능 값: LATEST, POPULAR - 각 항목은 AI 헤드라인(&#x60;headline&#x60;)을 포함합니다.
   ///
   /// Parameters:
   /// * [fromDate] - 보관 시작일, KST 기준. 2026-05-13 또는 2026-05-13T00:00:00.000Z 형식

@@ -32,6 +32,9 @@ abstract class InterestAgendaResponse with _$InterestAgendaResponse {
     /// 제목
     @JsonKey(name: r'title') required String title,
 
+    /// AI 헤드라인
+    @JsonKey(name: r'headline') required String headline,
+
     /// 내용 요약
     @JsonKey(name: r'content') String? content,
 

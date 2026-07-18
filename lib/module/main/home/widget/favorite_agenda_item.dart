@@ -44,7 +44,7 @@ class FavoriteAgendaItem extends StatelessWidget {
                 spacing: 12.h,
                 children: [
                   Text(
-                    item.title,
+                    item.title.wrapped,
                     maxLines: 2,
                     overflow: .ellipsis,
                     style: Pretendard.medium.set(
