@@ -60,28 +60,6 @@ class MainFilterHeaderDelegate extends SliverPersistentHeaderDelegate {
             child: Row(
               spacing: 8.w,
               children: [
-                Container(
-                  height: 32.h,
-                  padding: .symmetric(horizontal: 12.w),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [ColorStyles.primary50, ColorStyles.primary20],
-                    ),
-                    borderRadius: .circular(999.r),
-                  ),
-                  child: Row(
-                    mainAxisSize: .min,
-                    children: [
-                      Text(
-                        'AI추천',
-                        style: Pretendard.semiBold.set(
-                          size: 14,
-                          color: ColorStyles.primary100,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
                 MPFilterChip(
                   text: categoryText,
                   isActive: categories.isNotEmpty,

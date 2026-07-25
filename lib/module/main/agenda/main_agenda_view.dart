@@ -40,8 +40,38 @@ class MainAgendaView extends HookConsumerWidget {
         slivers: [
           SliverToBoxAdapter(
             child: Padding(
-              padding: .only(bottom: 20.h, left: 20.w, right: 20.w),
-              child: _RealtimePopularAgendaSection(),
+              padding: .only(bottom: 10.h, left: 20.w, right: 20.w),
+              child: Column(
+                children: [
+                  _RealtimePopularAgendaSection(),
+                  SizedBox(height: 10.h),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8.h),
+                    child: Center(
+                      child: Text.rich(
+                        TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'AI추천',
+                              style: Pretendard.medium.set(
+                                size: 13,
+                                color: const Color(0xFF49EFD9),
+                              ),
+                            ),
+                            TextSpan(
+                              text: '을 통해 의안을 전달드립니다.',
+                              style: Pretendard.medium.set(
+                                size: 13,
+                                color: const Color(0xFFF5F8FD),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           SliverPersistentHeader(
