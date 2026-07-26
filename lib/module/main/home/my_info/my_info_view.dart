@@ -81,7 +81,7 @@ class MyInfoView extends HookConsumerWidget {
                   MyInfoGroup(
                     children: [
                       MyInfoGroupTitle("설정"),
-                      MyInfoGroupItem("알림", onTap: () {}),
+                      // MyInfoGroupItem("알림", onTap: () {}),
                       MyInfoGroupItem(
                         "공지사항",
                         onTap: () => context.pushRoute(NoticeRoute()),
