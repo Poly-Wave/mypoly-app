@@ -124,7 +124,7 @@ class Stages extends _$Stages {
     context,
     multiple: true,
     title: "진행단계",
-    values: Stage.values.map((stage) => (stage, stage.text)).toList(),
+    values: Stage.values.map((stage) => (stage, stage.value)).toList(),
     value: state,
     onChanged: (value) {
       if (state == value) return;
