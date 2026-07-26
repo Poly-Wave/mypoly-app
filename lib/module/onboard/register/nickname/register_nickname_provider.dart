@@ -180,7 +180,7 @@ Future<void> onNext(
           provider: provider,
           tokenType: tokenType,
           token: token,
-          nickname: nickname,
+          nickname: nickname.trim(),
           terms: terms,
         );
 

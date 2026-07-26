@@ -445,7 +445,7 @@ Future<void> onSave(WidgetRef ref) async {
     await ref
         .read(appUserProvider.notifier)
         .updateProfile(
-          nickname: nickname,
+          nickname: nickname.trim(),
           gender: gender,
           birthDate: birthDate,
           sido: residence.sido,
