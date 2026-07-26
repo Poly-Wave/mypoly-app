@@ -139,6 +139,7 @@ class AppUser extends _$AppUser {
       sido: sido,
       sigungu: sigungu,
       emdName: emdName,
+      address: "$sido $sigungu $emdName",
     );
   }
 
