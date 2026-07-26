@@ -38,6 +38,9 @@ abstract class MainAgendaResponse with _$MainAgendaResponse {
     /// 내용 요약
     @JsonKey(name: r'content') String? content,
 
+    /// AI 3줄 요약. 각 줄이 배열 원소로 내려간다.
+    @JsonKey(name: r'summaryLines') List<String>? summaryLines,
+
     /// 등록일자
     @JsonKey(name: r'registeredDate') required DateTime registeredDate,
 

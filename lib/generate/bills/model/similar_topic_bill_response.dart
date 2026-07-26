@@ -26,6 +26,9 @@ abstract class SimilarTopicBillResponse with _$SimilarTopicBillResponse {
     /// AI 요약
     @JsonKey(name: r'summary') String? summary,
 
+    /// AI 3줄 요약. 각 줄이 배열 원소로 내려간다.
+    @JsonKey(name: r'summaryLines') List<String>? summaryLines,
+
     /// 원문 URL
     @JsonKey(name: r'detailUrl') String? detailUrl,
 

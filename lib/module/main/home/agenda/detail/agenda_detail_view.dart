@@ -374,14 +374,23 @@ class AgendaDetailView extends HookConsumerWidget {
                       ),
                     ),
                     MPHeight(20),
-                    Text(
-                      agendaDetail.aiSummary.summary.wrapped,
-                      style: Pretendard.medium.set(
-                        size: 16,
-                        height: 1.45,
-                        color: ColorStyles.white,
-                      ),
+                    Column(
+                      crossAxisAlignment: .stretch,
+                      spacing: 24.h,
+                      children: agendaDetail.aiSummary.summaryLines
+                          .map(
+                            (item) => Text(
+                              item.wrapped,
+                              style: Pretendard.medium.set(
+                                size: 16,
+                                height: 1.45,
+                                color: ColorStyles.white,
+                              ),
+                            ),
+                          )
+                          .toList(),
                     ),
+
                     MPHeight(10),
                     Row(
                       mainAxisAlignment: .end,

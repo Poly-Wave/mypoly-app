@@ -3,6 +3,7 @@
 //
 
 // ignore_for_file: unused_element
+import 'package:mypoly/generate/bills/model/co_proposer_response.dart';
 import 'package:mypoly/generate/bills/model/bill_vote_summary_response.dart';
 import 'package:mypoly/generate/bills/model/bill_category_summary_response.dart';
 import 'package:mypoly/generate/bills/model/bill_stage_response.dart';
@@ -30,6 +31,10 @@ abstract class BillDetailResponse with _$BillDetailResponse {
 
     /// 제안자 수
     @JsonKey(name: r'proposerCount') required int proposerCount,
+
+    /// 공동발의자 명단(대표발의자 제외)
+    @JsonKey(name: r'coProposers')
+    required List<CoProposerResponse> coProposers,
 
     /// 원문 URL
     @JsonKey(name: r'detailUrl') required String detailUrl,

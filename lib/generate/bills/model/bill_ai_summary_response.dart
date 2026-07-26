@@ -14,8 +14,8 @@ abstract class BillAiSummaryResponse with _$BillAiSummaryResponse {
     /// AI 헤드라인
     @JsonKey(name: r'headline') required String headline,
 
-    /// AI 요약 본문
-    @JsonKey(name: r'summary') required String summary,
+    /// AI 3줄 요약. 각 줄이 배열 원소로 내려간다.
+    @JsonKey(name: r'summaryLines') required List<String> summaryLines,
   }) = _BillAiSummaryResponse;
 
   factory BillAiSummaryResponse.fromJson(Map<String, dynamic> json) =>
