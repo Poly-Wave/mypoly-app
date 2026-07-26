@@ -431,7 +431,7 @@ Future<void> onSave(WidgetRef ref) async {
   context.unFocus();
 
   final nickname = ref.read(nicknameProvider);
-  final gender = ref.read(onboardGenderProvider);
+  final gender = ref.read(infoEditGenderProvider);
   final birthDate = ref.read(birthProvider).replaceAll(".", "");
   final residence = ref.read(residenceProvider);
 
