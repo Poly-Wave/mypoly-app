@@ -16,6 +16,7 @@ import 'package:mypoly/module/main/home/widget/popular_subsidy_card.dart';
 import 'package:mypoly/module/widget/carousel/horizontal_carousel.dart';
 import 'package:mypoly/module/main/home/widget/agenda_intro_item.dart';
 import 'package:mypoly/module/main/home/widget/favorite_agenda_item.dart';
+import 'package:mypoly/module/main/main_provider.dart';
 
 @RoutePage()
 class MainHomeView extends HookConsumerWidget {
@@ -180,17 +181,21 @@ class AgendaIntroSection extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tabs = ref.watch(appAgendaTabsProvider);
-
-    if (tabs.isEmpty) {
-      return SizedBox.shrink();
-    }
-
-    final selectedTab = useState<AgendaTabResponse>(tabs.first);
-    final userCategories = ref.watch(appUserCategoriesProvider);
     final appTabAgendas = ref.watch(appTabAgendasProvider);
-    final tabAgendas = appTabAgendas
-        .firstWhere((tabAgendas) => tabAgendas.$1 == selectedTab.value)
-        .$2;
+
+    final selectedTab = useState<AgendaTabResponse?>(
+      tabs.isNotEmpty ? tabs.first : null,
+    );
+
+    List<dynamic> tabAgendas = [];
+    if (selectedTab.value != null && appTabAgendas.isNotEmpty) {
+      for (final tuple in appTabAgendas) {
+        if (tuple.$1 == selectedTab.value) {
+          tabAgendas = tuple.$2;
+          break;
+        }
+      }
+    }
 
     return Column(
       crossAxisAlignment: .stretch,
@@ -213,7 +218,7 @@ class AgendaIntroSection extends HookConsumerWidget {
 
               GestureDetector(
                 onTap: () {
-                  // 더보기 기능
+                  ref.read(mainPageProvider.notifier).update(0);
                 },
                 behavior: HitTestBehavior.translucent,
                 child: Row(
@@ -234,37 +239,38 @@ class AgendaIntroSection extends HookConsumerWidget {
           ),
         ),
 
-        SizedBox(
-          height: 56.h,
-          child: MPSingleScroll(
-            scrollDirection: .horizontal,
-            child: Padding(
-              padding: .symmetric(horizontal: 20.w),
-              child: Row(
-                spacing: 8.w,
-                children: tabs.map((item) {
-                  final isSelected = selectedTab.value == item;
+        if (tabs.isNotEmpty)
+          SizedBox(
+            height: 56.h,
+            child: MPSingleScroll(
+              scrollDirection: .horizontal,
+              child: Padding(
+                padding: .symmetric(horizontal: 20.w),
+                child: Row(
+                  spacing: 8.w,
+                  children: tabs.map((item) {
+                    final isSelected = selectedTab.value == item;
 
-                  return GestureDetector(
-                    onTap: () => selectedTab.value = item,
-                    child: MPChip(
-                      text: item.label,
-                      isActive: isSelected,
+                    return GestureDetector(
                       onTap: () => selectedTab.value = item,
-                    ),
-                  );
-                }).toList(),
+                      child: MPChip(
+                        text: item.label,
+                        isActive: isSelected,
+                        onTap: () => selectedTab.value = item,
+                      ),
+                    );
+                  }).toList(),
+                ),
               ),
             ),
           ),
-        ),
 
         MPHeight(10),
 
         Padding(
           padding: .symmetric(horizontal: 20.w),
-          child: userCategories.isEmpty
-              ? CategoryEmptyView()
+          child: tabAgendas.isEmpty
+              ? VoteEmptyView()
               : ListView.separated(
                   key: ValueKey(selectedTab.value),
                   shrinkWrap: true,
@@ -501,6 +507,76 @@ class CategoryEmptyView extends StatelessWidget {
                   alignment: Alignment.center,
                   child: Text(
                     "관심 주제 선택",
+                    style: Pretendard.semiBold.set(
+                      size: 14,
+                      color: ColorStyles.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class VoteEmptyView extends HookConsumerWidget {
+  const VoteEmptyView({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Container(
+      height: 300.h,
+      decoration: BoxDecoration(
+        color: ColorStyles.divider,
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          MPImage(WebpImage.emptySearch, size: 64),
+          MPHeight(10),
+          Column(
+            children: [
+              Text(
+                "안건 투표를 진행해 주세요",
+                style: Pretendard.medium.set(
+                  size: 16,
+                  color: ColorStyles.white,
+                ),
+              ),
+              SizedBox(height: 6.h),
+              Text(
+                "안건 투표를 진행하면\n다양한 안건을 소개받을 수 있어요",
+                textAlign: TextAlign.center,
+                style: Pretendard.medium
+                    .set(size: 14, color: ColorStyles.gray30)
+                    .copyWith(height: 1.45),
+              ),
+            ],
+          ),
+          MPHeight(20),
+          GestureDetector(
+            onTap: () => ref.read(mainPageProvider.notifier).update(0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  height: 32.h,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 10.w,
+                    vertical: 6.h,
+                  ),
+                  decoration: BoxDecoration(
+                    color: ColorStyles.gray70,
+                    borderRadius: BorderRadius.circular(8.r),
+                    border: Border.all(color: ColorStyles.gray50, width: 1),
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(
+                    "안건 투표하기",
                     style: Pretendard.semiBold.set(
                       size: 14,
                       color: ColorStyles.white,
