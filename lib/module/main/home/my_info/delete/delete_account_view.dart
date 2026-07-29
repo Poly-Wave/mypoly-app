@@ -268,7 +268,6 @@ class DeleteAccountView extends HookConsumerWidget {
                                     height: 46.h,
                                     padding: EdgeInsets.symmetric(
                                       vertical: 12.h,
-                                      horizontal: 20.w,
                                     ),
                                     decoration: BoxDecoration(
                                       color: Colors.transparent,
