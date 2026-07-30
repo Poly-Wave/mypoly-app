@@ -85,11 +85,11 @@ class NoticeSection extends StatelessWidget {
 }
 
 // 내 정보
-class MyInfoSection extends StatelessWidget {
+class MyInfoSection extends ConsumerWidget {
   const MyInfoSection({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: .symmetric(horizontal: 20.w),
       child: Column(
@@ -110,7 +110,7 @@ class MyInfoSection extends StatelessWidget {
                       children: [
                         TextSpan(text: "안녕하세요\n"),
                         TextSpan(
-                          text: "동글동글한너구리",
+                          text: ref.watch(appUserNicknameProvider),
                           style: Pretendard.semiBold
                               .set(size: 25, height: 1.3)
                               .copyWith(
