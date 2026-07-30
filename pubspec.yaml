@@ -1,7 +1,7 @@
 name: mypoly
 description: "MyPOLY"
 publish_to: 'none'
-version: 0.1.0+17
+version: 1.0.0+18
 
 environment:
   sdk: ^3.10.7
