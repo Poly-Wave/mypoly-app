@@ -38,6 +38,12 @@ class AgendasPaging extends _$AgendasPaging {
       final newKey = lastKey != null ? lastKey + 1 : 0;
 
       final sort = ref.read(sortProvider);
+
+      final allCategoryCodes = ref
+          .read(appCategoriesProvider)
+          .map((category) => category.code)
+          .toList();
+
       final categoryCodes = ref
           .read(categoriesProvider)
           .map((category) => category.code)
@@ -50,7 +56,9 @@ class AgendasPaging extends _$AgendasPaging {
           .read(agendaServiceProvider)
           .getMainAgendas(
             sort: sort,
-            categoryCodes: categoryCodes,
+            categoryCodes: categoryCodes.isNotEmpty
+                ? categoryCodes
+                : allCategoryCodes,
             page: newKey,
             cancelToken: _currentCancelToken,
           );

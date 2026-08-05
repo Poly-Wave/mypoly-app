@@ -40,6 +40,12 @@ class BookmarksPaging extends _$BookmarksPaging {
       final newKey = lastKey != null ? lastKey + 1 : 0;
 
       final sort = ref.read(sortProvider);
+
+      final allCategoryCodes = ref
+          .read(appCategoriesProvider)
+          .map((category) => category.code)
+          .toList();
+
       final categoryCodes = ref
           .read(categoriesProvider)
           .map((category) => category.code)
@@ -60,7 +66,9 @@ class BookmarksPaging extends _$BookmarksPaging {
             sort: sort,
             fromDate: createdAtRange.$2,
             toDate: createdAtRange.$3,
-            categoryCodes: categoryCodes,
+            categoryCodes: categoryCodes.isNotEmpty
+                ? categoryCodes
+                : allCategoryCodes,
             stageCodes: stageCodes,
             page: newKey,
             cancelToken: _currentCancelToken,

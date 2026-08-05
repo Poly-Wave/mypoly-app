@@ -116,7 +116,7 @@ class AgendaService {
   }) async {
     try {
       return await _agendaApi.getMainAgendas(
-        categoryCodes: categoryCodes.isNotEmpty ? categoryCodes : null,
+        categoryCodes: categoryCodes,
         sortType: sort.value,
         page: page,
         size: size,
@@ -144,7 +144,7 @@ class AgendaService {
       return await _billBookmarkApi.getBookmarkedBills(
         fromDate: fromDate?.toDashYMD,
         toDate: toDate?.toDashYMD,
-        categoryCodes: categoryCodes.isNotEmpty ? categoryCodes : null,
+        categoryCodes: categoryCodes,
         stageCodes: stageCodes,
         sortType: sort.value,
         page: page,
