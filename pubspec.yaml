@@ -179,3 +179,9 @@ melos:
         - melos clean
         - cd android && fastlane deploy_firebase_dev && cd ..
         - cd ios && fastlane deploy_firebase_dev && cd ..
+
+    deploy:store:
+      steps:
+        - melos clean
+        - fvm flutter build aab --release --flavor prod
+        - fvm flutter build ipa --release --flavor prod
