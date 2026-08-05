@@ -119,32 +119,19 @@ class AgendaVoteView extends HookConsumerWidget {
                     ),
                     MPHeight(20),
                     if (agendaDetail.voteSummary.hasVoted) ...[
-                      GestureDetector(
-                        onTap: () => ref
-                            .read(detail.agendaDetailProvider.notifier)
-                            .vote(true),
-                        child: AgendaVoteProgress(
-                          text: '응원해요',
-                          percent: (agendaDetail.voteSummary.agreeRatio * 100)
-                              .round(),
-                          vote:
-                              agendaDetail.voteSummary.myVoteResult == "AGREE",
-                        ),
+                      AgendaVoteProgress(
+                        text: '응원해요',
+                        percent: (agendaDetail.voteSummary.agreeRatio * 100)
+                            .round(),
+                        vote: agendaDetail.voteSummary.myVoteResult == "AGREE",
                       ),
                       MPHeight(10),
-                      GestureDetector(
-                        onTap: () => ref
-                            .read(detail.agendaDetailProvider.notifier)
-                            .vote(false),
-                        child: AgendaVoteProgress(
-                          text: '아쉬워요',
-                          percent:
-                              (agendaDetail.voteSummary.disagreeRatio * 100)
-                                  .round(),
-                          vote:
-                              agendaDetail.voteSummary.myVoteResult ==
-                              "DISAGREE",
-                        ),
+                      AgendaVoteProgress(
+                        text: '아쉬워요',
+                        percent: (agendaDetail.voteSummary.disagreeRatio * 100)
+                            .round(),
+                        vote:
+                            agendaDetail.voteSummary.myVoteResult == "DISAGREE",
                       ),
                     ] else ...[
                       MPButton(
